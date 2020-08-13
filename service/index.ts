@@ -1,7 +1,7 @@
 import type {VNode} from "snabbdom/vnode"
 import {merge} from "rxjs";
 import {DeepPartial, LifecyclePort, sink, Socket, source} from "pkit/core";
-import {directProc, mapProc, mapToProc} from "pkit/processors";
+import {directProc, latestMapProc, mapProc, mapToProc} from "pkit/processors";
 import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
 import {State, compute} from './processors'
@@ -36,5 +36,6 @@ const uiKit = (port: Port) =>
 const useStateKit = (port: Port) =>
   merge(
     stateKit(port.state, compute),
-    mapProc(source(port.init), sink(port.state.init), ({state}) => state)
+    latestMapProc(source(port.ready), sink(port.state.init), [source(port.init)],
+      ([,{state}]) => state)
   )
