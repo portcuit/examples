@@ -1,6 +1,6 @@
 import type {VNode} from "snabbdom/vnode"
 import {merge} from "rxjs";
-import {DeepPartial, LifecyclePort, sink, Socket, source} from "pkit/core";
+import {DeepPartial, LifecyclePort, sink, Socket, source, PortSink} from "pkit/core";
 import {directProc, latestMapProc, mapProc, mapToProc} from "pkit/processors";
 import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
@@ -14,6 +14,7 @@ export type Params = {
 export class Port extends LifecyclePort<Params> {
   state = new StatePort<State>();
   vnode = new Socket<VNode>();
+  doSomething = new Socket<number>();
 }
 
 export const circuit = (port: Port) =>
