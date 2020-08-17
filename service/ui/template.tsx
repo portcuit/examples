@@ -1,4 +1,4 @@
-import {html} from '@pkit/snabbdom'
+import {jsx} from 'snabbdom/jsx'
 import {State} from "../processors";
 
 export const LayoutTpl = ({msg}: State) =>
