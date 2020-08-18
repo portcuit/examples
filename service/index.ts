@@ -6,6 +6,7 @@ import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
 import {State, compute} from './processors'
 import {LayoutTpl} from "./ui/template";
+import {ActionDetail, actionProc} from "@pkit/snabbdom";
 
 export type Params = {
   state: DeepPartial<State>
@@ -14,6 +15,7 @@ export type Params = {
 export class Port extends LifecyclePort<Params> {
   state = new StatePort<State>();
   vnode = new Socket<VNode>();
+  action = new Socket<ActionDetail>();
 }
 
 export const circuit = (port: Port) =>
@@ -25,6 +27,7 @@ export const circuit = (port: Port) =>
     ]),
     uiKit(port),
     useStateKit(port),
+    actionProc(source(port.action), sink(port.state.patch)),
     mapToProc(source(port.init), sink(port.ready)),
   )
 
