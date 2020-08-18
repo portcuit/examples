@@ -1,13 +1,5 @@
 import {run} from "pkit/core";
-
 import {Params, Port, circuit} from './'
-
-const subject$ = run(new Port, circuit);
-
-subject$.subscribe({
-  error: (e) =>
-    console.error(e)
-})
 
 const params: Params = {
   state: {
@@ -15,5 +7,11 @@ const params: Params = {
   }
 }
 
-subject$.next(['init', params]);
+const subject$ = run(new Port, circuit, params);
+
+subject$.subscribe({
+  error: (e) =>
+    console.error(e)
+})
+
 Object.assign(globalThis, {subject$});

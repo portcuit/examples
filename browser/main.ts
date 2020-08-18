@@ -1,16 +1,5 @@
-import {PortMessage, run} from "pkit/core";
+import {run} from "pkit/core";
 import {Params, Port, circuit} from './';
-
-Object.assign(globalThis, {env: {NODE_DEBUG: 'portcuit'}})
-
-const subject$ = run(new Port, circuit);
-
-subject$.subscribe({
-  // next: (msg) =>
-  //   console.debug(msg),
-  error: (e) =>
-    console.error(e)
-})
 
 const params: Params = {
   worker: {
@@ -22,6 +11,10 @@ const params: Params = {
   }
 }
 
-subject$.next(['init', params]);
+const subject$ = run(new Port, circuit, params);
+subject$.subscribe({
+  error: (e) =>
+    console.error(e)
+})
 
 Object.assign(globalThis, {subject$});
