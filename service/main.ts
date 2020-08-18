@@ -8,10 +8,6 @@ const params: Params = {
 }
 
 const subject$ = run(new Port, circuit, params);
-
-subject$.subscribe({
-  error: (e) =>
-    console.error(e)
-})
+subject$.subscribe({error: (e) => console.error(e)})
 
 Object.assign(globalThis, {subject$});
