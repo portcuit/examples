@@ -6,18 +6,15 @@ export type State = {
   items: {
     editing: boolean;
     completed: boolean;
-    label: string;
+    title: string;
+    focus?: EphemeralBoolean
   }[]
 }
 
 export const initial: State = {
-  newTodo: 'ほげ',
+  newTodo: '',
   editing: '',
-  items: [{
-    editing: false,
-    completed: false,
-    label: 'test'
-  }]
+  items: []
 }
 
 export const compute: Compute<State> = (state) => ({
