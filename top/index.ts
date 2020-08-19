@@ -1,8 +1,8 @@
-import {fromEvent, merge} from "rxjs";
+import {fromEvent, merge, of} from "rxjs";
+import {map, startWith, switchMap} from "rxjs/operators";
 import {LifecyclePort, source, sink, Socket} from "pkit/core";
-import {directProc, fromEventProc, latestMapProc, mapProc, mapToProc} from "pkit/processors";
+import {directProc, latestMapProc, mapProc, mapToProc} from "pkit/processors";
 import {workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit} from "pkit/worker";
-import {Port as ServicePort} from "../service/"
 import {
   snabbdomKit,
   SnabbdomParams,
@@ -11,7 +11,7 @@ import {
   createActionModule,
   ActionDetail
 } from "@pkit/snabbdom";
-import {map, startWith, switchMap, withLatestFrom} from "rxjs/operators";
+import {Port as AppPort, initial} from "../app/"
 
 export type Params = {
   worker: WorkerParams,
@@ -19,8 +19,8 @@ export type Params = {
 }
 
 export class Port extends LifecyclePort<Params> {
-  service = new class extends WorkerPort {
-    ifs = new ServicePort;
+  app = new class extends WorkerPort {
+    ifs = new AppPort;
   };
   snabbdom = new SnabbdomPort;
   state = new Socket<any>();
@@ -30,24 +30,27 @@ export const circuit = (port: Port) =>
   merge(
     useServiceKit(port),
     useSnabbdomKit(port),
-    directProc(source(port.service.ifs.state.raw), sink(port.state)),
+    lifecycleKit(port)
+  )
 
-    source(port.service.run.restart).pipe(
-      withLatestFrom(source(port.state)),
-      switchMap(([,state]) =>
-        mapToProc(source(port.service.ifs.ready), sink(port.service.ifs.state.init), state))),
+const lifecycleKit = (port: Port) =>
+  merge(
+    directProc(source(port.app.ifs.state.raw), sink(port.state)),
+    latestMapProc(source(port.app.ifs.ready), sink(port.app.ifs.state.init), [source(port.state)],
+      ([,state]) => state),
+    directProc(of(initial), sink(port.state)),
   )
 
 const useServiceKit = (port: Port) =>
   merge(
-    workerKit(port.service),
-    parentRemoteWorkerKit(port.service, [
-      port.service.ifs.state.init,
-      port.service.ifs.action
-    ], port.service.ifs),
-    mapProc(source(port.init), sink(port.service.init),
+    workerKit(port.app),
+    parentRemoteWorkerKit(port.app, [
+      port.app.ifs.state.init,
+      port.app.ifs.action
+    ], port.app.ifs),
+    mapProc(source(port.init), sink(port.app.init),
       ({worker}) => worker),
-    mapToProc(source(port.service.ready), sink(port.service.running), true)
+    mapToProc(source(port.app.ready), sink(port.app.running), true)
   )
 
 const useSnabbdomKit = (port: Port) =>
@@ -58,10 +61,10 @@ const useSnabbdomKit = (port: Port) =>
         const target = new EventTarget;
         return fromEvent<CustomEvent<ActionDetail>>(target as any, 'action').pipe(
           map(({detail}) =>
-            sink(port.service.ifs.action)(detail)),
+            sink(port.app.ifs.action)(detail)),
           startWith(sink(port.snabbdom.init)({...snabbdom,
             modules: [createActionModule(target), ...defaultModules]
           })))
       })),
-    directProc(source(port.service.ifs.vnode), sink(port.snabbdom.render)),
+    directProc(source(port.app.ifs.vnode), sink(port.snabbdom.render)),
   )

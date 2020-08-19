@@ -1,21 +1,22 @@
 import type {VNode} from "snabbdom/vnode"
 import {merge} from "rxjs";
 import {DeepPartial, LifecyclePort, sink, Socket, source} from "pkit/core";
-import {directProc, latestMapProc, mapProc, mapToProc} from "pkit/processors";
-import {stateKit, StatePort} from "pkit/state";
+import {mapProc, mapToProc} from "pkit/processors";
+import {EphemeralBoolean, stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
-import {State, compute} from './processors'
-import {LayoutTpl} from "./ui/template";
 import {ActionDetail, actionProc} from "@pkit/snabbdom";
+import {LayoutTpl} from "./ui/template";
+import {State, compute} from './processors'
 
-export type Params = {
-  state: DeepPartial<State>
-}
+export * from './processors'
 
-export class Port extends LifecyclePort<Params> {
+export class Port extends LifecyclePort {
   state = new StatePort<State>();
   vnode = new Socket<VNode>();
   action = new Socket<ActionDetail>();
+  dev = new class {
+    msgFocus = new Socket<void>();
+  }
 }
 
 export const circuit = (port: Port) =>
@@ -25,21 +26,24 @@ export const circuit = (port: Port) =>
       port.state.raw,
       port.ready
     ]),
+    stateKit(port.state, compute),
     uiKit(port),
-    useStateKit(port),
-    actionProc(source(port.action), sink(port.state.patch)),
+    lifecycleKit(port),
+    // devKit(port)
+  )
+
+const lifecycleKit = (port: Port) =>
+  merge(
     mapToProc(source(port.init), sink(port.ready)),
   )
 
 const uiKit = (port: Port) =>
   merge(
     mapProc(source(port.state.data), sink(port.vnode),
-      (state) => LayoutTpl(state))
+      (state) => LayoutTpl(state)),
+    actionProc(source(port.action), sink(port.state.patch)),
   )
 
-const useStateKit = (port: Port) =>
+const devKit = (port: Port) =>
   merge(
-    stateKit(port.state, compute),
-    latestMapProc(source(port.ready), sink(port.state.init), [source(port.init)],
-      ([,{state}]) => state)
   )
