@@ -1,12 +1,12 @@
 import type {VNode} from "snabbdom/vnode"
 import {merge} from "rxjs";
-import {DeepPartial, LifecyclePort, sink, Socket, source} from "pkit/core";
+import {LifecyclePort, sink, Socket, source} from "pkit/core";
 import {mapProc, mapToProc} from "pkit/processors";
-import {EphemeralBoolean, stateKit, StatePort} from "pkit/state";
+import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
 import {ActionDetail, actionProc} from "@pkit/snabbdom";
 import {LayoutTpl} from "./ui/template";
-import {State, compute} from './processors'
+import {State} from './processors'
 
 export * from './processors'
 
@@ -26,7 +26,7 @@ export const circuit = (port: Port) =>
       port.state.raw,
       port.ready
     ]),
-    stateKit(port.state, compute),
+    stateKit(port.state),
     uiKit(port),
     lifecycleKit(port),
     // devKit(port)

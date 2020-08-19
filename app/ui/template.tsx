@@ -10,11 +10,11 @@ injectGlobal`
 `
 
 export const LayoutTpl = ({newTodo, items}: State) =>
-  <section sel=".todoapp" dataset={{hoge: "huga"}} detail={true}>
+  <section sel=".todoapp">
     <header sel=".header">
       <h1>todos</h1>
       <input sel=".new-todo" placeholder="What needs to be done?" value={newTodo} autofocus detail={items.length} action={bindAction<State, number>({
-        keypress: ({key, currentTarget:{value}}) => (key === 'Enter' && value.length > 0) ? ({currentTarget:{value: title},detail:length}) => ({
+        keypress: ({key, currentTarget:{value}}) => (key === 'Enter' && value.length > 0) ? ({currentTarget:{value: title}, detail:length}) => ({
           newTodo: "",
           items: splice(length, 0, [{editing: false, completed: false, title}])
         }) : undefined
@@ -28,29 +28,29 @@ export const LayoutTpl = ({newTodo, items}: State) =>
         <li class={{editing, completed}} key={index}>
           <div sel=".view">
             <input sel=".toggle" type="checkbox" props={{checked: completed}} detail={index} action={bindAction<State, number>({
-              click: () => ({currentTarget:{checked:completed}, detail:index}) => ({
+              click: () => ({currentTarget: {checked:completed}, detail:index}) => ({
                 items: splice(index,0,[{completed}])
               })
             })} />
             <label detail={index} action={bindAction<State, number>({
-              dblclick: () => ({detail:index}) => ({
+              dblclick: () => ({detail: index}) => ({
                 items: splice(index, 0, [{editing: true, focus: new EphemeralBoolean(false)}])
               }),
             })}>{title}</label>
             <button sel=".destroy" detail={index} action={bindAction<State, number>({
-              click: () => ({detail:index}) => ({
+              click: () => ({detail: index}) => ({
                 items: splice(index,1)
               })
             })}> </button>
           </div>
           <input sel=".edit" value={title} trigger={{focus}} detail={index} action={bindAction<State, number>({
-            blur: () => ({detail:index}) => ({
+            blur: () => ({detail: index}) => ({
               items: splice(index, 0, [{editing: false}])
             }),
             keydown: ({key}) => key === 'Escape' ? ({detail: index}) => ({
               items: splice(index, 0, [{editing: false}])
             }) : undefined,
-            keypress: ({key}) => key === 'Enter' ? ({currentTarget:{value: title}, detail: index}) => ({
+            keypress: ({key}) => key === 'Enter' ? ({currentTarget: {value: title}, detail: index}) => ({
               items: splice(index, 0, [{title, editing: false}])
             }) : undefined
           })} />

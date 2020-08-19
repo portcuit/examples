@@ -1,7 +1,6 @@
-import {Compute, EphemeralBoolean} from "pkit/state";
+import {EphemeralBoolean} from "pkit/state";
 
 export type State = {
-  editing: string;
   newTodo: string;
   items: {
     editing: boolean;
@@ -13,10 +12,5 @@ export type State = {
 
 export const initial: State = {
   newTodo: '',
-  editing: '',
   items: []
 }
-
-export const compute: Compute<State> = (state) => ({
-  ...state
-} as State)
