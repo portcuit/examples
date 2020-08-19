@@ -1,10 +1,8 @@
 import {injectGlobal} from 'emotion'
 import {jsx} from 'snabbdom/jsx'
-import {DeepPartial} from 'pkit/core'
-import {EphemeralBoolean, splice} from "pkit/state";
+import {EphemeralBoolean, splice, ReplaceArray} from "pkit/state";
 import {State} from "../processors";
 import {bindAction} from "@pkit/snabbdom";
-
 
 injectGlobal`
   @import url("https://cdn.jsdelivr.net/npm/todomvc-common@1.0.5/base.css");
@@ -12,15 +10,14 @@ injectGlobal`
 `
 
 export const LayoutTpl = ({newTodo, items}: State) =>
-  <section sel=".todoapp" dataset={{hoge: "huga"}} json={true}>
+  <section sel=".todoapp" dataset={{hoge: "huga"}} detail={true}>
     <header sel=".header">
       <h1>todos</h1>
-      <input sel=".new-todo" placeholder="What needs to be done?" value={newTodo} autofocus action={bindAction<State>({
-        keypress: ({key}) => {
-          if (key === 'Enter') {
-            return ({currentTarget:{value}}) => ({})
-          }
-        }
+      <input sel=".new-todo" placeholder="What needs to be done?" value={newTodo} autofocus detail={items.length} action={bindAction<State,number>({
+        keypress: ({key, currentTarget:{value}}) => (key === 'Enter' && value.length > 0) ? ({currentTarget:{value:label},detail:length}) => ({
+          newTodo: "",
+          items: splice(length, 0, [{editing: false, completed: false, label}])
+        }) : undefined
       })} />
     </header>
 
@@ -29,18 +26,21 @@ export const LayoutTpl = ({newTodo, items}: State) =>
       <label for="toggle-all">Mark all as complete</label>
       <ul sel=".todo-list">{items.map(({completed, editing, label}, index) =>
         <li class={{editing, completed}}>
-          <div sel=".view">
-            <input sel=".toggle" type="checkbox" props={{checked: completed}} json={index} action={bindAction<State>({
-              change: () => ({currentTarget:{checked:completed, dataset:{json:index}}}) =>
-                ({items: splice(index,0,[{completed}])})
+          <div sel=".view" detail={index} action={bindAction<State>({
+            dblclick: () => ({detail:index}) => ({
+              items: splice(index, 0, [{editing: true}])
+            })
+          })}>
+            <input sel=".toggle" type="checkbox" props={{checked: completed}} detail={index} action={bindAction<State, number>({
+              change: () => ({currentTarget:{checked:completed}, detail:index}) => ({items: splice(index,0,[{completed}]),})
             })} />
             <label>{label}</label>
-            <button sel=".destroy" json={index} action={bindAction<State>({
-              click: () => ({currentTarget:{dataset:{json:index}}}) =>
+            <button sel=".destroy" detail={index} action={bindAction<State, number>({
+              click: () => ({detail:index}) =>
                 ({items: splice(index,1)})
             })}> </button>
           </div>
-          <input sel=".edit" value="Create a TodoMVC template" />
+          <input sel=".edit" value={label} />
         </li>)}
       </ul>
     </section>
