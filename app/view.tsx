@@ -52,7 +52,7 @@ export const View = ({newTodo, items, scope}: State) =>
               })
             }, index)}> </button>
           </div>
-          <input sel=".edit" value={title} trigger={{focus}} action={action<State, number>({
+          <input sel=".edit" value={title} trigger={{focus}} bind={action<State, number>({
             blur: () => ({detail: index}) => ({
               items: splice(index, 0, [{editing: false}])
             }),

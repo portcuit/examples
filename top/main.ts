@@ -7,12 +7,13 @@ const params: Params = {
     args: ['/esm/app/todo/app/main.js', {type: 'module'}]
   },
   snabbdom: {
-    container: document.body.firstElementChild!
+    container: document.body.firstElementChild!,
+    target: new EventTarget,
+    options: {
+      window,
+      hashchange: true
+    }
   },
-  window,
-  target: new EventTarget
-  // window: globalThis,
-  // location
 }
 
 const subject$ = run(new Port, circuit, params);

@@ -1,10 +1,9 @@
-import type {VNode} from "snabbdom/vnode"
 import {merge} from "rxjs";
-import {LifecyclePort, sink, Socket, source} from "pkit/core";
+import {LifecyclePort, sink, source} from "pkit/core";
 import {mapProc, mapToProc} from "pkit/processors";
 import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
-import {ActionDetail, actionProc} from "@pkit/snabbdom";
+import {SnabbdomPort, snabbdomActionPatchKit} from "@pkit/snabbdom";
 import {View} from "./view";
 import {State} from './processors'
 
@@ -12,24 +11,18 @@ export * from './processors'
 
 export class Port extends LifecyclePort {
   state = new StatePort<State>();
-  vnode = new Socket<VNode>();
-  action = new Socket<ActionDetail>();
-  dom = new class {
-    event = new class {
-      hashchange = new Socket<string>();
-    }
-  }
+  dom = new SnabbdomPort;
 }
 
 export const circuit = (port: Port) =>
   merge(
     childRemoteWorkerKit(port.debug, port.err, self as any, [
-      port.vnode,
+      port.ready,
       port.state.raw,
-      port.ready
+      port.dom.render,
     ]),
     stateKit(port.state),
-    uiKit(port),
+    domKit(port),
     lifecycleKit(port),
   )
 
@@ -38,11 +31,11 @@ const lifecycleKit = (port: Port) =>
     mapToProc(source(port.init), sink(port.ready)),
   )
 
-const uiKit = (port: Port) =>
+const domKit = (port: Port) =>
   merge(
-    mapProc(source(port.state.data), sink(port.vnode),
+    snabbdomActionPatchKit(port.dom, port.state),
+    mapProc(source(port.state.data), sink(port.dom.render),
       (state) => View(state)),
-    actionProc(source(port.action), sink(port.state.patch)),
     mapProc(source(port.dom.event.hashchange), sink(port.state.patch),
       (hash) => ({
         scope: hash === '#/active' ? 'active' as const :
