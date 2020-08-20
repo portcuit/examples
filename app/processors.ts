@@ -7,10 +7,12 @@ export type State = {
     completed: boolean;
     title: string;
     focus?: EphemeralBoolean
-  }[]
+  }[];
+  scope: 'all' | 'active' | 'completed'
 }
 
 export const initial: State = {
   newTodo: '',
-  items: []
+  items: [],
+  scope: 'all'
 }

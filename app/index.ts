@@ -5,7 +5,7 @@ import {mapProc, mapToProc} from "pkit/processors";
 import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
 import {ActionDetail, actionProc} from "@pkit/snabbdom";
-import {LayoutTpl} from "./ui/template";
+import {View} from "./view";
 import {State} from './processors'
 
 export * from './processors'
@@ -14,9 +14,6 @@ export class Port extends LifecyclePort {
   state = new StatePort<State>();
   vnode = new Socket<VNode>();
   action = new Socket<ActionDetail>();
-  dev = new class {
-    msgFocus = new Socket<void>();
-  }
 }
 
 export const circuit = (port: Port) =>
@@ -29,7 +26,6 @@ export const circuit = (port: Port) =>
     stateKit(port.state),
     uiKit(port),
     lifecycleKit(port),
-    // devKit(port)
   )
 
 const lifecycleKit = (port: Port) =>
@@ -40,10 +36,6 @@ const lifecycleKit = (port: Port) =>
 const uiKit = (port: Port) =>
   merge(
     mapProc(source(port.state.data), sink(port.vnode),
-      (state) => LayoutTpl(state)),
+      (state) => View(state)),
     actionProc(source(port.action), sink(port.state.patch)),
-  )
-
-const devKit = (port: Port) =>
-  merge(
   )
