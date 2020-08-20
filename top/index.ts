@@ -1,7 +1,15 @@
 import {fromEvent, merge, of} from "rxjs";
 import {map, startWith, switchMap} from "rxjs/operators";
 import {LifecyclePort, source, sink, Socket} from "pkit/core";
-import {directProc, latestMapProc, mapProc, mapToProc} from "pkit/processors";
+import {
+  directProc,
+  fromEventProc,
+  latestMapProc,
+  latestMergeMapProc,
+  mapProc,
+  mapToProc,
+  mergeMapProc
+} from "pkit/processors";
 import {workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit} from "pkit/worker";
 import {
   snabbdomKit,
@@ -15,7 +23,9 @@ import {Port as AppPort, initial} from "../app/"
 
 export type Params = {
   worker: WorkerParams,
-  snabbdom: SnabbdomParams
+  snabbdom: SnabbdomParams,
+  window: Window,
+  target: EventTarget
 }
 
 export class Port extends LifecyclePort<Params> {
@@ -46,7 +56,8 @@ const useServiceKit = (port: Port) =>
     workerKit(port.app),
     parentRemoteWorkerKit(port.app, [
       port.app.ifs.state.init,
-      port.app.ifs.action
+      port.app.ifs.action,
+      port.app.ifs.dom.event.hashchange
     ], port.app.ifs),
     mapProc(source(port.init), sink(port.app.init),
       ({worker}) => worker),
@@ -56,15 +67,17 @@ const useServiceKit = (port: Port) =>
 const useSnabbdomKit = (port: Port) =>
   merge(
     snabbdomKit(port.snabbdom),
-    source(port.init).pipe(
-      switchMap(({snabbdom}) => {
-        const target = new EventTarget;
-        return fromEvent<CustomEvent<ActionDetail>>(target as any, 'action').pipe(
-          map(({detail}) =>
-            sink(port.app.ifs.action)(detail)),
-          startWith(sink(port.snabbdom.init)({...snabbdom,
-            modules: [createActionModule(target), ...defaultModules]
-          })))
+    mapProc(source(port.init), sink(port.snabbdom.init), ({snabbdom, target}) =>
+      ({...snabbdom,
+        modules: [createActionModule(target), ...defaultModules]
       })),
+    mergeMapProc(source(port.init), sink(port.app.ifs.action), ({target}) =>
+      fromEvent<CustomEvent<ActionDetail>>(target as any, 'action').pipe(
+        map(({detail}) =>
+          detail))),
+    mergeMapProc(source(port.init), sink(port.app.ifs.dom.event.hashchange), ({window}) =>
+      fromEvent<void>(window, 'hashchange').pipe(
+        map(() =>
+          window.location.hash))),
     directProc(source(port.app.ifs.vnode), sink(port.snabbdom.render)),
   )

@@ -8,7 +8,11 @@ const params: Params = {
   },
   snabbdom: {
     container: document.body.firstElementChild!
-  }
+  },
+  window,
+  target: new EventTarget
+  // window: globalThis,
+  // location
 }
 
 const subject$ = run(new Port, circuit, params);

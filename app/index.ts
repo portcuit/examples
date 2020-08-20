@@ -14,6 +14,11 @@ export class Port extends LifecyclePort {
   state = new StatePort<State>();
   vnode = new Socket<VNode>();
   action = new Socket<ActionDetail>();
+  dom = new class {
+    event = new class {
+      hashchange = new Socket<string>();
+    }
+  }
 }
 
 export const circuit = (port: Port) =>
@@ -38,4 +43,9 @@ const uiKit = (port: Port) =>
     mapProc(source(port.state.data), sink(port.vnode),
       (state) => View(state)),
     actionProc(source(port.action), sink(port.state.patch)),
+    mapProc(source(port.dom.event.hashchange), sink(port.state.patch),
+      (hash) => ({
+        scope: hash === '#/active' ? 'active' as const :
+          hash === '#/completed' ? 'completed' as const : 'all' as const
+      })),
   )
