@@ -1,7 +1,7 @@
 import {injectGlobal} from 'emotion'
 import {jsx} from 'snabbdom/jsx'
 import {identity} from 'ramda'
-import {EphemeralBoolean, splice, ReplaceArray} from "pkit/state";
+import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit/state";
 import {action} from "@pkit/snabbdom";
 import {State} from "./processors";
 
@@ -14,17 +14,23 @@ export const View = ({newTodo, items, scope}: State) =>
     <header sel=".header">
       <h1>todos</h1>
       <input sel=".new-todo" placeholder="What needs to be done?" autofocus value={newTodo} bind={action<State, number>({
-        keypress: ({key, currentTarget:{value}}) => (key === 'Enter' && value.length > 0) ? ({currentTarget:{value: title}, detail: length}) => ({
+        keypress: ({key, currentTarget:{value}}) => (key === 'Enter' && value.length > 0) ? ({currentTarget: {value: title}, detail: length}) => ({
           newTodo: "",
-          items: splice(length, 0, [{editing: false, completed: false, title}])
+          items: padArray(length,{title, completed: false, editing: false})
         }) : undefined
       }, items.length)} />
-    </header>
+    </header>{...[items.length > 0 &&
 
     <section sel=".main">
-      <input sel="#toggle-all.toggle-all" type="checkbox" />
+      <input sel="#toggle-all.toggle-all" type="checkbox" checked={items.every(({completed}) => completed)} bind={action<State, number>({
+        change: () => ({detail: length, currentTarget: {checked}}) => ({
+          items: [...Array(length)].map(() => ({
+            completed: checked
+          }))
+        })
+      }, items.length)} />
       <label for="toggle-all">Mark all as complete</label>
-      <ul sel=".todo-list">{items.filter(({completed}) => {
+      <ul sel=".todo-list">{[...items.entries()].filter(([,{completed}]) => {
         switch (scope) {
           case 'all':
             return true;
@@ -33,17 +39,17 @@ export const View = ({newTodo, items, scope}: State) =>
           case 'completed':
             return completed;
         }})
-        .map(({completed, editing, title, focus}, index) =>
+        .map(([index, {completed, editing, title, focus}]) =>
         <li class={{editing, completed}} key={index}>
           <div sel=".view">
             <input sel=".toggle" type="checkbox" checked={completed} bind={action<State, number>({
               click: () => ({currentTarget: {checked: completed}, detail: index}) => ({
-                items: splice(index,0,[{completed}])
+                items: padArray(index,{completed})
               })
             }, index)} />
             <label detail={index} bind={action<State, number>({
               dblclick: () => ({detail: index}) => ({
-                items: splice(index, 0, [{editing: true, focus: new EphemeralBoolean(false)}])
+                items: padArray(index, {editing: true, focus: new EphemeralBoolean(false)})
               }),
             }, index)}>{title}</label>
             <button sel=".destroy" bind={action<State, number>({
@@ -54,18 +60,18 @@ export const View = ({newTodo, items, scope}: State) =>
           </div>
           <input sel=".edit" value={title} trigger={{focus}} bind={action<State, number>({
             blur: () => ({detail: index}) => ({
-              items: splice(index, 0, [{editing: false}])
+              items: padArray(index,{sam: 'getan', editing: false})
             }),
             keydown: ({key}) => key === 'Escape' ? ({detail: index}) => ({
-              items: splice(index, 0, [{editing: false}])
+              items: padArray(index, {editing: false})
             }) : undefined,
             keypress: ({key}) => key === 'Enter' ? ({currentTarget: {value: title}, detail: index}) => ({
-              items: splice(index, 0, [{title, editing: false}])
+              items: padArray(index, {title, editing: false})
             }) : undefined
           }, index)} />
         </li>)}
       </ul>
-    </section>
+    </section>].filter(identity)}{...[items.length > 0 &&
 
     <footer sel=".footer">
       <span sel=".todo-count"><strong>{items.filter(({completed}) => !completed).length}</strong> item left</span>
@@ -79,12 +85,12 @@ export const View = ({newTodo, items, scope}: State) =>
         <li>
           <a class={{selected: scope === 'completed'}} href="#/completed">Completed</a>
         </li>
-      </ul>
-      {...[items.some(({completed}) => completed) &&
+      </ul>{...[items.some(({completed}) => completed) &&
+
       <button sel=".clear-completed" bind={action<State, State['items']>({
         click: () => ({detail: items}) => ({
           items: new ReplaceArray(...items)
         })
       }, items.filter(({completed}) => !completed))}>Clear completed</button>].filter(identity)}
-    </footer>
+    </footer>].filter(identity)}
   </section>
