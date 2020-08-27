@@ -7,7 +7,7 @@ import {
   mapToProc,
 } from "pkit/processors";
 import {workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit} from "pkit/worker";
-import {snabbdomKit, SnabbdomParams, SnabbdomPort,} from "@pkit/snabbdom";
+import {snabbdomKit, SnabbdomParams, SnabbdomPort,} from "@pkit/snabbdom/csr";
 import {Port as AppPort, initial} from "../app/"
 
 export type Params = {

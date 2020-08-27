@@ -1,8 +1,8 @@
 import {injectGlobal} from 'emotion'
-import {jsx} from 'snabbdom/jsx'
 import {identity} from 'ramda'
 import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit/state";
-import {action} from "@pkit/snabbdom";
+import {jsx} from '@pkit/snabbdom'
+import {action} from "@pkit/snabbdom/csr";
 import {State} from "./processors";
 
 injectGlobal`

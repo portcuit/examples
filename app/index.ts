@@ -3,7 +3,7 @@ import {LifecyclePort, sink, source} from "pkit/core";
 import {mapProc, mapToProc} from "pkit/processors";
 import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
-import {SnabbdomPort, snabbdomActionPatchKit} from "@pkit/snabbdom";
+import {SnabbdomPort, snabbdomActionPatchKit} from "@pkit/snabbdom/csr";
 import {View} from "./view";
 import {State} from './processors'
 
