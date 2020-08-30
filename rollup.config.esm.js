@@ -2,8 +2,7 @@ import replace from '@rollup/plugin-replace'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 
-const esmDir = 'src/esm';
-const outputDir = 'esm';
+const outputDir = 'src/app/esm';
 
 const createConfig = (name) => ({
   input: name,

@@ -1,5 +1,5 @@
 /.idea
-/esm
+/src/app/esm
 
 *.js
 *.js.map

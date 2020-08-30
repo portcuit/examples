@@ -33,14 +33,14 @@ const circuit = (port: Port) =>
       terminatedComplete(entry(new HttpServerApiPort, apiKit, data))),
     mergeMapProc(route('**', source(port.event.request)), sink(port.debug),
       async ([req, res]) =>
-        ({handler: await handler(req, res, {public: './', cleanUrls: false})})),
+        ({handler: await handler(req, res, {public: './src/app', cleanUrls: false})})),
     mapToProc(source(port.ready), sink(port.running), true)
   )
 
 export const apiKit = (port: HttpServerApiPort) =>
   merge(
     httpServerApiKit(port),
-    mapProc(get('/src/app/todo', source(port.init)), sink(port.vnode),
+    mapProc(get('/todo', source(port.init)), sink(port.vnode),
       ([req]) => App({src: '/esm/app/todo/top/main.js'})),
     httpServerApiTerminateKit(port)
   )
