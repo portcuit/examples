@@ -6,6 +6,6 @@ import  * as todo from '../src/app/todo/ssr'
 export default (...args: RequestArgs) =>
   terminatedComplete(entry(new HttpServerApiPort, (port) =>
     merge(
-      todo.apiKit,
+      todo.apiKit(port),
       mapToProc(route('**', source(port.init)), sink(port.notFound.html), '404 Not Found.')
     ), args))
