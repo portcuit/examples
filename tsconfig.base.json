@@ -15,7 +15,6 @@
     "jsxFactory": "Pkit.jsxFactory",
     "jsxFragmentFactory": "Pkit.jsxFragmentFactory",
     "useDefineForClassFields": true,
-    "preserveSymlinks": true,
-    "typeRoots": ["types/**", "node_modules/@types"]
+    "preserveSymlinks": true
   }
 }
