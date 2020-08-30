@@ -1,12 +1,11 @@
 import {merge, of} from "rxjs";
-import {LifecyclePort, source, sink, Socket} from "pkit/core";
-import {
+import {LifecyclePort, source, sink, Socket,
   directProc,
   latestMapProc,
   mapProc,
   mapToProc,
-} from "pkit/processors";
-import {workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit} from "pkit/worker";
+  workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit
+} from "pkit";
 import {snabbdomKit, SnabbdomParams, SnabbdomPort,} from "@pkit/snabbdom/csr";
 import {Port as AppPort, initial} from "../app/"
 

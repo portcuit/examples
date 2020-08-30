@@ -1,4 +1,4 @@
-import {entry} from "pkit/core";
+import {entry} from "pkit";
 import {Params, Port, circuit} from './';
 
 const params: Params = {
