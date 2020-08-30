@@ -41,7 +41,7 @@ const apiKit = (port: HttpServerApiPort) =>
   merge(
     httpServerApiKit(port),
     mapProc(get('/', source(port.init)), sink(port.vnode),
-      ([req]) => App({src: '/esm/app/todo/index.js'})),
+      ([req]) => App({src: '/esm/app/todo/top/main.js'})),
     httpServerApiTerminateKit(port)
   )
 

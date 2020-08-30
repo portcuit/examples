@@ -6,7 +6,7 @@ import {LifecyclePort, source, sink, Socket,
   mapToProc,
   workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit
 } from "pkit";
-import {snabbdomKit, SnabbdomParams, SnabbdomPort,} from "@pkit/snabbdom/csr";
+import {snabbdomKit, SnabbdomParams, SnabbdomPort} from "@pkit/snabbdom/csr";
 import {Port as AppPort, initial} from "../app/"
 
 export type Params = {

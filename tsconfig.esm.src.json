@@ -8,13 +8,13 @@
         "resolve": [
           {
             "prefix": "/esm/",
-            "suffix": "/index.mjs",
-            "modules": ["@pkit/snabbdom/jsx"]
+            "suffix": ".js",
+            "modules": ["snabbdom/**"]
           },
           {
             "prefix": "/esm/vendor/",
             "suffix": "/index.js",
-            "modules": ["pkit/**", "@pkit/**"]
+            "modules": ["pkit", "pkit/**", "@pkit/**"]
           },
           {
             "prefix": "/esm/",
@@ -25,7 +25,8 @@
         "replace": {
           "rxjs": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs.min.js",
           "rxjs/operators": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs-operators.min.js",
-          "emotion": "https://cdn.jsdelivr.net/npm/@esm-bundle/emotion@10.0.27/esm/emotion.min.js"
+          "emotion": "https://cdn.jsdelivr.net/npm/@esm-bundle/emotion@10.0.27/esm/emotion.min.js",
+          "@pkit/snabbdom/jsx": "/esm/snabbdom/jsx.js"
         },
         "after": true
       }
