@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "rootDir": ".",
+    "outDir": ".",
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "target": "ES2019",
+    "module": "CommonJS",
+    "jsx": "react",
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment",
+    "useDefineForClassFields": true,
+    "preserveSymlinks": true
+  }
+}

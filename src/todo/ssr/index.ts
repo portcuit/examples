@@ -6,20 +6,22 @@ import {
   source,
   entry,
   terminatedComplete,
-  directProc,
   latestMergeMapProc,
   mapProc,
   mapToProc,
   mergeMapProc
 } from "pkit";
 import {
+  get,
+  httpServerApiKit,
+  HttpServerApiPort, httpServerApiTerminateKit,
   httpServerKit,
   HttpServerParams,
   HttpServerPort,
-  route, sseServerKit,
-  SseServerPort, sseServerRemoteKit
-} from "@pkit/http";
-import * as api from './api'
+  route,
+  SseServerPort,
+} from "pkit/http/server";
+import {App} from './app'
 
 export type Params = {
   http: HttpServerParams,
@@ -44,16 +46,13 @@ export const params: Params = {
 }
 
 export class Port extends LifecyclePort<Params> {
-  http = new class extends HttpServerPort {
-    sse = new SseServerPort;
-  }
+  http = new  HttpServerPort;
 }
 
 export const circuit = (port: Port) =>
   merge(
     httpServerKit(port.http),
-    sendSseKit(port),
-    apiKit(port),
+    useApiKit(port),
     staticKit(port),
     lifecycleKit(port)
   )
@@ -64,28 +63,37 @@ const lifecycleKit = (port: Port) =>
     mapToProc(source(port.http.ready), sink(port.http.running), true)
   )
 
-const apiKit = (port: Port) =>
-  mergeMapProc(source(port.http.event.request), sink(port.debug), (data) =>
-    terminatedComplete(entry(new api.Port, api.circuit, data)))
-
 const staticKit = (port: Port) =>
   latestMergeMapProc(route('**', source(port.http.event.request)), sink(port.http.debug), [source(port.init)],
     async ([[req, res], {serveConfig}]) => {
-      if (req.url!.startsWith('/node_modules/') && req.url!.match(/\/[^.]+$/)) {
-        req.url = `${req.url}.js`;
-      }
+      // if (req.url!.startsWith('/node_modules/') && req.url!.match(/\/[^.]+$/)) {
+      //   req.url = `${req.url}.js`;
+      // }
       return {handler: await handler(req, res, serveConfig)}
     })
 
-const sendSseKit = (port: Port) =>
-  mergeMapProc(route('/sse', source(port.http.event.request), 'GET'), sink(port.debug), (data) => {
-    const ssePort = new SseServerPort
-    return terminatedComplete (entry(ssePort, (sseServerPort: SseServerPort) =>
-      merge(
-        sseServerKit(sseServerPort),
-        sseServerRemoteKit(sseServerPort, [
-          port.info
-        ]),
-        directProc(source(port.http.sse.terminate), sink(ssePort.terminate)),
-      ), {args: data, retry: 3000}));
-  })
+const useApiKit = (port: Port) =>
+  mergeMapProc(source(port.http.event.request), sink(port.debug), (data) =>
+    terminatedComplete(entry(new ApiPort, apiKit, data))
+  )
+
+class ApiPort extends HttpServerApiPort {}
+
+const apiKit = (port: ApiPort) =>
+  merge(
+    httpServerApiKit(port),
+    routeKit(port),
+    httpServerApiTerminateKit(port)
+  )
+
+const routeKit = (port: ApiPort) =>
+  merge(
+    mapProc(get('/', source(port.init)), sink(port.json), () => ({
+      msg: 'Hello World'
+    })),
+    mapProc(get('/hello.html', source(port.init)), sink(port.html), () =>
+      `<p>hello</p>`),
+
+    mapProc(get('/**/*.html', source(port.init)), sink(port.vnode),
+      ([req]) => App({src: req.url!.replace('.html', '.js')}))
+  )

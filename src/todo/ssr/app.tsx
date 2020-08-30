@@ -1,7 +1,6 @@
-import type {FC} from '@pkit/snabbdom'
-import {jsx} from '@pkit/snabbdom/jsx'
+import {FC, jsx} from '@pkit/snabbdom'
 
-export const Esm: FC<{src: string}> = ({src}) =>
+export const App: FC<{src: string}> = ({src}) =>
   <Layout>
   <head>
     <title>{src}</title>
