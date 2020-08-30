@@ -4,29 +4,6 @@
     "target": "ES2020",
     "module": "ES2020",
     "declaration": false,
-    "outDir": "./esm",
-    "plugins": [
-      {
-        "transform": "ts-transformer-esm-web",
-        "resolve": [
-          {
-            "prefix": "/esm/",
-            "suffix": "/index.mjs",
-            "modules": ["@pkit/snabbdom/jsx"]
-          },
-          {
-            "prefix": "/esm/",
-            "suffix": "/index.js",
-            "modules": ["pkit/**", "@pkit/**", "ramda", "minimatch"]
-          }
-        ],
-        "replace": {
-          "rxjs": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs.min.js",
-          "rxjs/operators": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs-operators.min.js",
-          "emotion": "https://cdn.jsdelivr.net/npm/@esm-bundle/emotion@10.0.27/esm/emotion.min.js"
-        },
-        "after": true
-      }
-    ]
+    "outDir": "./esm"
   }
 }
