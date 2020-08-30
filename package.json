@@ -24,9 +24,17 @@
     "ts-transformer-esm-web": "file:src/vendor/ts-transformer-esm-web"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.1",
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@rollup/plugin-replace": "^2.3.3",
+    "@rollup/plugin-typescript": "^5.0.2",
+    "@rollup/plugin-virtual": "^2.0.3",
+    "@types/minimatch": "^3.0.3",
     "@types/node": "^14.6.2",
     "@types/ramda": "^0.27.1",
     "@types/serve-handler": "^6.1.0",
+    "rollup": "^2.23.1",
     "typescript": "^4.0.2"
   }
 }

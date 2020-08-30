@@ -4,20 +4,10 @@
     "target": "ES2020",
     "module": "ES2020",
     "declaration": false,
-    "rootDir": "./src/vendor",
     "outDir": "./esm",
     "plugins": [
       {
         "transform": "ts-transformer-esm-web",
-        //        "index.js": {
-        //          "/esm/": ["emotion", "minimatch",
-        //            "rxjs", "rxjs/operators", "ramda",
-        //            "pkit/*", "@pkit/**"
-        //          ]
-        //        },
-        //        "js": {
-        //          "/esm/": ["snabbdom/**"]
-        //        },
         "resolve": [
           {
             "prefix": "/esm/",
@@ -27,34 +17,16 @@
           {
             "prefix": "/esm/",
             "suffix": "/index.js",
-            "modules": ["emotion", "ramda", "dayjs"]
-          },
-          {
-            "prefix": "/esm/",
-            "suffix": ".js",
-            "modules": ["snabbdom/**"]
+            "modules": ["pkit/**", "@pkit/**", "ramda", "minimatch"]
           }
         ],
         "replace": {
           "rxjs": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs.min.js",
-          "rxjs/operators": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs-operators.min.js"
-
-          //          "dayjs": "/node_modules/dayjs/esm/index.js",
-          //          "snabbdom/init": "/node_modules/snabbdom/build/package/init.js",
-          //          "snabbdom/tovnode": "/node_modules/snabbdom/build/package/tovnode.js",
-          //          "snabbdom/jsx": "/node_modules/snabbdom/build/package/jsx.js",
-          //          "snabbdom/modules/class": "/node_modules/snabbdom/build/package/modules/class.js",
-          //          "snabbdom/modules/props": "/node_modules/snabbdom/build/package/modules/props.js",
-          //          "snabbdom/modules/attributes": "/node_modules/snabbdom/build/package/modules/attributes.js",
-          //          "snabbdom/modules/style": "/node_modules/snabbdom/build/package/modules/style.js",
-          //          "snabbdom/modules/eventlisteners": "/node_modules/snabbdom/build/package/modules/eventlisteners.js",
-          //          "snabbdom/modules/dataset": "/node_modules/snabbdom/build/package/modules/dataset.js"
+          "rxjs/operators": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs-operators.min.js",
+          "emotion": "https://cdn.jsdelivr.net/npm/@esm-bundle/emotion@10.0.27/esm/emotion.min.js"
         },
         "after": true
       }
     ]
-  },
-  "include": [
-    "./src/vendor/**/*"
-  ]
+  }
 }
