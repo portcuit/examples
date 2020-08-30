@@ -20,13 +20,13 @@ import {
 } from "pkit/http/server";
 import {App} from './app'
 
-export const params: HttpServerParams = {
-    listen: [10080]
+const params: HttpServerParams = {
+  listen: [10080]
 }
 
-export class Port extends HttpServerPort {}
+class Port extends HttpServerPort {}
 
-export const circuit = (port: Port) =>
+const circuit = (port: Port) =>
   merge(
     httpServerKit(port),
     mergeMapProc(source(port.event.request), sink(port.debug), (data) =>
@@ -37,10 +37,10 @@ export const circuit = (port: Port) =>
     mapToProc(source(port.ready), sink(port.running), true)
   )
 
-const apiKit = (port: HttpServerApiPort) =>
+export const apiKit = (port: HttpServerApiPort) =>
   merge(
     httpServerApiKit(port),
-    mapProc(get('/', source(port.init)), sink(port.vnode),
+    mapProc(get('/src/app/todo', source(port.init)), sink(port.vnode),
       ([req]) => App({src: '/esm/app/todo/top/main.js'})),
     httpServerApiTerminateKit(port)
   )
