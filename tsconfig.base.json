@@ -12,8 +12,8 @@
     "target": "ES2019",
     "module": "CommonJS",
     "jsx": "react",
-    "jsxFactory": "jsx",
-    "jsxFragmentFactory": "Fragment",
+    "jsxFactory": "Pkit.jsxFactory",
+    "jsxFragmentFactory": "Pkit.jsxFragmentFactory",
     "useDefineForClassFields": true,
     "preserveSymlinks": true
   }

@@ -18,6 +18,8 @@
   "homepage": "https://github.com/portcuit/examples#readme",
   "dependencies": {
     "@pkit/snabbdom": "file:src/vendor/@pkit/snabbdom",
+    "dayjs": "^1.8.34",
+    "emotion": "^10.0.27",
     "pkit": "file:src/vendor/pkit",
     "rxjs": "^6.6.2",
     "serve-handler": "^6.1.3",

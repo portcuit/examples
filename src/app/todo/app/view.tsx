@@ -1,7 +1,7 @@
 import {injectGlobal} from 'emotion'
 import {identity} from 'ramda'
 import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit/state";
-import {jsx} from '@pkit/snabbdom'
+import Pkit, {FC} from '@pkit/snabbdom'
 import {action} from "@pkit/snabbdom/csr";
 import {State} from "./processors";
 
@@ -9,7 +9,7 @@ injectGlobal`
   @import url("https://cdn.jsdelivr.net/npm/todomvc-common@1.0.5/base.css");
   @import url("https://cdn.jsdelivr.net/npm/todomvc-app-css@2.3.0/index.css");`
 
-export const View = ({newTodo, items, scope}: State) =>
+export const View: FC<State> = ({newTodo, items, scope}) =>
   <section sel=".todoapp">
     <header sel=".header">
       <h1>todos</h1>

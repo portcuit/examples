@@ -1,4 +1,4 @@
-import {FC, jsx} from '@pkit/snabbdom'
+import Pkit, {FC} from '@pkit/snabbdom'
 
 export const App: FC<{src: string}> = ({src}) =>
   <Layout>
