@@ -1,12 +1,10 @@
-import handler, {Config} from 'serve-handler'
+import handler from 'serve-handler'
 import {merge} from "rxjs";
 import {
-  LifecyclePort,
   sink,
   source,
   entry,
   terminatedComplete,
-  latestMergeMapProc,
   mapProc,
   mapToProc,
   mergeMapProc
@@ -18,82 +16,33 @@ import {
   httpServerKit,
   HttpServerParams,
   HttpServerPort,
-  route,
-  SseServerPort,
+  route
 } from "pkit/http/server";
 import {App} from './app'
 
-export type Params = {
-  http: HttpServerParams,
-  serveConfig: Config;
-}
-
-export const params: Params = {
-  http:{
+export const params: HttpServerParams = {
     listen: [10080]
-  },
-  serveConfig: {
-    public:'./',
-    cleanUrls: false,
-    headers: [{
-      source: "*",
-      headers: [{
-        key: 'Cache-Control',
-        value: 'no-cache, no-store, must-revalidate'
-      }]
-    }]
-  }
 }
 
-export class Port extends LifecyclePort<Params> {
-  http = new  HttpServerPort;
-}
+export class Port extends HttpServerPort {}
 
 export const circuit = (port: Port) =>
   merge(
-    httpServerKit(port.http),
-    useApiKit(port),
-    staticKit(port),
-    lifecycleKit(port)
+    httpServerKit(port),
+    mergeMapProc(source(port.event.request), sink(port.debug), (data) =>
+      terminatedComplete(entry(new HttpServerApiPort, apiKit, data))),
+    mergeMapProc(route('**', source(port.event.request)), sink(port.debug),
+      async ([req, res]) =>
+        ({handler: await handler(req, res, {public: './', cleanUrls: false})})),
+    mapToProc(source(port.ready), sink(port.running), true)
   )
 
-const lifecycleKit = (port: Port) =>
-  merge(
-    mapProc(source(port.init), sink(port.http.init), ({http}) => http),
-    mapToProc(source(port.http.ready), sink(port.http.running), true)
-  )
-
-const staticKit = (port: Port) =>
-  latestMergeMapProc(route('**', source(port.http.event.request)), sink(port.http.debug), [source(port.init)],
-    async ([[req, res], {serveConfig}]) => {
-      // if (req.url!.startsWith('/node_modules/') && req.url!.match(/\/[^.]+$/)) {
-      //   req.url = `${req.url}.js`;
-      // }
-      return {handler: await handler(req, res, serveConfig)}
-    })
-
-const useApiKit = (port: Port) =>
-  mergeMapProc(source(port.http.event.request), sink(port.debug), (data) =>
-    terminatedComplete(entry(new ApiPort, apiKit, data))
-  )
-
-class ApiPort extends HttpServerApiPort {}
-
-const apiKit = (port: ApiPort) =>
+const apiKit = (port: HttpServerApiPort) =>
   merge(
     httpServerApiKit(port),
-    routeKit(port),
+    mapProc(get('/', source(port.init)), sink(port.vnode),
+      ([req]) => App({src: '/esm/todo/index.js'})),
     httpServerApiTerminateKit(port)
   )
 
-const routeKit = (port: ApiPort) =>
-  merge(
-    mapProc(get('/', source(port.init)), sink(port.json), () => ({
-      msg: 'Hello World'
-    })),
-    mapProc(get('/hello.html', source(port.init)), sink(port.html), () =>
-      `<p>hello</p>`),
-
-    mapProc(get('/**/*.html', source(port.init)), sink(port.vnode),
-      ([req]) => App({src: req.url!.replace('.html', '.js')}))
-  )
+export default [Port, circuit, params]
