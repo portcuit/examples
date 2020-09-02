@@ -1,4 +1,4 @@
-import {EphemeralBoolean} from "pkit/state";
+import {EphemeralBoolean} from "pkit";
 
 export type State = {
   newTodo: string;

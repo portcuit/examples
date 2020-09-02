@@ -1,4 +1,4 @@
-import {entry} from "pkit/core";
+import {entry} from "pkit";
 import {Port, circuit} from './'
 
 const subject$ = entry(new Port, circuit);
