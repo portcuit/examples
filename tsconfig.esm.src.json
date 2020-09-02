@@ -13,6 +13,11 @@
           },
           {
             "prefix": "/esm/vendor/",
+            "suffix": ".js",
+            "modules": ["@pkit/snabbdom/**/processors"]
+          },
+          {
+            "prefix": "/esm/vendor/",
             "suffix": "/index.js",
             "modules": ["pkit", "pkit/**", "@pkit/**"]
           },

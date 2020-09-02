@@ -3,7 +3,7 @@ import {LifecyclePort, sink, source, mapProc, mapToProc,
   stateKit, StatePort, childRemoteWorkerKit
 } from "pkit";
 import {SnabbdomPort, snabbdomActionPatchKit} from "@pkit/snabbdom/csr";
-import {App} from "../../ui/";
+import {Csr} from "../../ui/";
 import {State} from '../../shared/state'
 
 export class Port extends LifecyclePort {
@@ -32,7 +32,7 @@ const domKit = (port: Port) =>
   merge(
     snabbdomActionPatchKit(port.dom, port.state),
     mapProc(source(port.state.data), sink(port.dom.render),
-      (state) => App(state)),
+      (state) => Csr(state)),
     mapProc(source(port.dom.event.hashchange), sink(port.state.patch),
       (hash) => ({
         scope: hash === '#/active' ? 'active' as const :
