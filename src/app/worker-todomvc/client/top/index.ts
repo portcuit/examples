@@ -30,13 +30,17 @@ export const circuit = (port: Port) =>
     lifecycleKit(port)
   )
 
+const StorageKey = 'portcuit-todos';
+
 const lifecycleKit = (port: Port) =>
   merge(
     directProc(source(port.app.ifs.state.raw), sink(port.state)),
     latestMapProc(source(port.app.ifs.ready), sink(port.app.ifs.state.init),
       [source(port.state)], ([,state]) =>
         state),
-    directProc(of(initial), sink(port.state)),
+    directProc(of(JSON.parse(localStorage.getItem(StorageKey) || JSON.stringify(initial))), sink(port.state)),
+    mapProc(source(port.state), sink(port.debug), (data) =>
+      ({'localStorage.setItem': localStorage.setItem(StorageKey, JSON.stringify(data)), data}))
   )
 
 const useAppKit = (port: Port) =>
