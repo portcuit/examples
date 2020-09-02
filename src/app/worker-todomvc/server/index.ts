@@ -41,8 +41,8 @@ const circuit = (port: Port) =>
 export const apiKit = (port: HttpServerApiPort) =>
   merge(
     httpServerApiKit(port),
-    mapProc(get('/todo/ui/', source(port.init)), sink(port.vnode), ([req]) =>
-      Ssr({src: '/esm/app/todo/client/top/main.js', state: initial})),
+    mapProc(get('/worker-todomvc/ui/', source(port.init)), sink(port.vnode), ([req]) =>
+      Ssr({src: '/esm/app/worker-todomvc/client/top/main.js', state: initial})),
     httpServerApiTerminateKit(port)
   )
 
