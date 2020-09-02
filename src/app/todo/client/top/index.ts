@@ -8,7 +8,7 @@ import {LifecyclePort, source, sink, Socket,
 } from "pkit";
 import {snabbdomKit, SnabbdomParams, SnabbdomPort} from "@pkit/snabbdom/csr";
 import {initial} from '../../shared/state'
-import {Port as AppPort} from "../worker/"
+import {Port as AppPort} from "../app/"
 
 export type Params = {
   worker: WorkerParams,
