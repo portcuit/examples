@@ -25,9 +25,7 @@ const params: HttpServerParams = {
   listen: [10080]
 }
 
-class Port extends HttpServerPort {}
-
-const circuit = (port: Port) =>
+const circuit = (port: HttpServerPort) =>
   merge(
     httpServerKit(port),
     mergeMapProc(source(port.event.request), sink(port.debug), (data) =>
@@ -46,4 +44,4 @@ export const apiKit = (port: HttpServerApiPort) =>
     httpServerApiTerminateKit(port)
   )
 
-export default {Port, circuit, params}
+export default {Port: HttpServerPort, circuit, params}

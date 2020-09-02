@@ -61,7 +61,7 @@ export const Csr: FC<State> = ({newTodo, items, scope}) =>
               </div>
               <input sel=".edit" value={title} trigger={{focus}} bind={action<State, number>({
                 blur: () => ({detail: index}) => ({
-                  items: padArray(index,{sam: 'getan', editing: false})
+                  items: padArray(index,{editing: false})
                 }),
                 keydown: ({key}) => key === 'Escape' ? ({detail: index}) => ({
                   items: padArray(index, {editing: false})
