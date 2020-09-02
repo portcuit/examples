@@ -1,22 +1,19 @@
 import {merge} from "rxjs";
-import {LifecyclePort, sink, source} from "pkit/core";
-import {mapProc, mapToProc} from "pkit/processors";
-import {stateKit, StatePort} from "pkit/state";
-import {childRemoteWorkerKit} from "pkit/worker";
+import {LifecyclePort, sink, source, mapProc, mapToProc,
+  stateKit, StatePort, childRemoteWorkerKit
+} from "pkit";
 import {SnabbdomPort, snabbdomActionPatchKit} from "@pkit/snabbdom/csr";
 import {App} from "../../ui/";
-import {State} from './processors'
-
-export * from './processors'
+import {State} from '../../shared/state'
 
 export class Port extends LifecyclePort {
   state = new StatePort<State>();
   dom = new SnabbdomPort;
 }
 
-export const circuit = (port: Port) =>
+const circuit = (port: Port) =>
   merge(
-    childRemoteWorkerKit(port.debug, port.err, self as any, [
+    childRemoteWorkerKit(port, self as any, [
       port.ready,
       port.state.raw,
       port.dom.render,
@@ -42,3 +39,5 @@ const domKit = (port: Port) =>
           hash === '#/completed' ? 'completed' as const : 'all' as const
       })),
   )
+
+export default {Port, circuit}

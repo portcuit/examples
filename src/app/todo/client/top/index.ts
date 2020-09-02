@@ -7,7 +7,8 @@ import {LifecyclePort, source, sink, Socket,
   workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit
 } from "pkit";
 import {snabbdomKit, SnabbdomParams, SnabbdomPort} from "@pkit/snabbdom/csr";
-import {Port as AppPort, initial} from "../app/"
+import {initial} from '../../shared/state'
+import {Port as AppPort} from "../worker/"
 
 export type Params = {
   worker: WorkerParams,
@@ -32,8 +33,9 @@ export const circuit = (port: Port) =>
 const lifecycleKit = (port: Port) =>
   merge(
     directProc(source(port.app.ifs.state.raw), sink(port.state)),
-    latestMapProc(source(port.app.ifs.ready), sink(port.app.ifs.state.init), [source(port.state)],
-      ([,state]) => state),
+    latestMapProc(source(port.app.ifs.ready), sink(port.app.ifs.state.init),
+      [source(port.state)], ([,state]) =>
+        state),
     directProc(of(initial), sink(port.state)),
   )
 
@@ -45,8 +47,8 @@ const useAppKit = (port: Port) =>
       port.app.ifs.dom.action,
       port.app.ifs.dom.event.hashchange
     ], port.app.ifs),
-    mapProc(source(port.init), sink(port.app.init),
-      ({worker}) => worker),
+    mapProc(source(port.init), sink(port.app.init), ({worker}) =>
+      worker),
     mapToProc(source(port.app.ready), sink(port.app.running), true)
   )
 

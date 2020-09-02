@@ -2,7 +2,7 @@ import {identity} from 'ramda'
 import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit/state";
 import Pkit, {FC} from '@pkit/snabbdom'
 import {action} from "@pkit/snabbdom/csr";
-import {State} from "../client/app";
+import {State} from "../shared/state";
 
 export const App: FC<State> = ({newTodo, items, scope}) =>
   <section sel=".todoapp">
