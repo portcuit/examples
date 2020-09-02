@@ -1,7 +1,7 @@
 import {merge} from "rxjs";
 import {directProc, entry, mapToProc, mergeMapProc, sink, source, terminatedComplete} from "pkit";
 import {HttpServerApiPort, RequestArgs, route} from "pkit/http/server";
-import  * as todo from '../src/app/todo/ssr'
+import  * as todo from '../src/app/todo/server'
 
 export default (...args: RequestArgs) =>
   terminatedComplete(entry(new HttpServerApiPort, (port) =>

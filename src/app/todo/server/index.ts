@@ -18,7 +18,7 @@ import {
   HttpServerPort,
   route
 } from "pkit/http/server";
-import {App} from './app'
+import {ServerLayout} from '../ui/_layout'
 
 const params: HttpServerParams = {
   listen: [10080]
@@ -40,8 +40,8 @@ const circuit = (port: Port) =>
 export const apiKit = (port: HttpServerApiPort) =>
   merge(
     httpServerApiKit(port),
-    mapProc(get('/todo', source(port.init)), sink(port.vnode),
-      ([req]) => App({src: '/esm/app/todo/top/main.js'})),
+    mapProc(get('/todo/ui/', source(port.init)), sink(port.vnode), ([req]) =>
+      ServerLayout({src: '/esm/app/todo/client/top/main.js'})),
     httpServerApiTerminateKit(port)
   )
 

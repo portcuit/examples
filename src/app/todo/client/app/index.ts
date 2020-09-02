@@ -4,7 +4,7 @@ import {mapProc, mapToProc} from "pkit/processors";
 import {stateKit, StatePort} from "pkit/state";
 import {childRemoteWorkerKit} from "pkit/worker";
 import {SnabbdomPort, snabbdomActionPatchKit} from "@pkit/snabbdom/csr";
-import {View} from "./view";
+import {App} from "../../ui/";
 import {State} from './processors'
 
 export * from './processors'
@@ -35,7 +35,7 @@ const domKit = (port: Port) =>
   merge(
     snabbdomActionPatchKit(port.dom, port.state),
     mapProc(source(port.state.data), sink(port.dom.render),
-      (state) => View(state)),
+      (state) => App(state)),
     mapProc(source(port.dom.event.hashchange), sink(port.state.patch),
       (hash) => ({
         scope: hash === '#/active' ? 'active' as const :

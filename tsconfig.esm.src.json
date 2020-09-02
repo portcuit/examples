@@ -19,14 +19,15 @@
           {
             "prefix": "/esm/",
             "suffix": "/index.js",
-            "modules": ["ramda", "minimatch"]
+            "modules": ["ramda", "minimatch", "remark", "remark-vdom"]
           }
         ],
         "replace": {
           "rxjs": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs.min.js",
           "rxjs/operators": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@6.6.2/esm/es2015/rxjs-operators.min.js",
           "emotion": "https://cdn.jsdelivr.net/npm/@esm-bundle/emotion@10.0.27/esm/emotion.min.js",
-          "@pkit/snabbdom/jsx": "/esm/snabbdom/jsx.js"
+          "@pkit/snabbdom/lib/jsx": "/esm/snabbdom/jsx.js",
+          "@pkit/snabbdom/lib/h": "/esm/snabbdom/h.js"
         },
         "after": true
       }
