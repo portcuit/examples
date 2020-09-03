@@ -1,5 +1,6 @@
 import {mount} from "pkit";
 import {Params, Port, circuit} from './';
+import EventTarget from '@ungap/event-target'
 
 const params: Params = {
   worker: {

@@ -34,6 +34,7 @@ const createConfig = (name) => ({
 })
 
 export default [
+  '@ungap/event-target',
   'remark',
   'remark-vdom',
   "minimatch",

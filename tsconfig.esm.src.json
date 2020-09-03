@@ -24,7 +24,7 @@
           {
             "prefix": "/esm/",
             "suffix": "/index.js",
-            "modules": ["ramda", "minimatch", "remark", "remark-vdom"]
+            "modules": ["ramda", "minimatch", "remark", "remark-vdom", "@ungap/event-target"]
           }
         ],
         "replace": {
