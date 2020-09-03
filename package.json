@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ttsc -b tsconfig.esm.src.json -w",
-    "build": "tsc -b && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.esm.js",
-    "todo": "node -e 'require(\\\"pkit\\\").mount(require(\\\"src/app/worker-todomvc/ssr\\\").default)'"
+    "build": "tsc -b && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.esm.js && rollup -c rollup.config.src.js"
   },
   "repository": {
     "type": "git",
