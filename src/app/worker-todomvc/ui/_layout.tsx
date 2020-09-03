@@ -3,8 +3,9 @@ import Pkit, {FC} from '@pkit/snabbdom'
 export const SsrLayout: FC<{src: string}> = ({src}, children) =>
   <html lang="ja">
   <head>
-    <title>TodoMVC | portcuit examples</title>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portcuit Examples | TodoMVC</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/todomvc-common@1.0.5/base.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/todomvc-app-css@2.3.0/index.css" />
     <script type="module" src={src} />
