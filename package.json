@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ttsc -b tsconfig.esm.src.json -w",
-    "build": "tsc -b && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.esm.js && rollup -c rollup.config.src.js"
+    "build": "tsc -b && rollup -c rollup.config.esm.js && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.prod.js && rollup -c rollup.config.worker.js"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,7 @@
     "@types/serve-handler": "^6.1.0",
     "rollup": "^2.23.1",
     "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-terser": "^7.0.1",
     "typescript": "^4.0.2",
     "vercel": "^20.1.0"
   }

@@ -34,6 +34,8 @@ const createConfig = (name) => ({
 })
 
 export default [
+  'rxjs',
+  'rxjs/operators',
   '@ungap/event-target',
   'remark',
   'remark-vdom',
