@@ -13,7 +13,7 @@ const makeConfig = (name) => ({
   plugins: [
     alias({
       entries:[
-        {find: /^\/esm\/(.*)/, replacement: `${__dirname}/src/app/esm/$1`}
+        {find: /^\/esm\/(.*)/, replacement: `${__dirname}/src/app/ui/esm/$1`}
       ]
     }),
     terser({
