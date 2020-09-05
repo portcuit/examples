@@ -5,7 +5,7 @@ import EventTarget from '@ungap/event-target'
 const params: Params = {
   worker: {
     ctor: Worker,
-    args: ['/src/app/ui/esm/app/html-pretty-print/client/app/main.js', {type: 'module'}]
+    args: ['/esm/app/html-pretty-print/client/app/main.js', {type: 'module'}]
   },
   snabbdom: {
     container: document.body.firstElementChild!,

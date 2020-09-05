@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.esm.json",
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": "./src/ui",
     "outDir": "./src/ui/esm",
     "plugins": [
       {
@@ -39,9 +39,5 @@
   "include": [
     "./src/ui/app",
     "./src/ui/vendor"
-  ],
-  "exclude": [
-    "./src/app",
-    "./src/vendor"
   ]
 }
