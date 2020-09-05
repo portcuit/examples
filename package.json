@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/portcuit/examples#readme",
   "dependencies": {
+    "@pkit/chokidar": "file:src/vendor/@pkit/chokidar",
     "@pkit/dev": "file:src/vendor/@pkit/dev",
     "@pkit/snabbdom": "file:src/vendor/@pkit/snabbdom",
     "@ungap/event-target": "^0.2.2",
