@@ -2,7 +2,7 @@
   "version": 2,
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/worker-todomvc/ui/index.html", "dest": "worker-todomvc/index.html"},
+    { "src": "/worker-todomvc/ui/index.html", "status": 308, "headers": { "Location": "worker-todomvc/index.html" }},
     { "src": ".*", "dest": "api/index.ts" }
   ]
 }
