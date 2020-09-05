@@ -32,7 +32,7 @@ const circuit = (port: HttpServerPort) =>
       terminatedComplete(entry(new HttpServerApiPort, apiKit, data))),
     mergeMapProc(route('**', source(port.event.request)), sink(port.debug),
       async ([req, res]) =>
-        ({handler: await handler(req, res, {public: './src/app', cleanUrls: false})})) ,
+        ({handler: await handler(req, res, {public: './src/app/ui', cleanUrls: false})})) ,
     mapToProc(source(port.ready), sink(port.running), true)
   )
 
