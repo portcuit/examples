@@ -14,15 +14,13 @@ export const Index: FC<State> = ({fromHtml, toHtml}) =>
         </label>
         <button class="bt-gray-300 p-2 m-2 bg-gray-300">URLから読み込み</button>
       </div>
-      <textarea class="w-full h-64" placeholder="ここに整形したいHTMLを貼り付けてください。" bind={action<State>({
+      <textarea class="w-full h-64 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。" bind={action<State>({
+        keyup: ({key}) => key === 'Enter' ? ({currentTarget: {value: fromHtml}}) => ({fromHtml}) : undefined,
         change: () => ({currentTarget: {value: fromHtml}}) => ({fromHtml})
-      })}>{fromHtml}</textarea>
-      <button class="w-full p-2 m-2 bg-blue-200" bind={action<State>({
-        click: () => () => ({format: new EphemeralBoolean(true)})
-      })}>整形する</button>
+      })} value={fromHtml} />
     </div>
     <div class="w-1/2 p-4">
-      <textarea class="w-full h-64 bg-gray-800 text-white" readonly>{toHtml}</textarea>
+      <textarea class="w-full h-64 p-4 bg-gray-800 text-white" readOnly={true} value={toHtml} />
     </div>
   </div>
 

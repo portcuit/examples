@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.esm.json",
   "compilerOptions": {
-    "rootDir": "./src/ui",
-    "outDir": "./src/ui/esm",
+    "rootDir": "src/ui",
+    "outDir": "src/ui/esm",
     "plugins": [
       {
         "transform": "ts-transformer-esm-web",
@@ -36,8 +36,12 @@
       }
     ]
   },
+  "exclude": [
+    "src/ui/!(app|vendor|shared)"
+  ],
   "include": [
-    "./src/ui/app",
-    "./src/ui/vendor"
+    "src/ui/app",
+    "src/ui/vendor",
+    "src/ui/shared"
   ]
 }
