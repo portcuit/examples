@@ -18,11 +18,11 @@ import {
   HttpServerPort,
   route
 } from "pkit/http/server";
-import {initial} from '../shared/state'
+import {initialState} from '../shared/state'
 import {Ssr} from '../ui/'
 
 const params: HttpServerParams = {
-  listen: [8080]
+  listen: [10080]
 }
 
 const circuit = (port: HttpServerPort) =>
@@ -32,15 +32,15 @@ const circuit = (port: HttpServerPort) =>
       terminatedComplete(entry(new HttpServerApiPort, apiKit, data))),
     mergeMapProc(route('**', source(port.event.request)), sink(port.debug),
       async ([req, res]) =>
-        ({handler: await handler(req, res, {public: './src/app', cleanUrls: false})})) ,
+        ({handler: await handler(req, res, {public: './src/app', cleanUrls: false})})),
     mapToProc(source(port.ready), sink(port.running), true)
   )
 
 export const apiKit = (port: HttpServerApiPort) =>
   merge(
     httpServerApiKit(port),
-    mapProc(get('/worker-todomvc/index.html', source(port.init)), sink(port.vnode), ([req]) =>
-      Ssr({src: '/esm/app/worker-todomvc/client/top/main.js', state: initial})),
+    mapProc(get('/markdown-converter/ui/index.html', source(port.init)), sink(port.vnode), ([req]) =>
+      Ssr(initialState())),
     httpServerApiTerminateKit(port)
   )
 
