@@ -25,7 +25,7 @@
           {
             "prefix": "/esm/",
             "suffix": "/index.js",
-            "modules": ["rehype", "rehype-format", "rxjs", "rxjs/operators", "ramda", "minimatch", "remark", "remark-vdom", "@ungap/event-target"]
+            "modules": ["unified", "rehype-parse" ,"rehype-stringify", "rehype-format", "rxjs", "rxjs/operators", "ramda", "minimatch", "remark", "remark-vdom", "@ungap/event-target"]
           }
         ],
         "replace": {

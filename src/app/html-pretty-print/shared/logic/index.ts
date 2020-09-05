@@ -1,5 +1,5 @@
 import unified from 'unified'
-import rehype from 'rehype'
+import stringify from 'rehype-stringify'
 import parse from 'rehype-parse'
 import format from 'rehype-format'
 
@@ -19,9 +19,12 @@ export const logicKit = (port: Port) =>
         !preventConvert)),
       sink(port.state.patch), async ({fromHtml}) =>
         ({
-          toHtml: (await rehype().use(format).process(fromHtml)).contents as string,
+          toHtml: (await unified()
+            .use(parse, {fragment: true})
+            .use(format)
+            .use(stringify)
+            .process(fromHtml)).contents as string,
           preventConvert: new EphemeralBoolean(true)
-        })
-    )
+        }))
   )
 

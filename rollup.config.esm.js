@@ -29,13 +29,17 @@ const createConfig = (name) => ({
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_DEBUG),
-      'process.cwd()': '"/"'
+      'process.cwd()': '"/"',
+      delimiters: ['', ''],
     }),
+
   ]
 })
 
 export default [
-  'rehype',
+  'unified',
+  'rehype-stringify',
+  'rehype-parse',
   'rehype-format',
   'rxjs',
   'rxjs/operators',
