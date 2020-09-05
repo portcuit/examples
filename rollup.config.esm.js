@@ -4,7 +4,7 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 
-const outputDir = 'src/app/esm';
+const outputDir = 'src/app/ui/esm';
 
 const createConfig = (name) => ({
   input: name,

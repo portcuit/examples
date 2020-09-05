@@ -3,10 +3,10 @@ import { terser } from "rollup-plugin-terser";
 
 const makeConfig = (name) => ({
   input: {
-    [name]: `src/app/esm/app/${name}`
+    [name]: `src/app/ui/esm/app/${name}`
   },
   output: {
-    dir: 'src/app/esm/app',
+    dir: 'src/app/ui/esm/app',
     format: 'iife',
     entryFileNames: '[name].js'
   },

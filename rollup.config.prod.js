@@ -3,10 +3,10 @@ import { terser } from "rollup-plugin-terser";
 
 export default {
   input: {
-    'worker-todomvc/client/top/main': 'src/app/esm/app/worker-todomvc/client/top/main'
+    'worker-todomvc/client/top/main': 'src/app/ui/esm/app/worker-todomvc/client/top/main'
   },
   output: {
-    dir: 'src/app/esm/app',
+    dir: 'src/app/ui/esm/app',
     format: 'es',
     entryFileNames: '[name].js'
   },
