@@ -7,9 +7,9 @@ export const SsrLayout: FC = (props, children) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Markdown Converter</title>
     <link href="./css/index.css" rel="stylesheet" />
-    <script type="module" src="../../esm/app/markdown-converter/client/top/main.js" />
+    <script type="module" src="/src/app/ui/esm/app/html-pretty-print/client/top/main.js" />
   </head>
-  <body data-state={JSON.stringify(props)}>
+  <body data-state={encodeURIComponent(JSON.stringify(props))}>
   {children}
   </body>
   </html>

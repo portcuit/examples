@@ -13,6 +13,7 @@ import {snabbdomActionPatchKit, SnabbdomPort} from "@pkit/snabbdom/csr";
 import {merge} from "rxjs";
 import {State} from '../../shared/state'
 import {Index} from '../../ui/'
+import {filter} from "rxjs/operators";
 
 export class Port extends LifecyclePort {
   state = new StatePort<State>();
@@ -28,7 +29,16 @@ const circuit = (port: Port) =>
     ]),
     stateKit(port.state),
     domKit(port),
-    mapToProc(source(port.init), sink(port.ready))
+    mapToProc(source(port.init), sink(port.ready)),
+    logicKit(port)
+  )
+
+const logicKit = (port: Port) =>
+  merge(
+    mapProc(source(port.state.data).pipe(filter(({format}) =>
+        !!format)),
+      sink(port.state.patch), ({fromHtml}) =>
+        ({toHtml: fromHtml}))
   )
 
 const domKit = (port: Port) =>

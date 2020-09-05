@@ -5,7 +5,7 @@ import EventTarget from '@ungap/event-target'
 const params: Params = {
   worker: {
     ctor: Worker,
-    args: ['/esm/app/markdown-converter/client/app/main.js', {type: 'module'}]
+    args: ['/src/app/ui/esm/app/html-pretty-print/client/app/main.js', {type: 'module'}]
   },
   snabbdom: {
     container: document.body.firstElementChild!,
@@ -15,7 +15,7 @@ const params: Params = {
       hashchange: true
     }
   },
-  state: JSON.parse(document.body.dataset.state!)
+  state: JSON.parse(decodeURIComponent(document.body.dataset.state!))
 }
 
 Object.assign(globalThis, {subject$: mount({Port, circuit, params})});
