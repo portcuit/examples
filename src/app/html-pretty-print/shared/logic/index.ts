@@ -1,6 +1,11 @@
+import unified from 'unified'
+import rehype from 'rehype'
+import parse from 'rehype-parse'
+import format from 'rehype-format'
+
 import {merge} from "rxjs";
-import {debounceTime, filter} from "rxjs/operators";
-import {EphemeralBoolean, mapProc, sink, Socket, source, StatePort} from "pkit";
+import {debounceTime, delay, filter} from "rxjs/operators";
+import {EphemeralBoolean, mapProc, mergeMapProc, sink, Socket, source, StatePort} from "pkit";
 import {State} from '../state'
 
 type Port = {
@@ -9,9 +14,14 @@ type Port = {
 
 export const logicKit = (port: Port) =>
   merge(
-    mapProc(source(port.state.data).pipe(
+    mergeMapProc(source(port.state.data).pipe(
       filter(({preventConvert}) =>
         !preventConvert)),
-      sink(port.state.patch), ({fromHtml}) =>
-        ({toHtml: fromHtml, preventConvert: new EphemeralBoolean(true)}))
+      sink(port.state.patch), async ({fromHtml}) =>
+        ({
+          toHtml: (await rehype().use(format).process(fromHtml)).contents as string,
+          preventConvert: new EphemeralBoolean(true)
+        })
+    )
   )
+

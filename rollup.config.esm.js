@@ -28,12 +28,15 @@ const createConfig = (name) => ({
     commonjs(),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_DEBUG)
+      'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_DEBUG),
+      'process.cwd()': '"/"'
     }),
   ]
 })
 
 export default [
+  'rehype',
+  'rehype-format',
   'rxjs',
   'rxjs/operators',
   '@ungap/event-target',
