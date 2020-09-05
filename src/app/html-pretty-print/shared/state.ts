@@ -7,10 +7,9 @@ export type State = {
 }
 
 export const initialState = () => ({
-  fromHtml: `<div>
-<p>ここに整形したいHTMLを貼り付けてください。</p><ul>
-<li>ローカルのファイルを選択して読み込むことができます。</li>
-<li>URLを指定してリモートのHTMLを読み込むことができます。</li></ul>
-</div>`,
+  fromHtml: `<article>
+<h1>ここに整形したいHTMLを貼り付けてください。</h1><ul>
+<li>PCに保存されているHTMLファイルを読み込むことができます。</li>
+<li>URLを指定してリモートのHTMLを読み込むことができます。</li></ul></article>`,
   toHtml: ''
 })

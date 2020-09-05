@@ -19,11 +19,11 @@ export const logicKit = (port: Port) =>
         !preventConvert)),
       sink(port.state.patch), async ({fromHtml}) =>
         ({
-          toHtml: (await unified()
+          toHtml: ((await unified()
             .use(parse, {fragment: true})
             .use(format)
             .use(stringify)
-            .process(fromHtml)).contents as string,
+            .process(fromHtml)).contents as string).trim(),
           preventConvert: new EphemeralBoolean(true)
         }))
   )
