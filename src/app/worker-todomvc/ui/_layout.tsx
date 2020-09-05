@@ -7,8 +7,7 @@ export const SsrLayout: FC<{src: string}> = ({src}, children) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Portcuit Examples | TodoMVC</title>
     <link rel="stylesheet" href="./css/base.css" />
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/todomvc-app-css@2.3.0/index.css" />
+    <link rel="stylesheet" href="./css/index.css" />
     <script type="module" src={src} />
   </head>
   <body>
