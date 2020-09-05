@@ -33,13 +33,13 @@ const circuit = (port: HttpServerPort) =>
     mergeMapProc(route('**', source(port.event.request)), sink(port.debug),
       async ([req, res]) => {
 
-        if (['vendor'].includes(req.url!.split('/')[1])) {
-          req.url = '/src' + req.url
-        } else if( !['src', 'node_modules'].includes(req.url!.split('/')[1]) ) {
-          req.url = '/src/app/ui' + req.url
-        }
+        // if (['vendor'].includes(req.url!.split('/')[1])) {
+        //   req.url = '/src' + req.url
+        // } else if( !['src', 'node_modules'].includes(req.url!.split('/')[1]) ) {
+        //   req.url = '/src/app/ui' + req.url
+        // }
 
-        return ({handler: await handler(req, res, {public: './', cleanUrls: false})})
+        return ({handler: await handler(req, res, {public: './public', cleanUrls: false})})
       }),
     mapToProc(source(port.ready), sink(port.running), true)
   )
