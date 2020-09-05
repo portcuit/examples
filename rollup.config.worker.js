@@ -1,19 +1,21 @@
 import alias from '@rollup/plugin-alias'
 import { terser } from "rollup-plugin-terser";
 
+const outDir = 'src/app/ui/esm'
+
 const makeConfig = (name) => ({
   input: {
-    [name]: `src/app/ui/esm/app/${name}`
+    [name]: `${outDir}/app/${name}`
   },
   output: {
-    dir: 'src/app/ui/esm/app',
+    dir: `${outDir}/app`,
     format: 'iife',
     entryFileNames: '[name].js'
   },
   plugins: [
     alias({
       entries:[
-        {find: /^\/esm\/(.*)/, replacement: `${__dirname}/src/app/ui/esm/$1`}
+        {find: /^\/esm\/(.*)/, replacement: `${__dirname}/${outDir}/$1`}
       ]
     }),
     terser({
