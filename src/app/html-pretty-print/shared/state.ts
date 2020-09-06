@@ -1,9 +1,10 @@
-import {EphemeralBoolean} from "pkit";
+import {EphemeralBoolean, EphemeralContainer} from "pkit";
 
 export type State = {
   fromHtml: string;
   toHtml: string;
-  preventConvert?: EphemeralBoolean
+  preventConvert?: EphemeralBoolean;
+  files?: EphemeralContainer<FileList>;
 }
 
 export const initialState = () => ({

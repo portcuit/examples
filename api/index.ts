@@ -8,6 +8,6 @@ export default (...args: RequestArgs) =>
   terminatedComplete(entry(new HttpServerApiPort, (port) =>
     merge(
       todo.apiKit(port),
-      httpPrettyPrint.circuit(port),
+      httpPrettyPrint.circuit(port as any),
       mapToProc(route('**', source(port.init)), sink(port.notFound.html), '404 Not Found.')
     ), args))

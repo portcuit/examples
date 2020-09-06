@@ -20,7 +20,7 @@ const makeConfig = (name) => ({
     }),
     terser({
       mangle: {
-        reserved: ['ReplaceObject', 'ReplaceArray', 'EphemeralBoolean', 'splice', 'padArray']
+        reserved: ['ReplaceObject', 'ReplaceArray', 'EphemeralBoolean', 'EphemeralFileList', 'splice', 'padArray']
       }
     })
   ]
