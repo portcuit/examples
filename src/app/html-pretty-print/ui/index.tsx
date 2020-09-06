@@ -4,7 +4,7 @@ import {action} from '@pkit/snabbdom/csr/processors'
 import {SsrLayout} from './_layout'
 import {State} from "../shared/state";
 
-const Converter: FC<State> = ({fromHtml, toHtml, copy}) =>
+const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
   <div class="flex mt-10">
     <div class="w-1/2 p-4">
       <div class="flex mb-2">
@@ -27,10 +27,10 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy}) =>
         <button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300 font-semibold" bind={action<State>({
           click: () => () => ({copy: new EphemeralBoolean(true)})
         })}>コピー</button>
-        <button class="w-1/2 p-2 ml-1 bg-white hover:bg-gray-300 font-semibold">
+        <a href={downloadFile} download="pretty.html" class="w-1/2 p-2 ml-1 bg-white hover:bg-gray-300 text-center font-semibold">
           <svg class="inline-block fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
           <span>ダウンロード</span>
-        </button>
+        </a>
       </div>
     </div>
   </div>

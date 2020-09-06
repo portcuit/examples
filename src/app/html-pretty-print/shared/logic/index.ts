@@ -7,14 +7,13 @@ import {filter, map, mergeMap, take} from "rxjs/operators";
 import {EphemeralBoolean, mapProc, mergeMapProc, sink, source, StatePort} from "pkit";
 import {State} from '../state'
 
-type Port = {
+interface Port {
   state: StatePort<State>
 }
 
-export const logicKit = (port: Port) =>
+export const sharedLogicKit = (port: Port) =>
   merge(
-    formatHtml(port),
-    loadFromFile(port)
+    formatHtml(port)
   )
 
 const formatHtml = (port: Port) =>
@@ -30,17 +29,3 @@ const formatHtml = (port: Port) =>
         .process(fromHtml)).contents as string).trim(),
       preventConvert: new EphemeralBoolean(true)
     }))
-
-const loadFromFile = (port: Port) =>
-  mapProc(source(port.state.data).pipe(
-    filter(({files}) =>
-      !!files && !!files?.data?.[0]),
-    mergeMap((state) => {
-      const file = state.files!.data[0];
-      const reader = new FileReader;
-      setTimeout(() =>
-        reader.readAsText(file), 0);
-      return fromEvent<{currentTarget:{result:string}}>(reader, 'load').pipe(
-        map(({currentTarget:{result}}) => result),
-        take(1))
-    })), sink(port.state.patch), (fromHtml) => ({fromHtml}))

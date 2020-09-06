@@ -1,8 +1,6 @@
 import {merge} from "rxjs";
-import {filter} from "rxjs/operators";
 import {
   childRemoteWorkerKit,
-  directProc,
   LifecyclePort,
   mapProc,
   mapToProc,
@@ -14,7 +12,8 @@ import {
 import {snabbdomActionPatchKit, SnabbdomPort} from "@pkit/snabbdom/csr";
 import {State} from '../../shared/state'
 import {Index} from '../../ui/'
-import {logicKit} from '../../shared/logic/'
+import {sharedLogicKit} from '../../shared/logic/'
+import {logicKit} from "../logic/";
 
 export class Port extends LifecyclePort {
   state = new StatePort<State>();
@@ -31,6 +30,7 @@ const circuit = (port: Port) =>
     stateKit(port.state),
     domKit(port),
     mapToProc(source(port.init), sink(port.ready)),
+    sharedLogicKit(port),
     logicKit(port)
   )
 

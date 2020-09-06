@@ -3,7 +3,7 @@ import {sink, source, mapProc, StatePort, stateKit} from "pkit";
 import {get, httpServerApiKit, HttpServerApiPort, httpServerApiTerminateKit, HttpServerPort} from "pkit/http/server";
 import {createDevKit} from '../../../shared/server/dev'
 import {initialState, State} from '../shared/state'
-import {logicKit} from '../shared/logic/'
+import {sharedLogicKit} from '../shared/logic/'
 import {Ssr} from '../ui/'
 import {delay, filter} from "rxjs/operators";
 
@@ -17,7 +17,7 @@ export const circuit = (port: Port) =>
   merge(
     httpServerApiKit(port),
     stateKit(port.state),
-    logicKit(port),
+    sharedLogicKit(port),
     mapProc(get(`/${appName}/`, source(port.init)).pipe(delay(0)), sink(port.state.init), () =>
       initialState()),
     mapProc(source(port.state.data).pipe(filter(({preventConvert}) =>

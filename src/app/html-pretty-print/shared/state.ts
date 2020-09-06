@@ -10,10 +10,12 @@ export type State = {
     fragment: boolean,
     indentInitial: boolean,
     indent: number | string
-  }
+  },
+  downloadFile: string;
+  debug?: void | Object;
 }
 
-export const initialState = () => ({
+export const initialState: () => State = () => ({
   fromHtml: `<html lang="ja"><head><title>HTML Pretty Print</title></head><body>
 <h1>ここに整形したいHTMLを貼り付けてください。</h1><ul>
 <li>PCに保存されているHTMLファイルを読み込むことができます。</li>
@@ -23,5 +25,6 @@ export const initialState = () => ({
     fragment: false,
     indentInitial: false,
     indent: 2
-  }
+  },
+  downloadFile: '#',
 })
