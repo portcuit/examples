@@ -7,9 +7,8 @@ export const SsrLayout: FC = (props, children) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HTML Pretty Print - HTML 整形</title>
     <link href="./css/index.css" rel="stylesheet" />
+    <meta name="state" content={encodeURIComponent(JSON.stringify(props))} />
     <script type="module" src="/esm/app/html-pretty-print/client/top/main.js" />
   </head>
-  <body data-state={encodeURIComponent(JSON.stringify(props))}>
   {children}
-  </body>
   </html>

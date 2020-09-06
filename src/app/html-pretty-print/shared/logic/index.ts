@@ -20,11 +20,12 @@ export const logicKit = (port: Port) =>
 const formatHtml = (port: Port) =>
   mergeMapProc(source(port.state.data).pipe(
     filter(({preventConvert}) =>
-      !preventConvert)), sink(port.state.patch), async ({fromHtml}) =>
+      !preventConvert)), sink(port.state.patch),
+    async ({fromHtml, options:{fragment, indentInitial, indent}}) =>
     ({
       toHtml: ((await unified()
-        .use(parse, {fragment: true})
-        .use(format)
+        .use(parse, {fragment})
+        .use(format, {indent, indentInitial})
         .use(stringify)
         .process(fromHtml)).contents as string).trim(),
       preventConvert: new EphemeralBoolean(true)

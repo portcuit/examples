@@ -18,7 +18,7 @@ export const circuit = (port: Port) =>
     httpServerApiKit(port),
     stateKit(port.state),
     logicKit(port),
-    mapProc(get(`/${appName}/index.html`, source(port.init)).pipe(delay(0)), sink(port.state.init), () =>
+    mapProc(get(`/${appName}/`, source(port.init)).pipe(delay(0)), sink(port.state.init), () =>
       initialState()),
     mapProc(source(port.state.data).pipe(filter(({preventConvert}) =>
       !!preventConvert)), sink(port.vnode), (state) =>

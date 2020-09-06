@@ -15,7 +15,10 @@ const params: Params = {
       hashchange: true
     }
   },
-  state: JSON.parse(decodeURIComponent(document.body.dataset.state!))
+  state: JSON.parse(decodeURIComponent(document.querySelector('meta[name=state]')!.getAttribute('content')!))
 }
 
-Object.assign(globalThis, {subject$: mount({Port, circuit, params})});
+const subject$ = mount({Port, circuit, params});
+subject$.subscribe({error: console.error})
+
+Object.assign(globalThis, {subject$});

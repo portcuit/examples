@@ -1,0 +1,68 @@
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HTML Pretty Print - HTML 整形</title><link href="./css/index.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-900">
+<div class="container mx-auto my-8">
+    <h1 class="text-white font-bold text-6xl text-center m-auth">HTML Pretty Print</h1>
+    <h2 class="text-gray-700 text-2xl text-center">ほげほげほげほげ</h2>
+
+    <div class="flex mt-10">
+        <div class="w-1/2 p-4">
+            <div class="flex mb-2">
+                <label class="w-1/2 mr-1 p-2 bg-gray-800 hover:bg-gray-700 text-center text-white font-semibold cursor-pointer">
+                    ファイルから読み込み
+                    <input class="hidden" type="file">
+                </label>
+                <button class="w-1/2 ml-1 p-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold">URLから読み込み</button>
+            </div>
+            <textarea class="w-full h-screen-1/2 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。">&#x3C;article>
+                &#x3C;h1>ここに整形したいHTMLを貼り付けてください。&#x3C;/h1>&#x3C;ul>
+                &#x3C;li>PCに保存されているHTMLファイルを読み込むことができます。&#x3C;/li>
+                &#x3C;li>URLを指定してリモートのHTMLを読み込むことができます。&#x3C;/li>&#x3C;/ul>&#x3C;/article>
+            </textarea>
+        </div>
+        <div class="w-1/2 p-4">
+            <textarea class="w-full h-screen-1/2 p-4 bg-gray-800 text-white" wrap="off" readonly>&#x3C;article>
+                &#x3C;h1>ここに整形したいHTMLを貼り付けてください。&#x3C;/h1>
+                &#x3C;ul>
+                &#x3C;li>PCに保存されているHTMLファイルを読み込むことができます。&#x3C;/li>
+                &#x3C;li>URLを指定してリモートのHTMLを読み込むことができます。&#x3C;/li>
+                &#x3C;/ul>
+                &#x3C;/article>
+            </textarea>
+            <div class="flex mt-2">
+                <button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300">コピー</button>
+                <button class="w-1/2 p-2 ml-1 bg-white hover:bg-gray-300">
+                    <svg class="inline-block fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                    <span>ダウンロード</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-4 text-gray-300">
+        <h3 class="font-bold text-3xl">Options</h3>
+        <ul class="mt-4 text-lg">
+            <li class="inline-block">
+                <label>
+                    <input type="checkbox" />
+                    <span class="pl-1">Fragment</span>
+                </label>
+            </li>
+        </ul>
+    </div>
+
+    <ul>
+        <li>ToDo
+            <ul>
+                <li>UTF-8以外の文字コードに対応</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
