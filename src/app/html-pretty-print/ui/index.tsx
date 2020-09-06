@@ -1,10 +1,10 @@
-import {EphemeralContainer} from "pkit";
+import {EphemeralBoolean, EphemeralContainer} from "pkit";
 import Pkit, {FC, markdown} from '@pkit/snabbdom'
 import {action} from '@pkit/snabbdom/csr/processors'
 import {SsrLayout} from './_layout'
 import {State} from "../shared/state";
 
-const Converter: FC<State> = ({fromHtml, toHtml}) =>
+const Converter: FC<State> = ({fromHtml, toHtml, copy}) =>
   <div class="flex mt-10">
     <div class="w-1/2 p-4">
       <div class="flex mb-2">
@@ -22,9 +22,11 @@ const Converter: FC<State> = ({fromHtml, toHtml}) =>
       })} value={fromHtml} />
     </div>
     <div class="w-1/2 p-4">
-      <textarea class="w-full h-screen-1/2 p-4 bg-gray-800 text-white" wrap="off" readOnly={true} value={toHtml} />
+      <textarea class="w-full h-screen-1/2 p-4 bg-gray-800 text-white" wrap="off" readOnly={true} value={toHtml} trigger={{copy}} />
       <div class="flex mt-2">
-        <button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300 font-semibold">コピー</button>
+        <button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300 font-semibold" bind={action<State>({
+          click: () => () => ({copy: new EphemeralBoolean(true)})
+        })}>コピー</button>
         <button class="w-1/2 p-2 ml-1 bg-white hover:bg-gray-300 font-semibold">
           <svg class="inline-block fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
           <span>ダウンロード</span>
@@ -41,7 +43,7 @@ const Options: FC<State> = ({options:{fragment,indentInitial, indent}}) =>
       <li class="mr-4">
         <label>
           <input type="radio" name="indent" checked={indent === 2} bind={action<State>({
-            click: () => () => ({options: {indent: 2}})
+            change: () => () => ({options: {indent: 2}})
           })} />
           <span class="pl-2">space-2</span>
         </label>
@@ -49,7 +51,7 @@ const Options: FC<State> = ({options:{fragment,indentInitial, indent}}) =>
       <li class="mr-4">
         <label>
           <input type="radio" name="indent" checked={indent === 4} bind={action<State>({
-            click: () => () => ({options: {indent: 4}})
+            change: () => () => ({options: {indent: 4}})
           })} />
           <span class="pl-2">space-4</span>
         </label>
@@ -57,7 +59,7 @@ const Options: FC<State> = ({options:{fragment,indentInitial, indent}}) =>
       <li class="mr-4">
         <label>
           <input type="radio" name="indent" checked={indent === "\t"} bind={action<State>({
-            click: () => () => ({options: {indent: "\t"}})
+            change: () => () => ({options: {indent: "\t"}})
           })} />
           <span class="pl-2">tab</span>
         </label>

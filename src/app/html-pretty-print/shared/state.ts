@@ -5,6 +5,7 @@ export type State = {
   toHtml: string;
   preventConvert?: EphemeralBoolean;
   files?: EphemeralContainer<FileList>;
+  copy?: EphemeralBoolean;
   options: {
     fragment: boolean,
     indentInitial: boolean,

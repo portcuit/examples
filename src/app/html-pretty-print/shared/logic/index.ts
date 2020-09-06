@@ -3,8 +3,8 @@ import stringify from 'rehype-stringify'
 import parse from 'rehype-parse'
 import format from 'rehype-format'
 import {fromEvent, merge} from "rxjs";
-import {debounceTime, delay, filter, map, mergeMap, take} from "rxjs/operators";
-import {EphemeralBoolean, mapProc, mergeMapProc, sink, Socket, source, StatePort} from "pkit";
+import {filter, map, mergeMap, take} from "rxjs/operators";
+import {EphemeralBoolean, mapProc, mergeMapProc, sink, source, StatePort} from "pkit";
 import {State} from '../state'
 
 type Port = {
