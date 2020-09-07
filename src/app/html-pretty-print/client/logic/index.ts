@@ -1,13 +1,14 @@
 import jschardet from 'jschardet'
 import {fromEvent, merge} from "rxjs";
-import {filter, map, mergeMap, take, withLatestFrom} from "rxjs/operators";
+import {filter, map, mergeMap, startWith, take, toArray, withLatestFrom} from "rxjs/operators";
 import {EphemeralBoolean, mapProc, mergeMapProc, sink, source, StatePort} from "pkit";
 import type {Port} from '../app/'
 
 export const logicKit = (port: Port) =>
   merge(
     loadFromFile(port),
-    makeDownloadFile(port)
+    makeDownloadFile(port),
+    loadFromUrl(port)
   )
 
 const makeDownloadFile = (port: Port) =>
@@ -24,24 +25,37 @@ const loadFromFile = (port: Port) =>
   mapProc(source(port.state.data).pipe(
     filter(({files}) =>
       !!files && !!files?.data?.[0]),
-    mergeMap((state) => {
+    mergeMap(async (state) => {
       const file = state.files!.data[0];
       const reader = new FileReader;
-      setTimeout(() =>
-        reader.readAsDataURL(file), 0);
-      return fromEvent<{currentTarget:{result: string}}>(reader, 'load').pipe(
-        map(({currentTarget:{result}}) => result),
-        take(1),
-        mergeMap((result) => {
-          const str = atob(result.split(';base64,')[1]);
-          const {encoding} = jschardet.detect(str);
-          console.log(encoding);
-          setTimeout(() =>
-            reader.readAsText(file, encoding), 0);
-          return fromEvent<any>(reader, 'load').pipe(
-            map(({currentTarget:{result}}) => result),
-            take(1))
-        }))
+
+      reader.readAsDataURL(file)
+      const {currentTarget:{result: dataUrl}} =
+        await fromEvent<{currentTarget:{result: string}}>(reader, 'load')
+          .pipe(take(1)).toPromise();
+
+      const {encoding} = jschardet.detect(atob(dataUrl.split(';base64,')[1]));
+
+      reader.readAsText(file, encoding);
+      return fromEvent<{currentTarget:{result: string}}>(reader, 'load')
+        .pipe(take(1), map(({currentTarget:{result}}) =>
+          result)).toPromise();
     })), sink(port.state.patch), (fromHtml) => ({fromHtml}));
 
-const loadFromUrl = (port: Port) => true
+const loadFromUrl = (port: Port) =>
+  mapProc(source(port.state.data).pipe(
+    withLatestFrom(source(port.state.patch)),
+    filter(([,{loadUrl}]) => !!loadUrl),
+    mergeMap(([{endpoint, loadUrl}]) =>
+      fetch(`${endpoint}load-url/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: loadUrl
+        })
+    })),
+    mergeMap((res) =>
+      res.text())
+  ), sink(port.state.patch), (fromHtml) => ({fromHtml}))

@@ -17,7 +17,7 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
         <button class="w-1/2 ml-1 p-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold" bind={action<State>({
           click: ({currentTarget}) =>
             (currentTarget.dataset.url = prompt('Please enter the URL.')!) ?
-              ({currentTarget:{dataset:{url}}}) => ({url}) : undefined
+              ({currentTarget:{dataset:{url}}}) => ({loadUrl:url}) : undefined
         })}>URL</button>
       </div>
       <textarea class="w-full h-screen-1/2 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。" bind={action<State>({
@@ -92,22 +92,16 @@ const Options: FC<State> = ({options:{fragment,indentInitial, indent}}) =>
 
 export const Index: FC<State> = (state) =>
   <body class="bg-gray-900">
-  <div class="container mx-auto my-8">
+  <div class="mx-auto my-8 px-8">
     <h1 class="text-white font-bold text-6xl text-center m-auth">HTML Pretty Print</h1>
-    <h2 class="text-gray-700 text-2xl text-center">Load from File and URL has any charset.</h2>
+    <h2 class="text-gray-700 text-2xl text-center">Load from File and URL supports multiple charset.</h2>
 
     <Converter {...state} />
     <Options {...state} />
-
-    {markdown`
-- ToDo
-    - UTF-8以外の文字コードに対応
-`}
   </div>
   </body>
 
-
 export const Ssr: FC<State> = (state) =>
-  <SsrLayout {...state}>
+  <SsrLayout {...{title: 'HTML Pretty Print', state}}>
     <Index {...state} />
   </SsrLayout>

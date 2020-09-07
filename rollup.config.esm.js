@@ -33,7 +33,7 @@ const createConfig = (name) => ({
       'this._mLastChar[1] = aBuf[0];': 'try{this._mLastChar[1]=aBuf[0];}catch(e){}',
       'this._mLastChar[0] = aBuf[aLen - 1];': 'try{this._mLastChar[0]=aBuf[aLen - 1];}catch(e){}',
       delimiters: ['', ''],
-    }),
+    })
 
   ]
 })
