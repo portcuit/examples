@@ -15,12 +15,9 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
           })} />
         </label>
         <button class="w-1/2 ml-1 p-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold" bind={action<State>({
-          click: ({currentTarget}) => {
-            const url = prompt('Please enter the URL.');
-            if (!url) { return; }
-            currentTarget.dataset.url = url;
-            return ({currentTarget:{dataset:{url}}}) => ({url})
-          }
+          click: ({currentTarget}) =>
+            (currentTarget.dataset.url = prompt('Please enter the URL.')!) ?
+              ({currentTarget:{dataset:{url}}}) => ({url}) : undefined
         })}>URL</button>
       </div>
       <textarea class="w-full h-screen-1/2 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。" bind={action<State>({

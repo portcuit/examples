@@ -44,5 +44,4 @@ const loadFromFile = (port: Port) =>
         }))
     })), sink(port.state.patch), (fromHtml) => ({fromHtml}));
 
-const loadFromUrl = (port: Port) =>
-  mergeMapProc()
+const loadFromUrl = (port: Port) => true
