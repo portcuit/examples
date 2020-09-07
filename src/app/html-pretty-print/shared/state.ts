@@ -1,4 +1,4 @@
-import {EphemeralBoolean, EphemeralContainer} from "pkit";
+import {EphemeralBoolean, EphemeralContainer, EphemeralString} from "pkit";
 
 export type State = {
   fromHtml: string;
@@ -13,6 +13,7 @@ export type State = {
   },
   downloadFile: string;
   debug?: void | Object;
+  url?: string;
 }
 
 export const initialState: () => State = () => ({

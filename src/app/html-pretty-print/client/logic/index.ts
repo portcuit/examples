@@ -1,3 +1,4 @@
+import jschardet from 'jschardet'
 import {fromEvent, merge} from "rxjs";
 import {filter, map, mergeMap, take, withLatestFrom} from "rxjs/operators";
 import {EphemeralBoolean, mapProc, mergeMapProc, sink, source, StatePort} from "pkit";
@@ -27,8 +28,21 @@ const loadFromFile = (port: Port) =>
       const file = state.files!.data[0];
       const reader = new FileReader;
       setTimeout(() =>
-        reader.readAsText(file), 0);
-      return fromEvent<{currentTarget:{result:string}}>(reader, 'load').pipe(
+        reader.readAsDataURL(file), 0);
+      return fromEvent<{currentTarget:{result: string}}>(reader, 'load').pipe(
         map(({currentTarget:{result}}) => result),
-        take(1))
+        take(1),
+        mergeMap((result) => {
+          const str = atob(result.split(';base64,')[1]);
+          const {encoding} = jschardet.detect(str);
+          console.log(encoding);
+          setTimeout(() =>
+            reader.readAsText(file, encoding), 0);
+          return fromEvent<any>(reader, 'load').pipe(
+            map(({currentTarget:{result}}) => result),
+            take(1))
+        }))
     })), sink(port.state.patch), (fromHtml) => ({fromHtml}));
+
+const loadFromUrl = (port: Port) =>
+  mergeMapProc()

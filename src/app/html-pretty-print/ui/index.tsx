@@ -1,4 +1,4 @@
-import {EphemeralBoolean, EphemeralContainer} from "pkit";
+import {EphemeralBoolean, EphemeralContainer, EphemeralString} from "pkit";
 import Pkit, {FC, markdown} from '@pkit/snabbdom'
 import {action} from '@pkit/snabbdom/csr/processors'
 import {SsrLayout} from './_layout'
@@ -9,12 +9,19 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
     <div class="w-1/2 p-4">
       <div class="flex mb-2">
         <label class="w-1/2 mr-1 p-2 bg-gray-800 hover:bg-gray-700 text-center text-white font-semibold cursor-pointer">
-          ファイルから読み込み
+          File
           <input type="file" class="hidden" bind={action<State>({
             change: () => ({currentTarget: {files}}) => ({files: new EphemeralContainer(files)})
           })} />
         </label>
-        <button class="w-1/2 ml-1 p-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold">URLから読み込み</button>
+        <button class="w-1/2 ml-1 p-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold" bind={action<State>({
+          click: ({currentTarget}) => {
+            const url = prompt('Please enter the URL.');
+            if (!url) { return; }
+            currentTarget.dataset.url = url;
+            return ({currentTarget:{dataset:{url}}}) => ({url})
+          }
+        })}>URL</button>
       </div>
       <textarea class="w-full h-screen-1/2 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。" bind={action<State>({
         keyup: ({key}) => key === 'Enter' ? ({currentTarget: {value: fromHtml}}) => ({fromHtml}) : undefined,
@@ -26,10 +33,10 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
       <div class="flex mt-2">
         <button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300 font-semibold" bind={action<State>({
           click: () => () => ({copy: new EphemeralBoolean(true)})
-        })}>コピー</button>
+        })}>Copy</button>
         <a href={downloadFile} download="pretty.html" class="w-1/2 p-2 ml-1 bg-white hover:bg-gray-300 text-center font-semibold">
           <svg class="inline-block fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
-          <span>ダウンロード</span>
+          <span>Download</span>
         </a>
       </div>
     </div>
@@ -90,7 +97,7 @@ export const Index: FC<State> = (state) =>
   <body class="bg-gray-900">
   <div class="container mx-auto my-8">
     <h1 class="text-white font-bold text-6xl text-center m-auth">HTML Pretty Print</h1>
-    <h2 class="text-gray-700 text-2xl text-center">HTMLを整えて表示します</h2>
+    <h2 class="text-gray-700 text-2xl text-center">Load from File and URL has any charset.</h2>
 
     <Converter {...state} />
     <Options {...state} />

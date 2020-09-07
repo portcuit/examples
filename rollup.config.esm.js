@@ -30,6 +30,8 @@ const createConfig = (name) => ({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_DEBUG),
       'process.cwd()': '"/"',
+      'this._mLastChar[1] = aBuf[0];': 'try{this._mLastChar[1]=aBuf[0];}catch(e){}',
+      'this._mLastChar[0] = aBuf[aLen - 1];': 'try{this._mLastChar[0]=aBuf[aLen - 1];}catch(e){}',
       delimiters: ['', ''],
     }),
 
@@ -37,6 +39,7 @@ const createConfig = (name) => ({
 })
 
 export default [
+  'jschardet',
   'unified',
   'rehype-stringify',
   'rehype-parse',
@@ -44,7 +47,6 @@ export default [
   'rxjs',
   'rxjs/operators',
   '@ungap/event-target',
-  'remark',
   'remark-vdom',
   "minimatch",
   'ramda',

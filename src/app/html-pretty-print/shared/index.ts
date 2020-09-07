@@ -5,18 +5,18 @@ import format from 'rehype-format'
 import {fromEvent, merge} from "rxjs";
 import {filter, map, mergeMap, take} from "rxjs/operators";
 import {EphemeralBoolean, mapProc, mergeMapProc, sink, source, StatePort} from "pkit";
-import {State} from '../state'
+import {State} from './state'
 
-interface Port {
+export interface SharedPort {
   state: StatePort<State>
 }
 
-export const sharedLogicKit = (port: Port) =>
+export const sharedAppKit = (port: SharedPort) =>
   merge(
     formatHtml(port)
   )
 
-const formatHtml = (port: Port) =>
+const formatHtml = (port: SharedPort) =>
   mergeMapProc(source(port.state.data).pipe(
     filter(({preventConvert}) =>
       !preventConvert)), sink(port.state.patch),

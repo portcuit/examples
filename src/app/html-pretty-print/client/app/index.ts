@@ -11,11 +11,11 @@ import {
 } from "pkit";
 import {snabbdomActionPatchKit, SnabbdomPort} from "@pkit/snabbdom/csr";
 import {State} from '../../shared/state'
+import {sharedAppKit, SharedPort} from '../../shared/'
 import {Index} from '../../ui/'
-import {sharedLogicKit} from '../../shared/logic/'
 import {logicKit} from "../logic/";
 
-export class Port extends LifecyclePort {
+export class Port extends LifecyclePort implements SharedPort {
   state = new StatePort<State>();
   dom = new SnabbdomPort;
 }
@@ -30,7 +30,7 @@ const circuit = (port: Port) =>
     stateKit(port.state),
     domKit(port),
     mapToProc(source(port.init), sink(port.ready)),
-    sharedLogicKit(port),
+    sharedAppKit(port),
     logicKit(port)
   )
 

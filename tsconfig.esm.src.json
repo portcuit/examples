@@ -25,7 +25,7 @@
           {
             "prefix": "/esm/",
             "suffix": "/index.js",
-            "modules": ["unified", "rehype-parse" ,"rehype-stringify", "rehype-format", "rxjs", "rxjs/operators", "ramda", "minimatch", "remark", "remark-vdom", "@ungap/event-target"]
+            "modules": ["buffer", "iconv-lite", "jschardet" ,"unified", "rehype-parse" ,"rehype-stringify", "rehype-format", "rxjs", "rxjs/operators", "ramda", "minimatch", "remark", "remark-vdom", "@ungap/event-target"]
           }
         ],
         "replace": {
@@ -37,11 +37,10 @@
     ]
   },
   "exclude": [
-    "src/ui/!(app|vendor|shared)"
+    "src/ui/!(app|vendor)"
   ],
   "include": [
     "src/ui/app",
-    "src/ui/vendor",
-    "src/ui/shared"
+    "src/ui/vendor"
   ]
 }
