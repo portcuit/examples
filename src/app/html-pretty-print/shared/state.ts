@@ -1,6 +1,8 @@
-import {EphemeralBoolean, EphemeralContainer, EphemeralString} from "pkit";
+import {DeepPartial, EphemeralBoolean, EphemeralContainer, EphemeralString} from "pkit";
 
 export type State = {
+  url?: URL;
+  title: string;
   endpoint: string;
   fromHtml: string;
   toHtml: string;
@@ -18,6 +20,7 @@ export type State = {
 }
 
 export const initialState: () => State = () => ({
+  title: '',
   endpoint: `/${__dirname.split('/').reverse()[1]}/`,
   fromHtml: `<html lang="ja"><head><title>HTML Pretty Print</title></head><body>
 <h1>ここに整形したいHTMLを貼り付けてください。</h1><ul>

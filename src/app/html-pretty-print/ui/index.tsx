@@ -1,9 +1,13 @@
-import {EphemeralBoolean, EphemeralContainer, EphemeralString} from "pkit";
+import {
+  EphemeralBoolean,
+  EphemeralContainer,
+} from "pkit";
 import Pkit, {FC, markdown} from '@pkit/snabbdom'
 import {action} from '@pkit/snabbdom/csr/processors'
-import {SsrLayout} from './_layout'
+import {Head} from './_head'
 import {Options} from './_options'
 import {State} from "../shared/state";
+import * as serverApp from '../server/app'
 
 const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
   <div class="flex mt-10">
@@ -40,7 +44,6 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
     </div>
   </div>
 
-
 export const Index: FC<State> = (state) =>
   <body class="bg-gray-900">
   <div class="mx-auto my-8 px-8">
@@ -54,7 +57,14 @@ export const Index: FC<State> = (state) =>
   </div>
   </body>
 
-export const Ssr: FC<State> = (state) =>
-  <SsrLayout {...{title: 'HTML Pretty Print', state}}>
-    <Index {...state} />
-  </SsrLayout>
+export const Html: FC<State> = (state) =>
+  <html lang="ja">
+  <Head {...state} />
+  <Index {...state} />
+  </html>
+
+export const server = {
+  Port: serverApp.ServerPort,
+  circuit: serverApp.serverKit,
+  params: {Html}
+}

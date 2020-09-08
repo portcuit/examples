@@ -1,8 +1,20 @@
 import fetch from 'node-fetch'
 import jschardet from 'jschardet'
 import iconv from 'iconv-lite'
-import {merge, zip} from "rxjs";
-import {sink, source, mapProc, StatePort, stateKit, mergeMapProc} from "pkit";
+import {merge, of, zip} from "rxjs";
+import {filter, takeWhile} from "rxjs/operators";
+import {
+  sink,
+  source,
+  mapProc,
+  StatePort,
+  stateKit,
+  mergeMapProc,
+  LifecyclePort,
+  directProc,
+  Socket,
+  latestMapProc
+} from "pkit";
 import {
   get,
   httpServerApiKit,
@@ -14,8 +26,8 @@ import {
 import {createDevKit} from '../../shared/server/dev'
 import {initialState, State} from '../shared/state'
 import {sharedAppKit, SharedPort} from '../shared/'
-import {Ssr} from '../ui/'
-import {delay, filter, switchMap} from "rxjs/operators";
+import {FC} from "@pkit/snabbdom";
+import {SnabbdomSsrParams, SnabbdomSsrPort} from '@pkit/snabbdom/ssr'
 
 const appName = __dirname.split('/').reverse()[1];
 
@@ -29,13 +41,37 @@ export const circuit = (port: Port) =>
     stateKit(port.state),
     sharedAppKit(port),
     apiKit(port),
-    mapProc(get(`/${appName}/`, source(port.init)).pipe(delay(0)), sink(port.state.init), () =>
-      initialState()),
-    mapProc(source(port.state.data).pipe(filter(({preventConvert}) =>
-      !!preventConvert)), sink(port.vnode), (state) =>
-      Ssr(state)),
+
+    // mapProc(get(`/${appName}/`, source(port.init)), sink(port.state.init), () =>
+    //   initialState()),
+    // mapProc(source(port.state.data).pipe(filter(({preventConvert}) =>
+    //   !!preventConvert)), sink(port.vnode), (state) =>
+    //   Html(state)),
+
     httpServerApiTerminateKit(port)
   )
+
+type SsrParams = {
+  url: {
+    pathname: string
+  },
+  App: FC<State>
+} & SnabbdomSsrParams
+
+interface SsrPort extends SnabbdomSsrPort<SsrParams> {
+  state: StatePort<State>;
+}
+
+export const ssrKit = (port: SsrPort) =>
+  merge(
+    mapProc(source(port.init), sink(port.state.init), ({url}) =>
+      Object.assign(initialState(), {url})),
+    latestMapProc(source(port.state.data).pipe(filter(({preventConvert}) =>
+        !!preventConvert)), sink(port.render), [source(port.init)] as const,
+      ([state, {App}]) =>
+        App(state))
+  )
+
 
 const apiKit = (port: Port) =>
   merge(
@@ -53,7 +89,7 @@ const apiKit = (port: Port) =>
           html = e.toString();
         }
         return html
-      }),
+      })
   )
 
 export default {Port: HttpServerPort, circuit: createDevKit({Port, circuit}), params: {listen: [8080]}}

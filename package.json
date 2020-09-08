@@ -25,6 +25,7 @@
     "@ungap/event-target": "^0.2.2",
     "dayjs": "^1.8.34",
     "emotion": "^10.0.27",
+    "glob": "^7.1.6",
     "iconv-lite": "^0.6.2",
     "jschardet": "^2.2.1",
     "node-fetch": "^2.6.1",
