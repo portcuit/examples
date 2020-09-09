@@ -1,10 +1,11 @@
 import alias from '@rollup/plugin-alias'
 import { terser } from "rollup-plugin-terser";
 
-const outDir = 'src/app/ui/esm'
+const outDir = 'public/esm'
 
 export default {
   input: {
+    'html-pretty-print/client/top/main': `${outDir}/app/html-pretty-print/client/top/main`,
     'worker-todomvc/client/top/main': `${outDir}/app/worker-todomvc/client/top/main`
   },
   output: {

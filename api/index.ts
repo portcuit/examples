@@ -8,9 +8,15 @@ import * as httpPrettyPrint from '../src/app/html-pretty-print/server/'
 import {server as createServer} from '../src/app/html-pretty-print/ui/'
 
 export default (...requestArgs: RequestArgs) =>
-  merge(
-    mount(createServer(requestArgs))
-  ).subscribe()
+  terminatedComplete(entry(new HttpServerApiPort, (port) =>
+    merge(
+      mount(createServer(requestArgs)),
+      mapToProc(route('**', source(port.init)), sink(port.notFound.html), '404 Not Found.')
+    ), requestArgs))
+
+  // merge(
+  //   mount(createServer(requestArgs))
+  // ).subscribe()
 
   // terminatedComplete(entry(new HttpServerApiPort, (port) =>
   //   merge(

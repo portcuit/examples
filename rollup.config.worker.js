@@ -1,7 +1,7 @@
 import alias from '@rollup/plugin-alias'
 import { terser } from "rollup-plugin-terser";
 
-const outDir = 'src/app/ui/esm'
+const outDir = 'public/esm'
 
 const makeConfig = (name) => ({
   input: {
@@ -20,12 +20,13 @@ const makeConfig = (name) => ({
     }),
     terser({
       mangle: {
-        reserved: ['ReplaceObject', 'ReplaceArray', 'EphemeralBoolean', 'EphemeralFileList', 'splice', 'padArray']
+        reserved: ['ReplaceObject', 'ReplaceArray', 'EphemeralBoolean', 'EphemeralString', 'EphemeralContainer', 'splice', 'padArray']
       }
     })
   ]
 })
 
 export default [
-  'worker-todomvc/client/app/main'
+  'worker-todomvc/client/app/main',
+  'html-pretty-print/client/app/main'
 ].map(makeConfig)
