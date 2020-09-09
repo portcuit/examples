@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ttsc -b tsconfig.esm.src.json -w",
     "ssg": "./bin/ssg.js public",
-    "build": "tsc -b && rollup -c rollup.config.esm.js && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.prod.js && rollup -c rollup.config.worker.js && npm run ssg"
+    "build": "tsc -b && rollup -c rollup.config.esm.js && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && npm run ssg"
   },
   "repository": {
     "type": "git",
