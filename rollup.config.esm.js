@@ -4,7 +4,7 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 
-const outputDir = 'src/ui/esm';
+const outputDir = 'public/esm';
 
 const createConfig = (name) => ({
   input: name,
@@ -38,16 +38,17 @@ const createConfig = (name) => ({
 })
 
 export default [
-  'jschardet',
-  'unified',
-  'rehype-stringify',
-  'rehype-parse',
-  'rehype-format',
-  'rxjs',
-  'rxjs/operators',
-  '@ungap/event-target',
-  'remark-vdom',
+  "jschardet",
+  "unified",
+  "rehype-stringify",
+  "rehype-parse",
+  "rehype-format",
+  "rxjs",
+  "rxjs/operators",
+  "@ungap/event-target",
+  "remark",
+  "remark-vdom",
   "minimatch",
-  'ramda',
-  'dayjs',
+  "ramda",
+  "dayjs",
 ].map((name) => createConfig(name))

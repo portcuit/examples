@@ -9,8 +9,12 @@ export const circuit = (port: HttpServerPort) =>
     mergeMapProc(source(port.event.request), sink(port.debug), (requestArgs) =>
       terminatedComplete(mount(app.server(requestArgs)))),
     httpServerKit(port),
-    mergeMapProc(route('**', source(port.event.request)), sink(port.debug), async ([req, res]) =>
-      ({handler: await handler(req, res, {public: 'public', cleanUrls: false})})),
+    mergeMapProc(route('**', source(port.event.request)), sink(port.debug), async ([req, res]) => {
+      if (!['src', 'node_modules'].includes(req.url!.split('/')[1])) {
+        req.url = '/public' + req.url
+      }
+      return ({handler: await handler(req, res, {public: '.', cleanUrls: false})})
+    }),
     mapToProc(source(port.ready), sink(port.running), true),
   )
 

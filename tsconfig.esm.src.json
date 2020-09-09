@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.esm.json",
   "compilerOptions": {
-    "rootDir": "src/ui",
-    "outDir": "src/ui/esm",
+    "rootDir": "src",
+    "outDir": "public/esm",
     "plugins": [
       {
         "transform": "ts-transformer-esm-web",
@@ -25,7 +25,21 @@
           {
             "prefix": "/esm/",
             "suffix": "/index.js",
-            "modules": ["buffer", "iconv-lite", "jschardet" ,"unified", "rehype-parse" ,"rehype-stringify", "rehype-format", "rxjs", "rxjs/operators", "ramda", "minimatch", "remark", "remark-vdom", "@ungap/event-target"]
+            "modules": [
+              "jschardet",
+              "unified",
+              "rehype-stringify",
+              "rehype-parse",
+              "rehype-format",
+              "rxjs",
+              "rxjs/operators",
+              "@ungap/event-target",
+              "remark",
+              "remark-vdom",
+              "minimatch",
+              "ramda",
+              "dayjs"
+            ]
           }
         ],
         "replace": {
@@ -36,11 +50,8 @@
       }
     ]
   },
-  "exclude": [
-    "src/ui/!(app|vendor)"
-  ],
   "include": [
-    "src/ui/app",
-    "src/ui/vendor"
+    "src/app",
+    "src/vendor"
   ]
 }

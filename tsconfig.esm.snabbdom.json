@@ -2,7 +2,7 @@
   "extends": "./tsconfig.esm.json",
   "compilerOptions": {
     "allowJs": true,
-    "outDir": "./src/ui/esm/snabbdom",
+    "outDir": "public/esm/snabbdom",
     "rootDir": "node_modules/snabbdom/build/package"
   },
   "include": [
