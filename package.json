@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ttsc -b tsconfig.esm.src.json -w",
-    "ssg": "node ./bin/ssg.js public",
+    "ssg": "node -e 'require(\"@pkit/experimental/ssg\").ssg(\"./src/ui\")'",
     "build": "tsc -b && rollup -c rollup.config.esm.js && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && npm run ssg"
   },
   "repository": {
