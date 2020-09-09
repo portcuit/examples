@@ -27,13 +27,13 @@ import {SnabbdomSsrPort} from '@pkit/snabbdom/ssr'
 
 const appName = __dirname.split('/').reverse()[2];
 
-export class ServerPort extends SharedServerPort<State> {}
-
 export const ssrKit = (port: SharedSsrPort<State>, vdom: SnabbdomSsrPort, state: StatePort<State>) =>
   latestMapProc(source(state.data).pipe(filter(({preventConvert}) =>
       !!preventConvert)), sink(vdom.render), [source(port.init)] as const,
     ([state, Html]) =>
       Html(state))
+
+export class ServerPort extends SharedServerPort<State> {}
 
 export const serverKit = (port: ServerPort) =>
   merge(

@@ -16,11 +16,16 @@ class Port extends LifecyclePort<string> {
 const circuit = (port: Port) =>
   merge(
     mergeMapProc(source(port.init), sink(port.files), (dir) =>
-      promisify(glob)(`${dir}/[!_]*.tsx`)),
+      promisify(glob)(`${dir}/**/[!_]*.tsx`)),
     mergeMapProc(source(port.files), sink(port.terminated), async (files) => {
       for (const file of files) {
         const fileName = resolve(file.slice(0, -4));
-        await terminatedComplete(mount(require(fileName).ssg(fileName))).toPromise();
+        const ssg = require(fileName)?.ssg;
+        if (ssg && typeof ssg === 'function') {
+          await terminatedComplete(mount(ssg(fileName))).toPromise();
+        } else {
+          console.log(`${fileName} has no Ssg.`);
+        }
       }
     }))
 
