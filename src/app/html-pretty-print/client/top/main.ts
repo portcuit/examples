@@ -15,7 +15,7 @@ const params: Params = {
       hashchange: true
     }
   },
-  state: JSON.parse(decodeURIComponent(document.querySelector('meta[name=state]')!.getAttribute('content')!))
+  state: JSON.parse(document.querySelector('#state')!.textContent!)
 }
 
 const subject$ = mount({Port, circuit, params});

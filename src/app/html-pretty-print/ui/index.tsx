@@ -59,16 +59,21 @@ export const Index: FC<State> = (state) =>
 
 export const Html: FC<State> = (state) =>
   <html lang="ja">
-  <Head {...state} />
+  <Head>
+    <title>HTML Pretty Print</title>
+    <script id="state" type="application/json" innerHTML={JSON.stringify(state)} />
+    <script type="module" src="/esm/app/html-pretty-print/client/top/main.js" />
+  </Head>
   <Index {...state} />
   </html>
 
 // TODO: この関数の型を書く
 export const server = (requestArgs: RequestArgs) => {
-  const app = require('../server/app/');
-  return {
-    Port: app.ServerPort,
-    circuit: app.serverKit,
-    params: {requestArgs, Html}
-  }
+  const {ServerPort: Port, serverKit: circuit} = require('../server/app/');
+  return {Port, circuit, params: {requestArgs, Html}}
+}
+
+export const ssg = (fileName: string) => {
+  const {SsgPort: Port, ssgKit: circuit} = require('../server/app/');
+  return {Port, circuit, params: {fileName, Html}}
 }

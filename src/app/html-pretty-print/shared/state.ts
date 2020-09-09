@@ -22,7 +22,7 @@ export type State = {
 export const initialState: () => State = () => ({
   title: '',
   endpoint: `/${__dirname.split('/').reverse()[1]}/`,
-  fromHtml: `<html lang="ja"><head><title>HTML Pretty Print</title></head><body>
+  fromHtml: `<html lang=ja><head><title>HTML Pretty Print</title></head><body>
 <h1>ここに整形したいHTMLを貼り付けてください。</h1><ul>
 <li>PCに保存されているHTMLファイルを読み込むことができます。</li>
 <li>URLを指定してリモートのHTMLを読み込むことができます。</li></ul></body></html>`,

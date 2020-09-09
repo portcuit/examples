@@ -1,8 +1,7 @@
-import {directProc, LifecyclePort, mapProc, mapToProc, sink, Socket, source, stateKit, StatePort} from 'pkit'
+import {directProc, LifecyclePort, mapProc, mapToProc, sink, source, stateKit, StatePort} from 'pkit'
 import {RequestArgs} from "pkit/http/server";
 import {FC} from "@pkit/snabbdom";
 import {httpServerApiKit, HttpServerApiPort, httpServerApiTerminateKit} from "pkit/http/server/index";
-import {State} from "../../../html-pretty-print/shared/state";
 import {snabbdomSsrKit, SnabbdomSsrPort} from "@pkit/snabbdom/ssr";
 import {merge} from "rxjs";
 
@@ -28,3 +27,16 @@ export const sharedServerKit = <T>(port: SharedServerPort<T>) =>
     httpServerApiTerminateKit(port.api)
   )
 
+export class SharedSsgPort<T> extends LifecyclePort<{fileName: string, Html: FC<T>}> {
+  state = new StatePort<T>();
+  ssr = new SharedSsrPort<T>();
+  vdom = new SnabbdomSsrPort;
+}
+
+export const sharedSsgKit = <T>(port: SharedSsgPort<T>) =>
+  merge(
+    stateKit(port.state),
+    snabbdomSsrKit(port.vdom),
+    mapToProc(source(port.init), sink(port.vdom.init)),
+    mapProc(source(port.init), sink(port.ssr.init), ({Html}) => Html),
+  )

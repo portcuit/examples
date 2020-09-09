@@ -1,68 +1,15 @@
-<html lang="ja">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HTML Pretty Print - HTML 整形</title><link href="./css/index.css" rel="stylesheet">
-</head>
-
-<body class="bg-gray-900">
-<div class="container mx-auto my-8">
-    <h1 class="text-white font-bold text-6xl text-center m-auth">HTML Pretty Print</h1>
-    <h2 class="text-gray-700 text-2xl text-center">ほげほげほげほげ</h2>
-
-    <div class="flex mt-10">
-        <div class="w-1/2 p-4">
-            <div class="flex mb-2">
-                <label class="w-1/2 mr-1 p-2 bg-gray-800 hover:bg-gray-700 text-center text-white font-semibold cursor-pointer">
-                    ファイルから読み込み
-                    <input class="hidden" type="file">
-                </label>
-                <button class="w-1/2 ml-1 p-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold">URLから読み込み</button>
-            </div>
-            <textarea class="w-full h-screen-1/2 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。">&#x3C;article>
-                &#x3C;h1>ここに整形したいHTMLを貼り付けてください。&#x3C;/h1>&#x3C;ul>
-                &#x3C;li>PCに保存されているHTMLファイルを読み込むことができます。&#x3C;/li>
-                &#x3C;li>URLを指定してリモートのHTMLを読み込むことができます。&#x3C;/li>&#x3C;/ul>&#x3C;/article>
-            </textarea>
-        </div>
-        <div class="w-1/2 p-4">
-            <textarea class="w-full h-screen-1/2 p-4 bg-gray-800 text-white" wrap="off" readonly>&#x3C;article>
-                &#x3C;h1>ここに整形したいHTMLを貼り付けてください。&#x3C;/h1>
-                &#x3C;ul>
-                &#x3C;li>PCに保存されているHTMLファイルを読み込むことができます。&#x3C;/li>
-                &#x3C;li>URLを指定してリモートのHTMLを読み込むことができます。&#x3C;/li>
-                &#x3C;/ul>
-                &#x3C;/article>
-            </textarea>
-            <div class="flex mt-2">
-                <button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300">コピー</button>
-                <button class="w-1/2 p-2 ml-1 bg-white hover:bg-gray-300">
-                    <svg class="inline-block fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
-                    <span>ダウンロード</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="m-4 text-gray-300">
-        <h3 class="font-bold text-3xl">Options</h3>
-        <ul class="mt-4 text-lg">
-            <li class="inline-block">
-                <label>
-                    <input type="checkbox" />
-                    <span class="pl-1">Fragment</span>
-                </label>
-            </li>
-        </ul>
-    </div>
-
-    <ul>
-        <li>ToDo
-            <ul>
-                <li>UTF-8以外の文字コードに対応</li>
-            </ul>
-        </li>
-    </ul>
-</div>
-</body>
-</html>
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title></title><link href="./css/index.css" rel="stylesheet"><meta name="state" content="%7B%22title%22%3A%22%22%2C%22endpoint%22%3A%22%2Fhtml-pretty-print%2F%22%2C%22fromHtml%22%3A%22%3Chtml%20lang%3D%5C%22ja%5C%22%3E%3Chead%3E%3Ctitle%3EHTML%20Pretty%20Print%3C%2Ftitle%3E%3C%2Fhead%3E%3Cbody%3E%5Cn%3Ch1%3E%E3%81%93%E3%81%93%E3%81%AB%E6%95%B4%E5%BD%A2%E3%81%97%E3%81%9F%E3%81%84HTML%E3%82%92%E8%B2%BC%E3%82%8A%E4%BB%98%E3%81%91%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%3C%2Fh1%3E%3Cul%3E%5Cn%3Cli%3EPC%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8BHTML%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80%E3%81%93%E3%81%A8%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82%3C%2Fli%3E%5Cn%3Cli%3EURL%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%97%E3%81%A6%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%81%AEHTML%E3%82%92%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80%E3%81%93%E3%81%A8%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82%3C%2Fli%3E%3C%2Ful%3E%3C%2Fbody%3E%3C%2Fhtml%3E%22%2C%22toHtml%22%3A%22%3Chtml%20lang%3D%5C%22ja%5C%22%3E%5Cn%3Chead%3E%5Cn%20%20%3Ctitle%3EHTML%20Pretty%20Print%3C%2Ftitle%3E%5Cn%3C%2Fhead%3E%5Cn%3Cbody%3E%5Cn%20%20%3Ch1%3E%E3%81%93%E3%81%93%E3%81%AB%E6%95%B4%E5%BD%A2%E3%81%97%E3%81%9F%E3%81%84HTML%E3%82%92%E8%B2%BC%E3%82%8A%E4%BB%98%E3%81%91%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%3C%2Fh1%3E%5Cn%20%20%3Cul%3E%5Cn%20%20%20%20%3Cli%3EPC%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8BHTML%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80%E3%81%93%E3%81%A8%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82%3C%2Fli%3E%5Cn%20%20%20%20%3Cli%3EURL%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%97%E3%81%A6%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%81%AEHTML%E3%82%92%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80%E3%81%93%E3%81%A8%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82%3C%2Fli%3E%5Cn%20%20%3C%2Ful%3E%5Cn%3C%2Fbody%3E%5Cn%3C%2Fhtml%3E%22%2C%22options%22%3A%7B%22fragment%22%3Afalse%2C%22indentInitial%22%3Afalse%2C%22indent%22%3A2%7D%2C%22downloadFile%22%3A%22%23%22%7D"><script type="module" src="/esm/app/html-pretty-print/client/top/main.js"></script></head><body class="bg-gray-900"><div class="mx-auto my-8 px-8"><h1 class="text-white font-bold text-6xl text-center m-auth">HTML Pretty Print</h1><h2 class="text-gray-700 text-2xl text-center">Load from File and URL supports multiple charset.</h2><div class="flex mt-10"><div class="w-1/2 p-4"><div class="flex mb-2"><label class="w-1/2 mr-1 p-2 bg-gray-800 hover:bg-gray-700 text-center text-white font-semibold cursor-pointer">File<input class="hidden" type="file"></label><button class="w-1/2 ml-1 p-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold">URL</button></div><textarea class="w-full h-screen-1/2 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。">&lt;html lang=&quot;ja&quot;&gt;&lt;head&gt;&lt;title&gt;HTML Pretty Print&lt;/title&gt;&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;ここに整形したいHTMLを貼り付けてください。&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;PCに保存されているHTMLファイルを読み込むことができます。&lt;/li&gt;
+&lt;li&gt;URLを指定してリモートのHTMLを読み込むことができます。&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</textarea></div><div class="w-1/2 p-4"><textarea class="w-full h-screen-1/2 p-4 bg-gray-800 text-white" wrap="off" readOnly="true" trigger="[object Object]">&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+  &lt;title&gt;HTML Pretty Print&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;ここに整形したいHTMLを貼り付けてください。&lt;/h1&gt;
+  &lt;ul&gt;
+    &lt;li&gt;PCに保存されているHTMLファイルを読み込むことができます。&lt;/li&gt;
+    &lt;li&gt;URLを指定してリモートのHTMLを読み込むことができます。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea><div class="flex mt-2"><button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300 font-semibold">Copy</button><a class="w-1/2 p-2 ml-1 bg-white hover:bg-gray-300 text-center font-semibold" href="#" download="pretty.html"><svg class="inline-block fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" ns="http://www.w3.org/2000/svg"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" ns="http://www.w3.org/2000/svg" /></svg><span>Download</span></a></div></div></div><div class="m-4 text-gray-300 text-lg"><h3 class="font-bold text-3xl mb-4">Options</h3><ul class="flex"><li class="mr-4"><label><input type="radio" name="indent" checked="true"><span class="pl-2">space-2</span></label></li><li class="mr-4"><label><input type="radio" name="indent"><span class="pl-2">space-4</span></label></li><li class="mr-4"><label><input type="radio" name="indent"><span class="pl-2">tab</span></label></li></ul><ul class="flex"><li class="mr-4"><label><input type="checkbox"><span class="pl-2">Fragment</span></label></li><li class="mr-4"><label><input type="checkbox"><span class="pl-2">indentInitial</span></label></li></ul></div><p>see source</p></div></body></html>

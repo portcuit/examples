@@ -1,3 +1,5 @@
+import {promisify} from "util";
+import {writeFile} from 'fs'
 import fetch from 'node-fetch'
 import jschardet from 'jschardet'
 import iconv from 'iconv-lite'
@@ -9,10 +11,16 @@ import {
   mapProc,
   StatePort,
   mergeMapProc,
-  latestMapProc
+  latestMapProc, LifecyclePort, latestMergeMapProc
 } from "pkit";
 import {post, reqToUrl, get} from "pkit/http/server";
-import {SharedServerPort, sharedServerKit, SharedSsrPort} from '../../../shared/server/app/'
+import {
+  SharedServerPort,
+  sharedServerKit,
+  SharedSsrPort,
+  SharedSsgPort,
+  sharedSsgKit
+} from '../../../shared/server/app/'
 import {initialState, State} from '../../shared/state'
 import {sharedAppKit, SharedPort} from '../../shared/'
 import {SnabbdomSsrPort} from '@pkit/snabbdom/ssr'
@@ -54,4 +62,17 @@ const apiKit = (port: ServerPort) =>
         }
         return html
       })
+  )
+
+export class SsgPort extends SharedSsgPort<State> {}
+
+export const ssgKit = (port: SsgPort) =>
+  merge(
+    sharedSsgKit(port),
+    ssrKit(port.ssr, port.vdom, port.state),
+    sharedAppKit(port),
+    mapProc(source(port.init), sink(port.state.init), () =>
+      ({...initialState()})),
+    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html,{fileName}]) =>
+      promisify(writeFile)(`${fileName}.html`, html))
   )
