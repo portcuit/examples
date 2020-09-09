@@ -1,6 +1,6 @@
 /.idea
 /src/ui/esm
-/src/ui/**/*.html
+/src/**/*.html
 
 *.js
 *.js.map
