@@ -7,7 +7,7 @@ import {action} from '@pkit/snabbdom/csr/processors'
 import {Head} from './_head'
 import {Options} from './_options'
 import {State} from "../shared/state";
-import * as serverApp from '../server/app'
+import {RequestArgs} from "pkit/http/server";
 
 const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
   <div class="flex mt-10">
@@ -63,8 +63,12 @@ export const Html: FC<State> = (state) =>
   <Index {...state} />
   </html>
 
-export const server = {
-  Port: serverApp.ServerPort,
-  circuit: serverApp.serverKit,
-  params: {Html}
+// TODO: この関数の型を書く
+export const server = (requestArgs: RequestArgs) => {
+  const app = require('../server/app/');
+  return {
+    Port: app.ServerPort,
+    circuit: app.serverKit,
+    params: {requestArgs, Html}
+  }
 }
