@@ -10,7 +10,7 @@ export const circuit = (port: HttpServerPort) =>
       terminatedComplete(mount(app.server(requestArgs)))),
     httpServerKit(port),
     mergeMapProc(route('**', source(port.event.request)), sink(port.debug), async ([req, res]) =>
-      ({handler: await handler(req, res, {public: './public', cleanUrls: false})})),
+      ({handler: await handler(req, res, {public: 'public', cleanUrls: false})})),
     mapToProc(source(port.ready), sink(port.running), true),
   )
 
