@@ -1,7 +1,4 @@
-import {
-  EphemeralBoolean,
-  EphemeralContainer,
-} from "pkit";
+import {EphemeralBoolean, EphemeralContainer} from "pkit";
 import Pkit, {FC, markdown} from '@pkit/snabbdom'
 import {action} from '@pkit/snabbdom/csr'
 import {Head} from './_head'
@@ -69,13 +66,13 @@ const Html: FC<State> = (state) =>
   </html>
 
 export const ssr = (requestArgs: RequestArgs) => {
-  const {SsrPort: Port, ssrKit: circuit} = require('../server/');
-  return {Port, circuit, params: {requestArgs, Html}}
+  const {ssr} = require('../server/');
+  return {...ssr, params: {requestArgs, Html}}
 }
 
 export const ssg = (fileName: string) => {
-  const {SsgPort: Port, ssgKit: circuit} = require('../server/');
-  return {Port, circuit, params: {fileName, Html}}
+  const {ssg} = require('../server/');
+  return {...ssg, params: {fileName, Html}}
 }
 
 export const csr = () => {

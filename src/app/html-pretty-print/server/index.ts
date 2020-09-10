@@ -42,6 +42,8 @@ export const ssrKit = (port: SsrPort) =>
     sharedSsrKit(port)
   )
 
+export const ssr = {Port: SsrPort, circuit: ssrKit}
+
 const loadUrl = (port: SsrPort) =>
   mergeMapProc(
     zip(post(`/${appName}/load-url/`, source(port.api.init)), source(port.api.body)),
@@ -71,3 +73,5 @@ export const ssgKit = (port: SsgPort) =>
     latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html,{fileName}]) =>
       promisify(writeFile)(`${fileName}.html`, html))
   )
+
+export const ssg = {Port: SsgPort, circuit: ssgKit}
