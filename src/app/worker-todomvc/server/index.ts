@@ -1,12 +1,11 @@
-import {dirname} from 'path'
-import {merge} from "rxjs";
-import {get} from "pkit/http/server";
-import {latestMapProc, latestMergeMapProc, mapProc, sink, source} from "pkit";
-import server from '../../shared/server/'
-import {RenderPort, sharedSsgKit, SharedSsgPort, sharedSsrKit, SharedSsrPort} from "../../shared/server/render";
-import {State, initialState} from '../shared/state'
 import {promisify} from "util";
 import {writeFile} from "fs";
+import {dirname} from 'path'
+import {merge} from "rxjs";
+import {latestMapProc, latestMergeMapProc, mapProc, sink, source} from "pkit";
+import {get} from "pkit/http/server";
+import {RenderPort, sharedSsgKit, SharedSsgPort, sharedSsrKit, SharedSsrPort} from "../../shared/server/render";
+import {State, initialState} from '../shared/state'
 
 const appName = __dirname.split('/').reverse()[1];
 
@@ -42,4 +41,3 @@ const ssgKit = (port: SsgPort) =>
 
 export const ssg = {Port: SsgPort, circuit: ssgKit}
 
-export default {...server, params:{server:{listen: [8080]}, pages: dirname(__dirname)}}

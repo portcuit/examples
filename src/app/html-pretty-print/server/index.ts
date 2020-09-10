@@ -13,7 +13,6 @@ import {
   latestMapProc, latestMergeMapProc
 } from "pkit";
 import {post, get} from "pkit/http/server";
-import server from '../../shared/server/'
 import {
   SharedSsrPort,
   sharedSsrKit,
@@ -21,7 +20,7 @@ import {
   sharedSsgKit, RenderPort
 } from '../../shared/server/render/'
 import {initialState, State} from '../shared/state'
-import {sharedAppKit, SharedPort} from '../shared/'
+import {sharedAppKit} from '../shared/'
 
 const appName = __dirname.split('/').reverse()[1];
 
@@ -38,28 +37,26 @@ export const ssrKit = (port: SsrPort) =>
     mapProc(get(`/${appName}/`, source(port.api.init)), sink(port.state.init), () => initialState()),
     renderKit(port),
     sharedAppKit(port),
-    apiKit(port),
+    loadUrl(port),
     sharedSsrKit(port)
   )
 
-const apiKit = (port: SsrPort) =>
-  merge(
-    mergeMapProc(
-      zip(post(`/${appName}/load-url/`, source(port.api.init)), source(port.api.body)),
-      sink(port.api.html), async ([,body]) => {
-        let html: string;
-        try {
-          const {url}: { url: string } = JSON.parse(body);
-          const res = await fetch(url);
-          const buffer = await res.buffer();
-          const {encoding} = jschardet.detect(buffer);
-          html = iconv.decode(buffer, encoding);
-        } catch (e) {
-          html = e.toString();
-        }
-        return html
-      })
-  )
+const loadUrl = (port: SsrPort) =>
+  mergeMapProc(
+    zip(post(`/${appName}/load-url/`, source(port.api.init)), source(port.api.body)),
+    sink(port.api.html), async ([,body]) => {
+      let html: string;
+      try {
+        const {url}: { url: string } = JSON.parse(body);
+        const res = await fetch(url);
+        const buffer = await res.buffer();
+        const {encoding} = jschardet.detect(buffer);
+        html = iconv.decode(buffer, encoding);
+      } catch (e) {
+        html = e.toString();
+      }
+      return html
+    })
 
 export class SsgPort extends SharedSsgPort<State> {}
 
@@ -72,5 +69,3 @@ export const ssgKit = (port: SsgPort) =>
     latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html,{fileName}]) =>
       promisify(writeFile)(`${fileName}.html`, html))
   )
-
-export default {...server, params:{server: {listen: [8080]}, pages: `${__dirname}/../ui`}}
