@@ -67,7 +67,6 @@ export const Html: FC<State> = (state) =>
   <Index {...state} />
   </html>
 
-// TODO: この関数の型を書く
 export const server = (requestArgs: RequestArgs) => {
   const {ServerPort: Port, serverKit: circuit} = require('../server/app/');
   return {Port, circuit, params: {requestArgs, Html}}
