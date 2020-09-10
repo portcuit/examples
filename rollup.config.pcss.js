@@ -1,9 +1,9 @@
 import postcss from 'rollup-plugin-postcss'
 
 const makeConfig = (appName) => ({
-  input: `src/app/${appName}/ui/css/index.pcss`,
+  input: `public/${appName}/css/index.pcss`,
   output: {
-    dir: `src/app/${appName}/ui/css`,
+    dir: `public/${appName}/css`,
     entryFileNames: '[name].js'
   },
   plugins: [
@@ -11,7 +11,7 @@ const makeConfig = (appName) => ({
       extract: true,
       plugins: [
         require('tailwindcss')({
-          purge: [`./src/app/${appName}/ui/**/*.tsx`],
+          purge: [`public/${appName}/**/*.tsx`],
           theme: {
             extend: {
               height: {
@@ -27,4 +27,7 @@ const makeConfig = (appName) => ({
   ]
 })
 
-export default ['html-pretty-print'].map(makeConfig)
+export default [
+  'html-pretty-print',
+  'worker-todomvc'
+].map(makeConfig)

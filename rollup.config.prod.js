@@ -3,14 +3,13 @@ import { terser } from "rollup-plugin-terser";
 
 const outDir = 'public/esm'
 
-export default {
+const makeConfig = (name) => ({
   input: {
-    'html-pretty-print/client/top/main': `${outDir}/app/html-pretty-print/client/top/main`,
-    'worker-todomvc/client/top/main': `${outDir}/app/worker-todomvc/client/top/main`
+    [name]: `${outDir}/app/${name}`
   },
   output: {
     dir: `${outDir}/app`,
-    format: 'es',
+    format: 'iife',
     entryFileNames: '[name].js'
   },
   plugins: [
@@ -19,6 +18,15 @@ export default {
         {find: /^\/esm\/(.*)/, replacement: `${__dirname}/${outDir}/$1`}
       ]
     }),
-    terser()
+    terser({
+      mangle: {
+        reserved: ['ReplaceObject', 'ReplaceArray', 'EphemeralBoolean', 'EphemeralString', 'EphemeralContainer', 'splice', 'padArray']
+      }
+    })
   ]
-}
+})
+
+export default [
+  'worker-todomvc/ui/main',
+  'html-pretty-print/ui/main'
+].map(makeConfig)

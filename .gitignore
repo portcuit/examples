@@ -5,6 +5,8 @@
 *.js.map
 *.d.ts
 
+*.css
+
 !rollup.*.js
 
 .vercel
