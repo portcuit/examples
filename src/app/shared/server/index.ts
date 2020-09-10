@@ -33,7 +33,8 @@ export const circuit = (port: Port) =>
               merge(...pages.map(({ssr}) =>
                 terminatedComplete(mount(ssr(requestArgs)))))))))),
     mergeMapProc(route('**', source(port.server.event.request).pipe(delay(0))), sink(port.server.debug), async ([req, res]) => {
-      if (!['src', 'node_modules'].includes(req.url!.split('/')[1])) {
+      const appName = req.url!.split('/')[1];
+      if (!appName || !['src', 'node_modules'].includes(appName)) {
         req.url = '/public' + req.url
       }
       return ({handler: await handler(req, res, {public: '.', cleanUrls: false})})
