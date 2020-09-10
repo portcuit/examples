@@ -73,4 +73,4 @@ export const ssgKit = (port: SsgPort) =>
       promisify(writeFile)(`${fileName}.html`, html))
   )
 
-export default {...server, params:{server: {listen: [8080]}, ui: `${__dirname}/../ui`}}
+export default {...server, params:{server: {listen: [8080]}, pages: `${__dirname}/../ui`}}

@@ -7,7 +7,7 @@ import {LifecyclePort, source, sink, Socket,
   workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit
 } from "pkit";
 import {snabbdomKit, SnabbdomParams, SnabbdomPort} from "@pkit/snabbdom/csr";
-import {initial} from '../../shared/state'
+import {initialState} from '../../shared/state'
 import {Port as AppPort} from "../app/"
 
 export type Params = {
@@ -38,7 +38,7 @@ const lifecycleKit = (port: Port) =>
     latestMapProc(source(port.app.ifs.ready), sink(port.app.ifs.state.init),
       [source(port.state)], ([,state]) =>
         state),
-    directProc(of(JSON.parse(localStorage.getItem(StorageKey) || JSON.stringify(initial))), sink(port.state)),
+    directProc(of(JSON.parse(localStorage.getItem(StorageKey) || JSON.stringify(initialState()))), sink(port.state)),
     mapProc(source(port.state), sink(port.debug), (data) =>
       ({'localStorage.setItem': localStorage.setItem(StorageKey, JSON.stringify(data)), data}))
   )

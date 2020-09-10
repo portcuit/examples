@@ -1,47 +1,45 @@
-import handler from 'serve-handler'
+import {dirname} from 'path'
 import {merge} from "rxjs";
-import {
-  sink,
-  source,
-  entry,
-  terminatedComplete,
-  mapProc,
-  mapToProc,
-  mergeMapProc
-} from "pkit";
-import {
-  get,
-  httpServerApiKit,
-  HttpServerApiPort, httpServerApiTerminateKit,
-  httpServerKit,
-  HttpServerParams,
-  HttpServerPort,
-  route
-} from "pkit/http/server";
-import {initial} from '../shared/state'
-import {Ssr} from '../ui/'
+import {get} from "pkit/http/server";
+import {latestMapProc, latestMergeMapProc, mapProc, sink, source} from "pkit";
+import server from '../../shared/server/'
+import {RenderPort, sharedSsgKit, SharedSsgPort, sharedSsrKit, SharedSsrPort} from "../../shared/server/render";
+import {State, initialState} from '../shared/state'
+import {promisify} from "util";
+import {writeFile} from "fs";
 
-const params: HttpServerParams = {
-  listen: [8080]
-}
+const appName = __dirname.split('/').reverse()[1];
 
-const circuit = (port: HttpServerPort) =>
-  merge(
-    httpServerKit(port),
-    mergeMapProc(source(port.event.request), sink(port.debug), (data) =>
-      terminatedComplete(entry(new HttpServerApiPort, apiKit, data))),
-    mergeMapProc(route('**', source(port.event.request)), sink(port.debug),
-      async ([req, res]) =>
-        ({handler: await handler(req, res, {public: './src/app/ui', cleanUrls: false})})) ,
-    mapToProc(source(port.ready), sink(port.running), true)
+const renderKit = (port: RenderPort<State>) =>
+  latestMapProc(source(port.state.data), sink(port.vdom.render),
+    [source(port.renderer.init)], ([state, Html]) =>
+      Html(state)
   )
 
-export const apiKit = (port: HttpServerApiPort) =>
+class SsrPort extends SharedSsrPort<State> {}
+
+const ssrKit = (port: SsrPort) =>
   merge(
-    httpServerApiKit(port),
-    mapProc(get('/worker-todomvc/index.html', source(port.init)), sink(port.vnode), ([req]) =>
-      Ssr({src: '/esm/app/worker-todomvc/client/top/main.js', state: initial})),
-    httpServerApiTerminateKit(port)
+    renderKit(port),
+    mapProc(get(`/${appName}/`, source(port.api.init)), sink(port.state.init), () =>
+      initialState(appName)),
+    sharedSsrKit(port),
   )
 
-export default {Port: HttpServerPort, circuit, params}
+export const ssr = {Port: SsrPort, circuit: ssrKit}
+
+class SsgPort extends SharedSsgPort<State> {}
+
+const ssgKit = (port: SsgPort) =>
+  merge(
+    sharedSsgKit(port),
+    renderKit(port),
+    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html, {fileName}]) =>
+      promisify(writeFile)(`${fileName}.html`, html)),
+    mapProc(source(port.init), sink(port.state.init), () =>
+      initialState()),
+  )
+
+export const ssg = {Port: SsgPort, circuit: ssgKit}
+
+export default {...server, params:{server:{listen: [8080]}, pages: dirname(__dirname)}}

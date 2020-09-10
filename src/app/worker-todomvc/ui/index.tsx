@@ -2,14 +2,10 @@ import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit";
 import Pkit, {FC, Touch} from '@pkit/snabbdom'
 import {action} from "@pkit/snabbdom/csr";
 import {State} from "../shared/state";
-import {SsrLayout} from './_layout'
+import {RequestArgs} from "pkit/http/server";
+import client from '../client/'
 
-export const Ssr: FC<{state: State, src: string}> = ({state, src}) =>
-  <SsrLayout src={src}>
-    <Csr {...state} />
-  </SsrLayout>
-
-export const Csr: FC<State> = ({newTodo, items, scope}) =>
+const App: FC<State> = ({newTodo, items, scope}) =>
   <section class="todoapp">
     <header class="header">
       <h1>todos</h1>
@@ -100,10 +96,41 @@ export const Csr: FC<State> = ({newTodo, items, scope}) =>
     </Touch>
   </section>
 
-export const page = async () => {
-  // @ts-ignore
-  const md = getResource('./index.md')
+const Body: FC<State> = (state, children) =>
+  <body>
+  <App {...state} />
+  <footer class="info">
+    <p>Double-click to edit a todo</p>
+    <p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+    <p>Created by <a href="https://github.com/portcuit/examples">Portcuit Examples</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+  </footer>
+  </body>
 
+const Html: FC<State> = (state) =>
+  <html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portcuit Examples | TodoMVC</title>
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <script id="state" type="application/json" innerHTML={JSON.stringify(state)} />
+    <script type="module" src={`${state.esmAppRoot}/main.js`} />
+  </head>
+  <Body {...state} />
+  </html>
 
+export const ssr = (requestArgs: RequestArgs) => {
+  const {ssr} = require('../server');
+  return {...ssr, params: {requestArgs, Html}}
+}
 
+export const ssg = (fileName: string) => {
+  const {ssg} = require('../server');
+  return {...ssg, params: {fileName, Html}}
+}
+
+export const csr = () => {
+  return {...client, params: Body}
 }

@@ -45,7 +45,7 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
     </div>
   </div>
 
-export const Index: FC<State> = (state) =>
+const Body: FC<State> = (state) =>
   <body class="bg-gray-900">
   <div class="mx-auto my-8 px-8">
     <h1 class="text-white font-bold text-6xl text-center m-auth">HTML Pretty Print</h1>
@@ -58,14 +58,14 @@ export const Index: FC<State> = (state) =>
   </div>
   </body>
 
-export const Html: FC<State> = (state) =>
+const Html: FC<State> = (state) =>
   <html lang="ja">
   <Head>
     <title>HTML Pretty Print</title>
     <script id="state" type="application/json" innerHTML={JSON.stringify(state)} />
     <script type="module" src={`${state.esmAppRoot}/main.js`} />
   </Head>
-  <Index {...state} />
+  <Body {...state} />
   </html>
 
 export const ssr = (requestArgs: RequestArgs) => {
@@ -79,5 +79,5 @@ export const ssg = (fileName: string) => {
 }
 
 export const csr = () => {
-  return {...client, params: Html}
+  return {...client, params: Body}
 }

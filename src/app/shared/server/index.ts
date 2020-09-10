@@ -9,7 +9,7 @@ import {delay, map, mergeMap, switchMap} from "rxjs/operators";
 
 export type Params = {
   server: HttpServerParams;
-  ui: string;
+  pages: string;
 }
 
 export class Port extends LifecyclePort<Params> {
@@ -20,8 +20,8 @@ export const circuit = (port: Port) =>
   merge(
     httpServerKit(port.server),
     source(port.init).pipe(
-      switchMap(({ui}) =>
-        from(promisify(glob)(`${ui}/**/[!_]*.tsx`)).pipe(
+      switchMap(({pages}) =>
+        from(promisify(glob)(`${pages}/**/[!_]*.tsx`)).pipe(
           map((files) =>
             files
               .map((file) =>
