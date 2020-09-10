@@ -34,7 +34,8 @@ export class SsrPort extends SharedSsrPort<State> {}
 
 export const ssrKit = (port: SsrPort) =>
   merge(
-    mapProc(get(`/${appName}/`, source(port.api.init)), sink(port.state.init), () => initialState()),
+    mapProc(get(`/${appName}/`, source(port.api.init)), sink(port.state.init), () =>
+      initialState(appName)),
     renderKit(port),
     sharedAppKit(port),
     loadUrl(port),
@@ -65,7 +66,8 @@ export const ssgKit = (port: SsgPort) =>
     sharedSsgKit(port),
     renderKit(port),
     sharedAppKit(port),
-    mapProc(source(port.init), sink(port.state.init), () => initialState()),
+    mapProc(source(port.init), sink(port.state.init), () =>
+      initialState(appName)),
     latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html,{fileName}]) =>
       promisify(writeFile)(`${fileName}.html`, html))
   )

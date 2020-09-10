@@ -36,7 +36,7 @@ const ssgKit = (port: SsgPort) =>
     latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html, {fileName}]) =>
       promisify(writeFile)(`${fileName}.html`, html)),
     mapProc(source(port.init), sink(port.state.init), () =>
-      initialState()),
+      initialState(appName)),
   )
 
 export const ssg = {Port: SsgPort, circuit: ssgKit}

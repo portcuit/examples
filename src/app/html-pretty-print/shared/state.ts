@@ -19,9 +19,7 @@ export type State = {
   loadUrl?: string;
 }
 
-const appName = __dirname.split('/').reverse()[1];
-
-export const initialState: () => State = () => ({
+export const initialState: (...args: any) => State = (appName: string) => ({
   esmAppRoot: `/esm/app/${appName}/ui`,
   endpoint: `/${appName}`,
   fromHtml: `<html lang=ja><head><title>HTML Pretty Print</title></head><body>
