@@ -68,13 +68,13 @@ export const Html: FC<State> = (state) =>
   <Index {...state} />
   </html>
 
-export const server = (requestArgs: RequestArgs) => {
-  const {SsrPort: Port, ssrKit: circuit} = require('../server/app/');
+export const ssr = (requestArgs: RequestArgs) => {
+  const {SsrPort: Port, ssrKit: circuit} = require('../server/');
   return {Port, circuit, params: {requestArgs, Html}}
 }
 
 export const ssg = (fileName: string) => {
-  const {SsgPort: Port, ssgKit: circuit} = require('../server/app/');
+  const {SsgPort: Port, ssgKit: circuit} = require('../server/');
   return {Port, circuit, params: {fileName, Html}}
 }
 

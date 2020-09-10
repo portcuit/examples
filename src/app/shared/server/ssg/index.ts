@@ -1,13 +1,8 @@
 import {promisify} from 'util'
 import {resolve} from 'path'
-import glob, {IOptions} from 'glob'
-import {LifecyclePort, mapProc, mapToProc, mergeMapProc, mount, sink, Socket, source, terminatedComplete} from "pkit";
+import glob from 'glob'
 import {merge} from "rxjs";
-
-type GlobParams = [pattern: string, options?: IOptions]
-
-export const ssg = (params: string) =>
-  terminatedComplete(mount({Port, circuit, params})).toPromise();
+import {LifecyclePort, mergeMapProc, mount, sink, Socket, source, terminatedComplete} from "pkit";
 
 class Port extends LifecyclePort<string> {
   files = new Socket<string[]>();
@@ -29,3 +24,5 @@ const circuit = (port: Port) =>
       }
     }))
 
+export const exec = (params: string) =>
+  terminatedComplete(mount({Port, circuit, params})).toPromise();
