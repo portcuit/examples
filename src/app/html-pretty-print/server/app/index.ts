@@ -15,37 +15,35 @@ import {
 } from "pkit";
 import {post, reqToUrl, get} from "pkit/http/server";
 import {
-  SharedServerPort,
-  sharedServerKit,
   SharedSsrPort,
+  sharedSsrKit,
   SharedSsgPort,
-  sharedSsgKit
+  sharedSsgKit, RenderPort
 } from '../../../shared/server/app/'
 import {initialState, State} from '../../shared/state'
 import {sharedAppKit, SharedPort} from '../../shared/'
-import {SnabbdomSsrPort} from '@pkit/snabbdom/ssr'
 
 const appName = __dirname.split('/').reverse()[2];
 
-export const ssrKit = (port: SharedSsrPort<State>, vdom: SnabbdomSsrPort, state: StatePort<State>) =>
-  latestMapProc(source(state.data).pipe(filter(({preventConvert}) =>
-      !!preventConvert)), sink(vdom.render), [source(port.init)] as const,
+export const renderKit = (port: RenderPort<State>) =>
+  latestMapProc(source(port.state.data).pipe(filter(({preventConvert}) =>
+      !!preventConvert)), sink(port.vdom.render), [source(port.renderer.init)] as const,
     ([state, Html]) =>
       Html(state))
 
-export class ServerPort extends SharedServerPort<State> {}
+export class SsrPort extends SharedSsrPort<State> {}
 
-export const serverKit = (port: ServerPort) =>
+export const ssrKit = (port: SsrPort) =>
   merge(
-    mapProc(get(`/${appName}/`, source(port.api.init)), sink(port.state.init), ([req]) =>
-      ({...initialState(), url: reqToUrl(req)})),
-    ssrKit(port.ssr, port.vdom, port.state),
+    mapProc(get(`/${appName}/`, source(port.api.init)), sink(port.state.init), () =>
+      initialState()),
+    renderKit(port),
     sharedAppKit(port),
     apiKit(port),
-    sharedServerKit(port)
+    sharedSsrKit(port)
   )
 
-const apiKit = (port: ServerPort) =>
+const apiKit = (port: SsrPort) =>
   merge(
     mergeMapProc(
       zip(post(`/${appName}/load-url/`, source(port.api.init)), source(port.api.body)),
@@ -69,7 +67,7 @@ export class SsgPort extends SharedSsgPort<State> {}
 export const ssgKit = (port: SsgPort) =>
   merge(
     sharedSsgKit(port),
-    ssrKit(port.ssr, port.vdom, port.state),
+    renderKit(port),
     sharedAppKit(port),
     mapProc(source(port.init), sink(port.state.init), () =>
       ({...initialState()})),

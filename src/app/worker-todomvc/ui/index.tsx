@@ -1,6 +1,6 @@
 import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit";
 import Pkit, {FC, Touch} from '@pkit/snabbdom'
-import {action} from "@pkit/snabbdom/csr/processors";
+import {action} from "@pkit/snabbdom/csr";
 import {State} from "../shared/state";
 import {SsrLayout} from './_layout'
 

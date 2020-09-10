@@ -1,6 +1,6 @@
 import {EphemeralBoolean, EphemeralContainer, EphemeralString} from "pkit";
 import Pkit, {FC, markdown} from '@pkit/snabbdom'
-import {action} from '@pkit/snabbdom/csr/processors'
+import {action} from '@pkit/snabbdom/csr'
 import {State} from "../shared/state";
 
 export const Options: FC<State> = ({options:{fragment,indentInitial, indent}}) =>

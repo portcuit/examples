@@ -5,31 +5,37 @@ import {httpServerApiKit, HttpServerApiPort, httpServerApiTerminateKit} from "pk
 import {snabbdomSsrKit, SnabbdomSsrPort} from "@pkit/snabbdom/ssr";
 import {merge} from "rxjs";
 
-export class SharedSsrPort<T> extends LifecyclePort<FC<T>> {}
+class RendererPort<T> extends LifecyclePort<FC<T>> {}
 
-export class SharedServerPort<T> extends LifecyclePort<{requestArgs: RequestArgs, Html: FC<T>}> {
+export interface RenderPort<T> {
+  renderer: RendererPort<T>;
+  state: StatePort<T>;
+  vdom: SnabbdomSsrPort;
+}
+
+export class SharedSsrPort<T> extends LifecyclePort<{requestArgs: RequestArgs, Html: FC<T>}> implements RenderPort<T> {
   api = new HttpServerApiPort;
   state = new StatePort<T>();
-  ssr = new SharedSsrPort<T>();
+  renderer = new RendererPort<T>();
   vdom = new SnabbdomSsrPort;
 }
 
-export const sharedServerKit = <T>(port: SharedServerPort<T>) =>
+export const sharedSsrKit = <T>(port: SharedSsrPort<T>) =>
   merge(
     httpServerApiKit(port.api),
     stateKit(port.state),
     snabbdomSsrKit(port.vdom),
     mapProc(source(port.init), sink(port.api.init), ({requestArgs}) => requestArgs),
     mapToProc(source(port.init), sink(port.vdom.init)),
-    mapProc(source(port.init), sink(port.ssr.init), ({Html}) => Html),
+    mapProc(source(port.init), sink(port.renderer.init), ({Html}) => Html),
     directProc(source(port.vdom.html), sink(port.api.html)),
     mapToProc(source(port.api.terminated), sink(port.terminated)),
     httpServerApiTerminateKit(port.api)
   )
 
-export class SharedSsgPort<T> extends LifecyclePort<{fileName: string, Html: FC<T>}> {
+export class SharedSsgPort<T> extends LifecyclePort<{fileName: string, Html: FC<T>}> implements RenderPort<T> {
   state = new StatePort<T>();
-  ssr = new SharedSsrPort<T>();
+  renderer = new RendererPort<T>();
   vdom = new SnabbdomSsrPort;
 }
 
@@ -38,5 +44,5 @@ export const sharedSsgKit = <T>(port: SharedSsgPort<T>) =>
     stateKit(port.state),
     snabbdomSsrKit(port.vdom),
     mapToProc(source(port.init), sink(port.vdom.init)),
-    mapProc(source(port.init), sink(port.ssr.init), ({Html}) => Html),
+    mapProc(source(port.init), sink(port.renderer.init), ({Html}) => Html),
   )

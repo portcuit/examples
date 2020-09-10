@@ -1,8 +1,8 @@
-import {DeepPartial, EphemeralBoolean, EphemeralContainer, EphemeralString} from "pkit";
+import {EphemeralBoolean, EphemeralContainer} from "pkit";
 
 export type State = {
   url?: URL;
-  title: string;
+  esmAppRoot: string;
   endpoint: string;
   fromHtml: string;
   toHtml: string;
@@ -19,9 +19,11 @@ export type State = {
   loadUrl?: string;
 }
 
+const appName = __dirname.split('/').reverse()[1];
+
 export const initialState: () => State = () => ({
-  title: '',
-  endpoint: `/${__dirname.split('/').reverse()[1]}/`,
+  esmAppRoot: `/esm/app/${appName}/ui`,
+  endpoint: `/${appName}`,
   fromHtml: `<html lang=ja><head><title>HTML Pretty Print</title></head><body>
 <h1>ここに整形したいHTMLを貼り付けてください。</h1><ul>
 <li>PCに保存されているHTMLファイルを読み込むことができます。</li>

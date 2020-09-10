@@ -14,11 +14,6 @@
           },
           {
             "prefix": "/esm/vendor/",
-            "suffix": ".js",
-            "modules": ["@pkit/snabbdom/**/processors"]
-          },
-          {
-            "prefix": "/esm/vendor/",
             "suffix": "/index.js",
             "modules": ["pkit", "pkit/**", "@pkit/**"]
           },
@@ -44,7 +39,14 @@
         ],
         "replace": {
           "@pkit/snabbdom/lib/jsx": "/esm/snabbdom/jsx.js",
-          "@pkit/snabbdom/lib/h": "/esm/snabbdom/h.js"
+          "@pkit/snabbdom/lib/h": "/esm/snabbdom/h.js",
+          "@pkit/snabbdom/lib/tovnode": "/esm/snabbdom/tovnode.js",
+          "@pkit/snabbdom/lib/init": "/esm/snabbdom/init.js",
+          "@pkit/snabbdom/lib/modules/attributes": "/esm/snabbdom/modules/attributes.js",
+          "@pkit/snabbdom/lib/modules/props": "/esm/snabbdom/modules/props.js",
+          "@pkit/snabbdom/lib/modules/style": "/esm/snabbdom/modules/style.js",
+          "@pkit/snabbdom/lib/modules/eventlisteners": "/esm/snabbdom/modules/eventlisteners.js",
+          "@pkit/snabbdom/lib/modules/dataset": "/esm/snabbdom/modules/dataset.js"
         },
         "after": true
       }

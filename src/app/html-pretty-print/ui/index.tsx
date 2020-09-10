@@ -3,11 +3,12 @@ import {
   EphemeralContainer,
 } from "pkit";
 import Pkit, {FC, markdown} from '@pkit/snabbdom'
-import {action} from '@pkit/snabbdom/csr/processors'
+import {action} from '@pkit/snabbdom/csr'
 import {Head} from './_head'
 import {Options} from './_options'
 import {State} from "../shared/state";
 import {RequestArgs} from "pkit/http/server";
+import client from '../client/'
 
 const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
   <div class="flex mt-10">
@@ -62,17 +63,21 @@ export const Html: FC<State> = (state) =>
   <Head>
     <title>HTML Pretty Print</title>
     <script id="state" type="application/json" innerHTML={JSON.stringify(state)} />
-    <script type="module" src="/esm/app/html-pretty-print/client/top/main.js" />
+    <script type="module" src={`${state.esmAppRoot}/main.js`} />
   </Head>
   <Index {...state} />
   </html>
 
 export const server = (requestArgs: RequestArgs) => {
-  const {ServerPort: Port, serverKit: circuit} = require('../server/app/');
+  const {SsrPort: Port, ssrKit: circuit} = require('../server/app/');
   return {Port, circuit, params: {requestArgs, Html}}
 }
 
 export const ssg = (fileName: string) => {
   const {SsgPort: Port, ssgKit: circuit} = require('../server/app/');
   return {Port, circuit, params: {fileName, Html}}
+}
+
+export const csr = () => {
+  return {...client, params: Html}
 }

@@ -2,7 +2,7 @@ import {merge} from "rxjs";
 import {entry, mapToProc, mergeMapProc, mount, sink, source} from "pkit";
 import {httpServerApiKit, HttpServerApiPort, RequestArgs, route} from "pkit/http/server";
 
-import {server as createServer} from '../src/app/html-pretty-print/ui/'
+import {ssr as createServer} from '../src/app/html-pretty-print/ui/'
 import {map} from "rxjs/operators";
 
 export default (...requestArgs: RequestArgs) =>

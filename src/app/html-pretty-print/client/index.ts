@@ -1,10 +1,21 @@
-import jschardet from 'jschardet'
+import jschardet from "jschardet";
 import {fromEvent, merge} from "rxjs";
-import {filter, map, mergeMap, startWith, take, toArray, withLatestFrom} from "rxjs/operators";
-import {EphemeralBoolean, mapProc, mergeMapProc, sink, source, StatePort} from "pkit";
-import type {Port} from '../app/'
+import {filter, map, mergeMap, take, withLatestFrom} from "rxjs/operators";
+import {EphemeralBoolean, latestMapProc, mapProc, mapToProc, sink, source} from "pkit";
+import {VmPort, vmKit} from '../../shared/client/vm/'
+import {State} from '../shared/state'
+import {sharedAppKit} from '../shared/'
 
-export const logicKit = (port: Port) =>
+export class Port extends VmPort<State> {}
+
+export const circuit = (port: Port) =>
+  merge(
+    vmKit(port),
+    sharedAppKit(port),
+    appKit(port),
+  )
+
+const appKit = (port: Port) =>
   merge(
     loadFromFile(port),
     makeDownloadFile(port),
@@ -47,7 +58,7 @@ const loadFromUrl = (port: Port) =>
     withLatestFrom(source(port.state.patch)),
     filter(([,{loadUrl}]) => !!loadUrl),
     mergeMap(([{endpoint, loadUrl}]) =>
-      fetch(`${endpoint}load-url/`, {
+      fetch(`${endpoint}/load-url/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +66,9 @@ const loadFromUrl = (port: Port) =>
         body: JSON.stringify({
           url: loadUrl
         })
-    })),
+      })),
     mergeMap((res) =>
       res.text())
   ), sink(port.state.patch), (fromHtml) => ({fromHtml}))
+
+export default {Port, circuit}

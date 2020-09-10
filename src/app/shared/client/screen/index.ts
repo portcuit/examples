@@ -7,15 +7,15 @@ import {LifecyclePort, source, sink, Socket,
   workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit
 } from "pkit";
 import {snabbdomKit, SnabbdomParams, SnabbdomPort} from "@pkit/snabbdom/csr";
-import {Port as AppPort} from "../app/"
+import {VmPort as AppPort} from "../vm/"
 
-export type Params = {
+export type ScreenParams = {
   worker: WorkerParams;
   snabbdom: SnabbdomParams;
   state: any
 }
 
-export class Port extends LifecyclePort<Params> {
+export class ScreenPort extends LifecyclePort<ScreenParams> {
   app = new class extends WorkerPort {
     ifs = new AppPort;
   };
@@ -23,14 +23,14 @@ export class Port extends LifecyclePort<Params> {
   state = new Socket<any>();
 }
 
-export const circuit = (port: Port) =>
+export const screenKit = (port: ScreenPort) =>
   merge(
     useAppKit(port),
     useSnabbdomKit(port),
     lifecycleKit(port)
   )
 
-const lifecycleKit = (port: Port) =>
+const lifecycleKit = (port: ScreenPort) =>
   merge(
     directProc(source(port.app.ifs.state.raw), sink(port.state)),
     latestMapProc(source(port.app.ifs.ready), sink(port.app.ifs.state.init),
@@ -39,7 +39,7 @@ const lifecycleKit = (port: Port) =>
     mapProc(source(port.init), sink(port.state), ({state}) => state),
   )
 
-const useAppKit = (port: Port) =>
+const useAppKit = (port: ScreenPort) =>
   merge(
     workerKit(port.app),
     parentRemoteWorkerKit(port.app, [
@@ -52,7 +52,7 @@ const useAppKit = (port: Port) =>
     mapToProc(source(port.app.ready), sink(port.app.running), true)
   )
 
-const useSnabbdomKit = (port: Port) =>
+const useSnabbdomKit = (port: ScreenPort) =>
   merge(
     snabbdomKit(port.snabbdom),
     mapProc(source(port.init), sink(port.snabbdom.init), ({snabbdom}) => snabbdom),
