@@ -9,7 +9,7 @@ import {httpServerApiKit, HttpServerApiPort, RequestArgs, route} from "pkit/http
 // import {createSsr as todo} from '../src/app/worker-todomvc/ui/'
 // import {create} from "domain";
 
-const createSsrs = glob.sync('../src/app/**/*.tsx')
+const createSsrs = glob.sync(`${__dirname}/../src/app/**/*.tsx`)
   .map((file) =>
     require(resolve(file).slice(0,-4)))
   .filter(({createSsr}) =>
@@ -17,13 +17,12 @@ const createSsrs = glob.sync('../src/app/**/*.tsx')
   .map(({createSsr}) =>
     createSsr)
 
-
 export default (...requestArgs: RequestArgs) =>
   entry(new HttpServerApiPort, (port) =>
     merge(httpServerApiKit(port),
       merge(
-        ...createSsrs.map((createSsr) => mount(createSsr(requestArgs)))
-
+        ...createSsrs.map((createSsr) =>
+          mount(createSsr(requestArgs)))
 
         // mount(createServer(requestArgs)),
         // mount(todo(requestArgs))
