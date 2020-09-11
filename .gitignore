@@ -6,6 +6,7 @@
 *.d.ts
 
 *.css
+*.html
 
 !rollup.*.js
 

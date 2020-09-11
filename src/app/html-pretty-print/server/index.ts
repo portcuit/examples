@@ -1,5 +1,3 @@
-import {promisify} from "util";
-import {writeFile} from 'fs'
 import fetch from 'node-fetch'
 import jschardet from 'jschardet'
 import iconv from 'iconv-lite'
@@ -17,7 +15,7 @@ import {
   SharedSsrPort,
   sharedSsrKit,
   SharedSsgPort,
-  sharedSsgKit, RenderPort
+  sharedSsgKit, RenderPort, ssgPublishKit
 } from '../../shared/server/render/'
 import {initialState, State} from '../shared/state'
 import {sharedAppKit} from '../shared/'
@@ -70,8 +68,7 @@ export const ssgKit = (port: SsgPort) =>
     sharedAppKit(port),
     mapProc(source(port.init), sink(port.state.init), () =>
       initialState(appName)),
-    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html,{info: [fileName]}]) =>
-      promisify(writeFile)(`${fileName}.html`, html))
+    ssgPublishKit(port)
   )
 
 export const ssg = {Port: SsgPort, circuit: ssgKit}

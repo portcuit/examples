@@ -1,9 +1,23 @@
-import {directProc, LifecyclePort, mapProc, mapToProc, RootCircuit, sink, source, stateKit, StatePort, Portcuit} from 'pkit'
+import {merge} from "rxjs";
+import {promisify} from "util";
+import {writeFile} from "fs";
+import {
+  directProc,
+  LifecyclePort,
+  mapProc,
+  mapToProc,
+  RootCircuit,
+  sink,
+  source,
+  stateKit,
+  StatePort,
+  Portcuit,
+  latestMergeMapProc
+} from 'pkit'
 import {RequestArgs} from "pkit/http/server";
 import {FC} from "@pkit/snabbdom";
 import {httpServerApiKit, HttpServerApiPort, httpServerApiTerminateKit} from "pkit/http/server/index";
 import {snabbdomSsrKit, SnabbdomSsrPort} from "@pkit/snabbdom/ssr";
-import {merge} from "rxjs";
 
 class RendererPort<T> extends LifecyclePort<FC<T>> {}
 
@@ -57,3 +71,10 @@ export const sharedSsgKit = <T>(port: SharedSsgPort<T>) =>
   )
 
 export type CreateSsg<T> = (...ssgInfo: SsgInfo) => Portcuit<SharedSsgPort<T>>
+
+export const ssgPublishKit = <T>(port: SharedSsgPort<T>) =>
+  latestMergeMapProc(source(port.vdom.html), sink(port.terminated),
+    [source(port.init)], async ([html,{info: [fileName, input, output]}]) => {
+      const path = `${output}${fileName.substr(input.length).replace(/\/ui/, '')}.html`;
+      return {writeFile: await promisify(writeFile)(path, html), path}
+    })

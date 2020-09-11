@@ -1,9 +1,14 @@
-import {promisify} from "util";
-import {writeFile} from "fs";
 import {merge} from "rxjs";
 import {latestMapProc, latestMergeMapProc, mapProc, sink, source} from "pkit";
 import {get} from "pkit/http/server";
-import {RenderPort, sharedSsgKit, SharedSsgPort, sharedSsrKit, SharedSsrPort} from "../../shared/server/render";
+import {
+  RenderPort,
+  sharedSsgKit,
+  SharedSsgPort,
+  sharedSsrKit,
+  SharedSsrPort,
+  ssgPublishKit
+} from "../../shared/server/render";
 import {State, initialState} from '../shared/state'
 
 const appName = __dirname.split('/').reverse()[1];
@@ -31,8 +36,7 @@ const ssgKit = (port: SsgPort) =>
   merge(
     sharedSsgKit(port),
     renderKit(port),
-    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html, {info: [fileName, input, output]}]) =>
-      promisify(writeFile)(`${fileName}.html`, html)),
+    ssgPublishKit(port),
     mapProc(source(port.init), sink(port.state.init), () =>
       initialState(appName)),
   )

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ssg": "node -e 'require(\"./src/app/shared/server/ssg\").exec(\"src/app\", \"public\")'",
-    "build": "tsc -b && rollup -c rollup.config.mod.js && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.prod.js && rollup -c rollup.config.pcss.js"
+    "build": "tsc -b && rollup -c rollup.config.mod.js && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.prod.js && rollup -c rollup.config.pcss.js && npm run ssg"
   },
   "repository": {
     "type": "git",
