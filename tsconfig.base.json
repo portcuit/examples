@@ -15,6 +15,7 @@
     "jsxFactory": "Pkit.jsxFactory",
     "jsxFragmentFactory": "Pkit.jsxFragmentFactory",
     "useDefineForClassFields": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "noErrorTruncation": true
   }
 }

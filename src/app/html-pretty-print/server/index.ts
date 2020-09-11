@@ -10,7 +10,7 @@ import {
   source,
   mapProc,
   mergeMapProc,
-  latestMapProc, latestMergeMapProc
+  latestMapProc, latestMergeMapProc, Portcuit, RootCircuit, LifecyclePort
 } from "pkit";
 import {post, get} from "pkit/http/server";
 import {
@@ -61,7 +61,7 @@ const loadUrl = (port: SsrPort) =>
       return html
     })
 
-export class SsgPort extends SharedSsgPort<State> {}
+class SsgPort extends SharedSsgPort<State> {}
 
 export const ssgKit = (port: SsgPort) =>
   merge(
@@ -70,8 +70,11 @@ export const ssgKit = (port: SsgPort) =>
     sharedAppKit(port),
     mapProc(source(port.init), sink(port.state.init), () =>
       initialState(appName)),
-    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html,{fileName}]) =>
+    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html,{info: [fileName]}]) =>
       promisify(writeFile)(`${fileName}.html`, html))
   )
+
+// const storePortcuit = <T extends new(...args:any)=>any>(Port: T, circuit: RootCircuit<InstanceType<T>>) =>
+//   ({Port, circuit})
 
 export const ssg = {Port: SsgPort, circuit: ssgKit}

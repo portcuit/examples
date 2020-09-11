@@ -126,7 +126,7 @@ export const ssr = (requestArgs: RequestArgs) => {
   return {...ssr, params: {requestArgs, Html}}
 }
 
-export const ssg = (fileName: string) => {
+export const createSsg = (fileName: string, input: string, output: string) => {
   const {ssg} = require('../server');
   return {...ssg, params: {fileName, Html}}
 }

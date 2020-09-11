@@ -6,6 +6,8 @@ import {Options} from './_options'
 import {State} from "../shared/state";
 import {RequestArgs} from "pkit/http/server";
 import client from '../client/'
+import {CreateSsg} from "../../shared/server/render";
+import {ssg} from '../server/'
 
 const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
   <div class="flex mt-10">
@@ -70,9 +72,10 @@ export const ssr = (requestArgs: RequestArgs) => {
   return {...ssr, params: {requestArgs, Html}}
 }
 
-export const ssg = (fileName: string) => {
-  const {ssg} = require('../server/');
-  return {...ssg, params: {fileName, Html}}
+export const createSsg: CreateSsg<State> = (...info) => {
+  return {...ssg, params: {info, Html}}
+  // const {ssg}: {ssg: Omit<ReturnType<CreateSsg<State>>, 'params'>} = require('../server/');
+  // return {...ssg, params: {info:[fileName, input, output], Html}}
 }
 
 export const csr = () => {

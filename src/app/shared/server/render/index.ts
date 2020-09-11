@@ -1,4 +1,4 @@
-import {directProc, LifecyclePort, mapProc, mapToProc, sink, source, stateKit, StatePort} from 'pkit'
+import {directProc, LifecyclePort, mapProc, mapToProc, RootCircuit, sink, source, stateKit, StatePort, Portcuit} from 'pkit'
 import {RequestArgs} from "pkit/http/server";
 import {FC} from "@pkit/snabbdom";
 import {httpServerApiKit, HttpServerApiPort, httpServerApiTerminateKit} from "pkit/http/server/index";
@@ -33,7 +33,14 @@ export const sharedSsrKit = <T>(port: SharedSsrPort<T>) =>
     httpServerApiTerminateKit(port.api)
   )
 
-export class SharedSsgPort<T> extends LifecyclePort<{fileName: string, Html: FC<T>}> implements RenderPort<T> {
+export type SsgInfo = [fileName: string, input: string, output: string];
+
+type SsgParams<T> = {
+  info: SsgInfo,
+  Html: FC<T>
+}
+
+export class SharedSsgPort<T> extends LifecyclePort<SsgParams<T>> implements RenderPort<T> {
   state = new StatePort<T>();
   renderer = new RendererPort<T>();
   vdom = new SnabbdomSsrPort;
@@ -46,3 +53,5 @@ export const sharedSsgKit = <T>(port: SharedSsgPort<T>) =>
     mapToProc(source(port.init), sink(port.vdom.init)),
     mapProc(source(port.init), sink(port.renderer.init), ({Html}) => Html),
   )
+
+export type CreateSsg<T> = (...ssgInfo: SsgInfo) => Portcuit<SharedSsgPort<T>>

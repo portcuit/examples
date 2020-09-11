@@ -33,7 +33,7 @@ const ssgKit = (port: SsgPort) =>
   merge(
     sharedSsgKit(port),
     renderKit(port),
-    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html, {fileName}]) =>
+    latestMergeMapProc(source(port.vdom.html), sink(port.terminated), [source(port.init)], ([html, {info: [fileName, input, output]}]) =>
       promisify(writeFile)(`${fileName}.html`, html)),
     mapProc(source(port.init), sink(port.state.init), () =>
       initialState(appName)),
