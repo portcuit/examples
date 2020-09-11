@@ -3,8 +3,11 @@ import {map} from "rxjs/operators";
 import {entry, mapToProc, mergeMapProc, mount, sink, source} from "pkit";
 import {httpServerApiKit, HttpServerApiPort, RequestArgs, route} from "pkit/http/server";
 
-import {ssr as createServer} from '../src/app/html-pretty-print/ui/'
-import {ssr as todo} from '../src/app/worker-todomvc/ui/'
+import {createSsr as createServer} from '../src/app/html-pretty-print/ui/'
+import {createSsr as todo} from '../src/app/worker-todomvc/ui/'
+
+
+
 
 export default (...requestArgs: RequestArgs) =>
   entry(new HttpServerApiPort, (port) =>
