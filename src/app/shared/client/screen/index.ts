@@ -7,7 +7,7 @@ import {LifecyclePort, source, sink, Socket,
   workerKit, WorkerParams, WorkerPort, parentRemoteWorkerKit
 } from "pkit";
 import {snabbdomKit, SnabbdomParams, SnabbdomPort} from "@pkit/snabbdom/csr";
-import {VmPort as AppPort} from "../vm/"
+import {VmPort} from "../vm/"
 
 export type ScreenParams = {
   worker: WorkerParams;
@@ -17,7 +17,7 @@ export type ScreenParams = {
 
 export class ScreenPort extends LifecyclePort<ScreenParams> {
   app = new class extends WorkerPort {
-    ifs = new AppPort;
+    ifs = new VmPort;
   };
   snabbdom = new SnabbdomPort;
   state = new Socket<any>();

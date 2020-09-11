@@ -3,34 +3,23 @@ import jschardet from 'jschardet'
 import iconv from 'iconv-lite'
 import {merge, of, zip} from "rxjs";
 import {filter} from "rxjs/operators";
-import {
-  sink,
-  source,
-  mapProc,
-  mergeMapProc,
-  latestMapProc, latestMergeMapProc, Portcuit, RootCircuit, LifecyclePort
-} from "pkit";
+import {sink, source, mapProc, mergeMapProc, latestMapProc} from "pkit";
 import {post, get} from "pkit/http/server";
-import {
-  SharedSsrPort,
-  sharedSsrKit,
-  SharedSsgPort,
-  sharedSsgKit, RenderPort, ssgPublishKit
-} from '../../shared/server/render/'
+import {SharedSsrPort, sharedSsrKit, SharedSsgPort, sharedSsgKit, RenderPort, ssgPublishKit} from '../../shared/server/render/'
 import {initialState, State} from '../shared/state'
 import {sharedAppKit} from '../shared/'
 
 const appName = __dirname.split('/').reverse()[1];
 
-export const renderKit = (port: RenderPort<State>) =>
+const renderKit = (port: RenderPort<State>) =>
   latestMapProc(source(port.state.data).pipe(filter(({preventConvert}) =>
       !!preventConvert)), sink(port.vdom.render), [source(port.renderer.init)] as const,
     ([state, Html]) =>
       Html(state))
 
-export class SsrPort extends SharedSsrPort<State> {}
+class SsrPort extends SharedSsrPort<State> {}
 
-export const ssrKit = (port: SsrPort) =>
+const ssrKit = (port: SsrPort) =>
   merge(
     mapProc(get(`/${appName}/`, source(port.api.init)), sink(port.state.init), () =>
       initialState(appName)),
@@ -39,8 +28,6 @@ export const ssrKit = (port: SsrPort) =>
     loadUrl(port),
     sharedSsrKit(port)
   )
-
-export const ssr = {Port: SsrPort, circuit: ssrKit}
 
 const loadUrl = (port: SsrPort) =>
   mergeMapProc(
@@ -61,14 +48,15 @@ const loadUrl = (port: SsrPort) =>
 
 class SsgPort extends SharedSsgPort<State> {}
 
-export const ssgKit = (port: SsgPort) =>
+const ssgKit = (port: SsgPort) =>
   merge(
     sharedSsgKit(port),
+    ssgPublishKit(port),
     renderKit(port),
     sharedAppKit(port),
     mapProc(source(port.init), sink(port.state.init), () =>
       initialState(appName)),
-    ssgPublishKit(port)
   )
 
+export const ssr = {Port: SsrPort, circuit: ssrKit}
 export const ssg = {Port: SsgPort, circuit: ssgKit}

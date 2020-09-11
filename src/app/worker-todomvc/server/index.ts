@@ -1,5 +1,5 @@
 import {merge} from "rxjs";
-import {latestMapProc, latestMergeMapProc, mapProc, sink, source} from "pkit";
+import {latestMapProc, mapProc, sink, source} from "pkit";
 import {get} from "pkit/http/server";
 import {
   RenderPort,
@@ -28,18 +28,17 @@ const ssrKit = (port: SsrPort) =>
     sharedSsrKit(port),
   )
 
-export const ssr = {Port: SsrPort, circuit: ssrKit}
-
 class SsgPort extends SharedSsgPort<State> {}
 
 const ssgKit = (port: SsgPort) =>
   merge(
     sharedSsgKit(port),
-    renderKit(port),
     ssgPublishKit(port),
+    renderKit(port),
     mapProc(source(port.init), sink(port.state.init), () =>
       initialState(appName)),
   )
 
+export const ssr = {Port: SsrPort, circuit: ssrKit}
 export const ssg = {Port: SsgPort, circuit: ssgKit}
 

@@ -6,7 +6,6 @@ import {
   LifecyclePort,
   mapProc,
   mapToProc,
-  RootCircuit,
   sink,
   source,
   stateKit,
