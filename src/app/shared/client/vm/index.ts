@@ -2,8 +2,7 @@ import {merge} from "rxjs";
 import {
   childRemoteWorkerKit, latestMapProc,
   LifecyclePort,
-  mapProc,
-  mapToProc,
+  mapToProc, Portcuit,
   sink,
   source,
   stateKit,
@@ -11,13 +10,7 @@ import {
 } from "pkit";
 import {snabbdomActionPatchKit, SnabbdomPort} from "@pkit/snabbdom/csr";
 
-// import {State} from '../../shared/state'
-
 import {FC} from "@pkit/snabbdom";
-
-// import {sharedAppKit, SharedPort} from '../../shared/'
-// import {Index} from '../../ui/'
-// import {logicKit} from "../logic/";
 
 export class VmPort<T> extends LifecyclePort<FC<T>> {
   state = new StatePort<T>();
@@ -38,17 +31,8 @@ export const vmKit = <T>(port: VmPort<T>) =>
       [source(port.init)], ([state, Body]) =>
         Body(state)),
     mapToProc(source(port.init), sink(port.ready))
-    // mapToProc(source(port.init), sink(port.ready)),
-    // sharedAppKit(port),
-    // logicKit(port)
-
   )
 
-// const domKit = (port: VmPort) =>
-//   merge(
-//     snabbdomActionPatchKit(port.dom, port.state),
-//     // mapProc(source(port.state.data), sink(port.dom.render), (state) =>
-//     //   Index(state))
-//   )
-
 export default {Port: VmPort, circuit: vmKit}
+
+export type CreateCsr<T> = () => Portcuit<VmPort<T>>

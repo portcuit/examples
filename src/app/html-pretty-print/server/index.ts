@@ -74,7 +74,4 @@ export const ssgKit = (port: SsgPort) =>
       promisify(writeFile)(`${fileName}.html`, html))
   )
 
-// const storePortcuit = <T extends new(...args:any)=>any>(Port: T, circuit: RootCircuit<InstanceType<T>>) =>
-//   ({Port, circuit})
-
 export const ssg = {Port: SsgPort, circuit: ssgKit}

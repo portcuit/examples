@@ -6,4 +6,4 @@ export class Port extends VmPort<State> {}
 export const circuit = (port: Port) =>
   vmKit(port)
 
-export default {Port, circuit}
+export const csr = {Port, circuit}

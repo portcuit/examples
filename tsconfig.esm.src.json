@@ -38,6 +38,7 @@
           }
         ],
         "replace": {
+          "../server/": "/esm/vendor/@pkit/next/mock/server.js",
           "@pkit/snabbdom/lib/jsx": "/esm/snabbdom/jsx.js",
           "@pkit/snabbdom/lib/h": "/esm/snabbdom/h.js",
           "@pkit/snabbdom/lib/tovnode": "/esm/snabbdom/tovnode.js",

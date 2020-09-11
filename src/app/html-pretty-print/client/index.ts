@@ -71,4 +71,4 @@ const loadFromUrl = (port: Port) =>
       res.text())
   ), sink(port.state.patch), (fromHtml) => ({fromHtml}))
 
-export default {Port, circuit}
+export const csr = {Port, circuit}

@@ -1,7 +1,7 @@
 import EventTarget from '@ungap/event-target'
 import {mount} from "pkit";
 import {ScreenParams, ScreenPort, screenKit} from '../../shared/client/screen/';
-import {csr} from './'
+import {createCsr} from './'
 
 let subject$;
 
@@ -24,7 +24,7 @@ if (globalThis.document) {
   }
   subject$ = mount({Port: ScreenPort, circuit: screenKit, params});
 } else {
-  subject$ = mount(csr());
+  subject$ = mount(createCsr());
 }
 
 subject$.subscribe({error: console.error})

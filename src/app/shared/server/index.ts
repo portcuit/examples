@@ -6,6 +6,7 @@ import {from, merge, of} from "rxjs";
 import {sink, source, mergeMapProc, entry, terminatedComplete, mapToProc, mount, LifecyclePort, mapProc} from "pkit";
 import {HttpServerPort, httpServerKit, route, HttpServerParams} from "pkit/http/server";
 import {delay, map, mergeMap, switchMap} from "rxjs/operators";
+import {CreateSsr} from "./render";
 
 export type Params = {
   server: HttpServerParams;
@@ -27,11 +28,11 @@ export const circuit = (port: Port) =>
               .map((file) =>
                 require(resolve(file.slice(0,-4))))
               .filter((page) =>
-                !!page.ssr && typeof page.ssr === 'function')),
+                !!page.createSsr && typeof page.createSsr === 'function')),
           switchMap((pages) =>
             mergeMapProc(source(port.server.event.request), sink(port.debug), (requestArgs) =>
-              merge(...pages.map(({ssr}) =>
-                terminatedComplete(mount(ssr(requestArgs)))))))))),
+              merge(...pages.map(({createSsr}: {createSsr: CreateSsr<any>}) =>
+                terminatedComplete(mount(createSsr(requestArgs)))))))))),
     mergeMapProc(route('**', source(port.server.event.request).pipe(delay(0))), sink(port.server.debug), async ([req, res]) => {
       const appName = req.url!.split('/')[1];
       if (!appName || !['src', 'node_modules'].includes(appName)) {

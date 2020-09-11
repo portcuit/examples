@@ -33,6 +33,8 @@ export const sharedSsrKit = <T>(port: SharedSsrPort<T>) =>
     httpServerApiTerminateKit(port.api)
   )
 
+export type CreateSsr<T> = (requestArgs: RequestArgs) => Portcuit<SharedSsrPort<T>>
+
 export type SsgInfo = [fileName: string, input: string, output: string];
 
 type SsgParams<T> = {

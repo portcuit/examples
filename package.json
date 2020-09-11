@@ -22,6 +22,7 @@
     "@pkit/chokidar": "file:src/vendor/@pkit/chokidar",
     "@pkit/dev": "file:src/vendor/@pkit/dev",
     "@pkit/experimental": "file:src/vendor/@pkit/experimental",
+    "@pkit/next": "file:src/vendor/@pkit/next",
     "@pkit/snabbdom": "file:src/vendor/@pkit/snabbdom",
     "@ungap/event-target": "^0.2.2",
     "dayjs": "^1.8.34",

@@ -1,9 +1,11 @@
 import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit";
 import Pkit, {FC, Touch} from '@pkit/snabbdom'
 import {action} from "@pkit/snabbdom/csr";
+import {CreateSsg, CreateSsr} from "../../shared/server/render";
+import {CreateCsr} from "../../shared/client/vm";
 import {State} from "../shared/state";
-import {RequestArgs} from "pkit/http/server";
-import client from '../client/'
+import {ssr, ssg} from '../server/'
+import {csr} from '../client/'
 
 const App: FC<State> = ({newTodo, items, scope}) =>
   <section class="todoapp">
@@ -121,16 +123,11 @@ const Html: FC<State> = (state) =>
   <Body {...state} />
   </html>
 
-export const ssr = (requestArgs: RequestArgs) => {
-  const {ssr} = require('../server');
-  return {...ssr, params: {requestArgs, Html}}
-}
+export const createSsr: CreateSsr<State> = (requestArgs) =>
+  ({...ssr, params: {requestArgs, Html}})
 
-export const createSsg = (fileName: string, input: string, output: string) => {
-  const {ssg} = require('../server');
-  return {...ssg, params: {fileName, Html}}
-}
+export const createSsg: CreateSsg<State> = (...info) =>
+  ({...ssg, params: {info, Html}})
 
-export const csr = () => {
-  return {...client, params: Body}
-}
+export const createCsr: CreateCsr<State> = () =>
+  ({...csr, params: Body})

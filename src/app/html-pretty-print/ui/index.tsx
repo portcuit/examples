@@ -1,13 +1,13 @@
 import {EphemeralBoolean, EphemeralContainer} from "pkit";
-import Pkit, {FC, markdown} from '@pkit/snabbdom'
+import Pkit, {FC} from '@pkit/snabbdom'
 import {action} from '@pkit/snabbdom/csr'
 import {Head} from './_head'
 import {Options} from './_options'
 import {State} from "../shared/state";
-import {RequestArgs} from "pkit/http/server";
-import client from '../client/'
-import {CreateSsg} from "../../shared/server/render";
-import {ssg} from '../server/'
+import {csr} from '../client/'
+import {CreateSsg, CreateSsr} from "../../shared/server/render";
+import {ssr, ssg} from '../server/'
+import {CreateCsr} from "../../shared/client/vm";
 
 const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
   <div class="flex mt-10">
@@ -67,17 +67,11 @@ const Html: FC<State> = (state) =>
   <Body {...state} />
   </html>
 
-export const ssr = (requestArgs: RequestArgs) => {
-  const {ssr} = require('../server/');
-  return {...ssr, params: {requestArgs, Html}}
-}
+export const createSsr: CreateSsr<State> = (requestArgs) =>
+  ({...ssr, params: {requestArgs, Html}})
 
-export const createSsg: CreateSsg<State> = (...info) => {
-  return {...ssg, params: {info, Html}}
-  // const {ssg}: {ssg: Omit<ReturnType<CreateSsg<State>>, 'params'>} = require('../server/');
-  // return {...ssg, params: {info:[fileName, input, output], Html}}
-}
+export const createSsg: CreateSsg<State> = (...info) =>
+  ({...ssg, params: {info, Html}})
 
-export const csr = () => {
-  return {...client, params: Body}
-}
+export const createCsr: CreateCsr<State> = () =>
+  ({...csr, params: Body})

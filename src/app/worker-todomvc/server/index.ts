@@ -1,6 +1,5 @@
 import {promisify} from "util";
 import {writeFile} from "fs";
-import {dirname} from 'path'
 import {merge} from "rxjs";
 import {latestMapProc, latestMergeMapProc, mapProc, sink, source} from "pkit";
 import {get} from "pkit/http/server";
@@ -12,8 +11,7 @@ const appName = __dirname.split('/').reverse()[1];
 const renderKit = (port: RenderPort<State>) =>
   latestMapProc(source(port.state.data), sink(port.vdom.render),
     [source(port.renderer.init)], ([state, Html]) =>
-      Html(state)
-  )
+      Html(state))
 
 class SsrPort extends SharedSsrPort<State> {}
 
