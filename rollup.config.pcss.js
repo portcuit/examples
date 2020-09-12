@@ -25,12 +25,14 @@ const makeConfig = (appName) => ({
         })
       ]
     }),
-    ...process.env.NODE_ENV === 'production' ?
-      [copy({
-        targets: [
-          {src: `src/app/${appName}/ui/css/*.css`, dest: `public/${appName}/css`}
-        ]
-      })] : []
+    ...(process.env.NODE_ENV === 'production' ?
+      [
+        copy({
+          targets: [
+            {src: `src/app/${appName}/ui/css/*.css`, dest: `public/${appName}/css`}
+          ]
+        })
+      ] : [])
   ]
 })
 
