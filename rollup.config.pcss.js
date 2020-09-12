@@ -2,7 +2,7 @@ import {resolve} from 'path'
 import copy from 'rollup-plugin-copy'
 import postcss from 'rollup-plugin-postcss'
 
-const makeConfig = (appName) => ({
+const makeConfig = (appName) => ([{
   input: `src/app/${appName}/ui/css/index.pcss`,
   output: {
     dir: `src/app/${appName}/ui/css`,
@@ -25,20 +25,23 @@ const makeConfig = (appName) => ({
           }
         })
       ]
-    }),
-    ...(process.env.NODE_ENV === 'production' ?
-      [
-        copy({
-          targets: [
-            {src: resolve(`src/app/${appName}/ui/css/index.css`), dest: resolve(`public/${appName}/css`)}
-          ],
-          verbose: true
-        })
-      ] : [])
+    })
   ]
-})
+},
+  {
+    input: `src/app/${appName}/ui/css/index.js`,
+    plugins: [
+      copy({
+        targets: [
+          {src: `src/app/${appName}/ui/css/index.css`, dest: `public/${appName}/css`}
+        ],
+        verbose: true
+      })
+    ]
+  }
+])
 
 export default [
   'html-pretty-print',
   'worker-todomvc'
-].map(makeConfig)
+].flatMap(makeConfig)
