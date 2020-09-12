@@ -1,4 +1,7 @@
 .git
 .gitignore
 
+*.js.map
+
 /public/**/*.tsx
+/public/**/*.ts

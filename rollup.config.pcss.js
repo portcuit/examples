@@ -1,9 +1,10 @@
+import copy from 'rollup-plugin-copy'
 import postcss from 'rollup-plugin-postcss'
 
 const makeConfig = (appName) => ({
-  input: `public/${appName}/css/index.pcss`,
+  input: `src/app/${appName}/ui/css/index.pcss`,
   output: {
-    dir: `public/${appName}/css`,
+    dir: `src/app/${appName}/ui/css`,
     entryFileNames: '[name].js'
   },
   plugins: [
@@ -11,7 +12,7 @@ const makeConfig = (appName) => ({
       extract: true,
       plugins: [
         require('tailwindcss')({
-          purge: [`public/${appName}/**/*.tsx`],
+          purge: [`src/app/${appName}/ui/**/*.tsx`],
           theme: {
             extend: {
               height: {
@@ -23,7 +24,13 @@ const makeConfig = (appName) => ({
           }
         })
       ]
-    })
+    }),
+    ...process.env.NODE_ENV === 'production' ?
+      [copy({
+        targets: [
+          {src: `src/app/${appName}/ui/css/*.css`, dest: `public/${appName}/css`}
+        ]
+      })] : []
   ]
 })
 
