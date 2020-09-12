@@ -1,3 +1,4 @@
+import {resolve} from 'path'
 import copy from 'rollup-plugin-copy'
 import postcss from 'rollup-plugin-postcss'
 
@@ -29,7 +30,7 @@ const makeConfig = (appName) => ({
       [
         copy({
           targets: [
-            {src: `src/app/${appName}/ui/css/*.css`, dest: `public/${appName}/css`}
+            {src: `src/app/${appName}/ui/css/*.css`, dest: resolve(`public/${appName}/css`)}
           ]
         })
       ] : [])

@@ -5,3 +5,4 @@
 
 /public/**/*.tsx
 /public/**/*.ts
+/public/**/*.pcss
