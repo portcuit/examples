@@ -100,6 +100,7 @@ const App: FC<State> = ({newTodo, items, scope}) =>
 
 const Body: FC<State> = (state, children) =>
   <body>
+  <pkit-todos />
   <App {...state} />
   <footer class="info">
     <p>Double-click to edit a todo</p>

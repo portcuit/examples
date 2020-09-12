@@ -11,3 +11,6 @@
 !rollup.*.js
 
 .vercel
+
+
+/src/app/blog/ui/*
