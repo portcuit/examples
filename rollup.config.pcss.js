@@ -37,7 +37,7 @@ const makeConfig = (appName) => ([
       }),
       copy({
         targets: [
-          {src: `src/app/${appName}/ui/css/*.css`, dest: `public/${appName}/css`}
+          {src: `src/app/${appName}/ui/css/index.css`, dest: `public/${appName}/css`}
         ],
         verbose: true
       })
