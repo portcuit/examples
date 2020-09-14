@@ -92,7 +92,7 @@ const Body: FC<State> = (state) =>
     <Options {...state} />
   </div>
 
-  <p class="container mx-auto text-gray-700 text-center">
+  <p class="container mx-auto text-gray-700 text-center mt-10 mb-16">
     <span>Part of </span>
     <a class="text-gray-500 underline hover:text-gray-300" href="https://github.com/portcuit/examples">Portcuit examples.</a>
   </p>
