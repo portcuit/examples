@@ -23,7 +23,10 @@ const makeConfig = (appName) => ([
                   'screen-1/3': '75vh'
                 }
               }
-            }
+            },
+            plugins: [
+              require('@tailwindcss/custom-forms')
+            ]
           })
         ]
       })
