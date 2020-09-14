@@ -39,7 +39,10 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
         </button>
       </div>
       <textarea class="w-full h-screen-1/2 p-4" placeholder="ここに整形したいHTMLを貼り付けてください。" bind={action<State>({
-        keyup: ({key}) => key === 'Enter' ? ({currentTarget: {value: fromHtml}}) => ({fromHtml}) : undefined,
+        paste: (ev) => {
+          ev.currentTarget.dataset.html = ev.clipboardData!.getData('text');
+          return ({currentTarget: {dataset: {html: fromHtml}}}) => ({fromHtml});
+        },
         change: () => ({currentTarget: {value: fromHtml}}) => ({fromHtml})
       })} value={fromHtml} />
     </div>
@@ -75,7 +78,7 @@ const SvgContainer: FC = (props, children) =>
 
 const Body: FC<State> = (state) =>
   <body class="bg-gray-900">
-  <div class="container mx-auto">
+  <div class="container mx-auto mt-8">
     <h1 class="text-white font-bold text-6xl text-center m-auth">HTML Pretty Print</h1>
     <h2 class="text-gray-700 text-2xl text-center">
       A tool to convert ugly HTML code to pretty format. <br/>
@@ -88,6 +91,11 @@ const Body: FC<State> = (state) =>
   <div class="container mx-auto">
     <Options {...state} />
   </div>
+
+  <p class="container mx-auto text-gray-700 text-center">
+    <span>Part of </span>
+    <a class="text-gray-500 underline hover:text-gray-300" href="https://github.com/portcuit/examples">Portcuit examples.</a>
+  </p>
 
   </body>
 
