@@ -10,8 +10,8 @@ import {ssr, ssg} from '../server/'
 import {CreateCsr} from "../../shared/client/vm";
 
 const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
-  <div class="flex mt-10">
-    <div class="w-1/2 p-4">
+  <div class="flex flex-col lg:flex-row mt-10">
+    <div class="flex-1 w-full p-4">
       <div class="flex mb-2">
         <label class="w-1/2 mr-1 p-2 bg-gray-800 hover:bg-gray-700 text-center text-white font-semibold cursor-pointer">
           File
@@ -30,7 +30,7 @@ const Converter: FC<State> = ({fromHtml, toHtml, copy, downloadFile}) =>
         change: () => ({currentTarget: {value: fromHtml}}) => ({fromHtml})
       })} value={fromHtml} />
     </div>
-    <div class="w-1/2 p-4">
+    <div class="flex-1 w-rull p-4">
       <textarea class="w-full h-screen-1/2 p-4 bg-gray-800 text-white" wrap="off" readOnly={true} value={toHtml} trigger={{copy}} />
       <div class="flex mt-2">
         <button class="w-1/2 p-2 mr-1 bg-white hover:bg-gray-300 font-semibold" bind={action<State>({
