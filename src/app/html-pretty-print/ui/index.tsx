@@ -104,7 +104,7 @@ const Html: FC<State> = (state) =>
   <Head>
     <title>HTML Pretty Print</title>
     <script id="state" type="application/json" innerHTML={JSON.stringify(state)} />
-    <script type="module" src={`${state.esmAppRoot}/main.js`} defer />
+    <script type="module" src={`${state.jsAppRoot}/main.js`} defer />
   </Head>
   <Body {...state} />
   </html>

@@ -119,7 +119,7 @@ const Html: FC<State> = (state) =>
     <link rel="stylesheet" href="./css/base.css" />
     <link rel="stylesheet" href="./css/index.css" />
     <script id="state" type="application/json" innerHTML={JSON.stringify(state)} />
-    <script type="module" src={`${state.esmAppRoot}/main.js`} defer />
+    <script type="module" src={`${state.jsAppRoot}/main.js`} defer />
   </head>
   <Body {...state} />
   </html>

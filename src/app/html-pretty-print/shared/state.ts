@@ -2,7 +2,7 @@ import {EphemeralBoolean, EphemeralContainer} from "pkit";
 
 export type State = {
   url?: URL;
-  esmAppRoot: string;
+  jsAppRoot: string;
   endpoint: string;
   fromHtml: string;
   toHtml: string;
@@ -20,7 +20,7 @@ export type State = {
 }
 
 export const initialState: (...args: any) => State = (appName: string) => ({
-  esmAppRoot: `/esm/app/${appName}/ui`,
+  jsAppRoot: `/js/app/${appName}/ui`,
   endpoint: `/${appName}`,
   fromHtml: `<html lang=ja><head><title>
 HTML Pretty Print</title></head><body><h1>

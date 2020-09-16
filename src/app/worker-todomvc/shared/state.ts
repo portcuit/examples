@@ -1,7 +1,7 @@
 import {EphemeralBoolean} from "pkit";
 
 export type State = {
-  esmAppRoot: string;
+  jsAppRoot: string;
   newTodo: string;
   items: {
     editing: boolean;
@@ -13,7 +13,7 @@ export type State = {
 }
 
 export const initialState: (...args: any[]) => State = (appName: string) => ({
-  esmAppRoot: `/esm/app/${appName}/ui`,
+  jsAppRoot: `/js/app/${appName}/ui`,
   newTodo: '',
   items: [],
   scope: 'all'

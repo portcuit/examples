@@ -21,3 +21,7 @@ build: build.pcss
 .PHONY: build.pcss
 build.pcss:
 	npx rollup -c rollup.config.pcss.js
+
+.PHONY: build.watch
+build.watch: tsconfig.esm.src.json
+	ttsc -b tsconfig.esm.src.json -w
