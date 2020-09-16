@@ -14,7 +14,7 @@ tsconfig.esm.src.json:
 .PHONY: build
 build: build.pcss
 	npx tsc -b
-	npx rollup -c rollup.config.mod.js
+	npx rollup -c rollup.config.mods.js
 	npx tsc -b tsconfig.esm.snabbdom.json
 	npx ttsc -b tsconfig.esm.src.json
 

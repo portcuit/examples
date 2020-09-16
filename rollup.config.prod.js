@@ -3,7 +3,7 @@ import { terser } from "rollup-plugin-terser";
 import packageJson from './package.json'
 
 const {['@pkit/web']:{jsRoot, docRoot}} = packageJson;
-const outDir = [docRoot, jsRoot].concat('/');
+const outDir = [docRoot, jsRoot].join('/');
 
 const makeConfig = (name) => ({
   input: {
