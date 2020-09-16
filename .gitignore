@@ -9,9 +9,10 @@
 *.html
 
 !rollup.*.js
-
-.vercel
+!tsconfig.*.js
 
 tsconfig.esm.*.json
+
+.vercel
 
 /src/app/blog/ui/*
