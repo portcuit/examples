@@ -1,10 +1,9 @@
 import jschardet from "jschardet";
 import {fromEvent, merge} from "rxjs";
 import {filter, map, mergeMap, take, withLatestFrom} from "rxjs/operators";
-import {EphemeralBoolean, latestMapProc, mapProc, mapToProc, sink, source} from "pkit";
-import {VmPort, vmKit} from '../../shared/client/vm/'
-import {State} from '../shared/state'
-import {sharedAppKit} from '../shared/'
+import {EphemeralBoolean, mapProc, sink, source} from "pkit";
+import {VmPort, vmKit} from '@pkit/next/client'
+import {State, sharedAppKit} from '../shared/'
 
 export class Port extends VmPort<State> {}
 

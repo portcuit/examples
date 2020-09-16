@@ -8,7 +8,7 @@ import {
   sharedSsrKit,
   SharedSsrPort,
   ssgPublishKit
-} from "../../shared/server/render";
+} from "@pkit/next/server";
 import {State, initialState} from '../shared/state'
 
 const appName = __dirname.split('/').reverse()[1];

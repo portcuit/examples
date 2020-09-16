@@ -1,4 +1,4 @@
-import {VmPort, vmKit} from '../../shared/client/vm/'
+import {VmPort, vmKit} from '@pkit/next/client'
 import {State} from '../shared/state'
 
 class Port extends VmPort<State> {}

@@ -2,11 +2,13 @@ import {promisify} from 'util'
 import {resolve} from 'path'
 import glob from 'glob'
 import handler from "serve-handler";
-import {from, merge, of} from "rxjs";
+import {from, merge} from "rxjs";
+import {delay, map, mergeMap, switchMap} from "rxjs/operators";
 import {sink, source, mergeMapProc, entry, terminatedComplete, mapToProc, mount, LifecyclePort, mapProc} from "pkit";
 import {HttpServerPort, httpServerKit, route, HttpServerParams} from "pkit/http/server";
-import {delay, map, mergeMap, switchMap} from "rxjs/operators";
-import {CreateSsr} from "./render";
+import {CreateSsr} from "./render/";
+
+export * from './render/'
 
 export type Params = {
   server: HttpServerParams;

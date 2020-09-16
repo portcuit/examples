@@ -7,6 +7,8 @@ import {filter, map, mergeMap, take} from "rxjs/operators";
 import {EphemeralBoolean, mapProc, mergeMapProc, sink, source, StatePort} from "pkit";
 import {State} from './state'
 
+export * from './state'
+
 export interface SharedPort {
   state: StatePort<State>
 }

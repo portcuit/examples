@@ -1,4 +1,4 @@
-import {main} from '../../shared/client/main'
+import {main} from '@pkit/next/client'
 import {createCsr} from './'
 
 const subject$ = main(createCsr);

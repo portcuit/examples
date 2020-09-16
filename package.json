@@ -4,9 +4,10 @@
   "description": "Portcuit examples.",
   "main": "index.js",
   "scripts": {
+    "dev": "node -e \"require('@pkit/dev').run_worker('./src/app')\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ssg": "node -e 'require(\"./src/app/shared/server/ssg\").exec(\"src/app\", \"public\")'",
-    "build": "tsc -b && rollup -c rollup.config.mod.js && tsc -b tsconfig.esm.snabbdom.json && ttsc -b tsconfig.esm.src.json && rollup -c rollup.config.prod.js && rollup -c rollup.config.pcss.js && npm run ssg"
+    "ssg": "node -e \"require('@pkit/next/server/ssg').exec('src/app', 'public')\"",
+    "build": "make && rollup -c rollup.config.prod.js && npm run ssg"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,25 @@
     "url": "https://github.com/portcuit/examples/issues"
   },
   "homepage": "https://github.com/portcuit/examples#readme",
+  "@pkit/web": {
+    "docRoot": "public",
+    "jsRoot": "js",
+    "modules": [
+      "jschardet",
+      "unified",
+      "rehype-stringify",
+      "rehype-parse",
+      "rehype-format",
+      "rxjs",
+      "rxjs/operators",
+      "@ungap/event-target",
+      "remark",
+      "remark-vdom",
+      "minimatch",
+      "ramda",
+      "dayjs"
+    ]
+  },
   "dependencies": {
     "@pkit/chokidar": "file:src/vendor/@pkit/chokidar",
     "@pkit/dev": "file:src/vendor/@pkit/dev",

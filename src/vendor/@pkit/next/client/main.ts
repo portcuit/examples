@@ -1,6 +1,6 @@
 import EventTarget from '@ungap/event-target'
 import {mount} from "pkit";
-import {ScreenParams, ScreenPort, screenKit} from '../../shared/client/screen/';
+import {ScreenParams, ScreenPort, screenKit} from './screen/';
 import {CreateCsr} from "./vm";
 
 export const main = (createCsr: CreateCsr<any>) => {

@@ -12,5 +12,6 @@
 
 .vercel
 
+tsconfig.esm.*.json
 
 /src/app/blog/ui/*

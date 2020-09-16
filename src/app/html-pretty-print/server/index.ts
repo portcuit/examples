@@ -5,9 +5,8 @@ import {merge, of, zip} from "rxjs";
 import {filter} from "rxjs/operators";
 import {sink, source, mapProc, mergeMapProc, latestMapProc} from "pkit";
 import {post, get} from "pkit/http/server";
-import {SharedSsrPort, sharedSsrKit, SharedSsgPort, sharedSsgKit, RenderPort, ssgPublishKit} from '../../shared/server/render/'
-import {initialState, State} from '../shared/state'
-import {sharedAppKit} from '../shared/'
+import {SharedSsrPort, sharedSsrKit, SharedSsgPort, sharedSsgKit, RenderPort, ssgPublishKit} from '@pkit/next/server'
+import {initialState, State, sharedAppKit} from '../shared/'
 
 const appName = __dirname.split('/').reverse()[1];
 

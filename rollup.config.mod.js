@@ -3,13 +3,15 @@ import replace from '@rollup/plugin-replace'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
+import packageJson from './package.json'
 
-const outputDir = 'public/esm';
+const {['@pkit/web']:{modules, docRoot, jsRoot}} = packageJson;
+const outDir = [docRoot, jsRoot].join('/');
 
 const createConfig = (name) => ({
   input: name,
   output: {
-    dir: `${outputDir}/${name}`,
+    dir: `${outDir}/${name}`,
     entryFileNames: 'index.js',
     sourcemap: true,
     format: 'module'
@@ -37,18 +39,4 @@ const createConfig = (name) => ({
   ]
 })
 
-export default [
-  "jschardet",
-  "unified",
-  "rehype-stringify",
-  "rehype-parse",
-  "rehype-format",
-  "rxjs",
-  "rxjs/operators",
-  "@ungap/event-target",
-  "remark",
-  "remark-vdom",
-  "minimatch",
-  "ramda",
-  "dayjs",
-].map((name) => createConfig(name))
+export default modules.map((name) => createConfig(name))

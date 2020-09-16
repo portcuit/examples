@@ -1,10 +1,10 @@
 import {EphemeralBoolean, EphemeralContainer} from "pkit";
 import Pkit, {FC} from '@pkit/snabbdom'
 import {action} from '@pkit/snabbdom/csr'
-import {State} from "../shared/state";
-import {CreateSsg, CreateSsr} from "../../shared/server/render";
+import {State} from "../shared/";
+import {CreateSsg, CreateSsr} from "@pkit/next/server";
+import {CreateCsr} from "@pkit/next/client";
 import {ssr, ssg} from '../server/'
-import {CreateCsr} from "../../shared/client/vm";
 import {csr} from '../client/'
 import {Head} from './_head'
 import {Options} from './_options'

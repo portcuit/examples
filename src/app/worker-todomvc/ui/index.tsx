@@ -1,8 +1,8 @@
 import {EphemeralBoolean, splice, ReplaceArray, padArray} from "pkit";
 import Pkit, {FC, Touch} from '@pkit/snabbdom'
 import {action} from "@pkit/snabbdom/csr";
-import {CreateSsg, CreateSsr} from "../../shared/server/render";
-import {CreateCsr} from "../../shared/client/vm";
+import {CreateSsg, CreateSsr} from "@pkit/next/server";
+import {CreateCsr} from "@pkit/next/client";
 import {State} from "../shared/state";
 import {ssr, ssg} from '../server/'
 import {csr} from '../client/'

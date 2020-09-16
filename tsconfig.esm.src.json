@@ -2,23 +2,29 @@
   "extends": "./tsconfig.esm.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "public/esm",
+    "outDir": "public/js",
     "plugins": [
       {
         "transform": "ts-transformer-esm-web",
         "resolve": [
           {
-            "prefix": "/esm/",
+            "prefix": "/js/",
             "suffix": ".js",
-            "modules": ["snabbdom/**"]
+            "modules": [
+              "snabbdom/**"
+            ]
           },
           {
-            "prefix": "/esm/vendor/",
+            "prefix": "/js/vendor/",
             "suffix": "/index.js",
-            "modules": ["pkit", "pkit/**", "@pkit/**"]
+            "modules": [
+              "pkit",
+              "pkit/**",
+              "@pkit/**"
+            ]
           },
           {
-            "prefix": "/esm/",
+            "prefix": "/js/",
             "suffix": "/index.js",
             "modules": [
               "jschardet",
@@ -38,16 +44,16 @@
           }
         ],
         "replace": {
-          "../server/": "/esm/vendor/@pkit/next/mock/server.js",
-          "@pkit/snabbdom/lib/jsx": "/esm/snabbdom/jsx.js",
-          "@pkit/snabbdom/lib/h": "/esm/snabbdom/h.js",
-          "@pkit/snabbdom/lib/tovnode": "/esm/snabbdom/tovnode.js",
-          "@pkit/snabbdom/lib/init": "/esm/snabbdom/init.js",
-          "@pkit/snabbdom/lib/modules/attributes": "/esm/snabbdom/modules/attributes.js",
-          "@pkit/snabbdom/lib/modules/props": "/esm/snabbdom/modules/props.js",
-          "@pkit/snabbdom/lib/modules/style": "/esm/snabbdom/modules/style.js",
-          "@pkit/snabbdom/lib/modules/eventlisteners": "/esm/snabbdom/modules/eventlisteners.js",
-          "@pkit/snabbdom/lib/modules/dataset": "/esm/snabbdom/modules/dataset.js"
+          "../server/": "/js/vendor/@pkit/next/mock/server.js",
+          "@pkit/snabbdom/lib/jsx": "/js/snabbdom/jsx.js",
+          "@pkit/snabbdom/lib/h": "/js/snabbdom/h.js",
+          "@pkit/snabbdom/lib/tovnode": "/js/snabbdom/tovnode.js",
+          "@pkit/snabbdom/lib/init": "/js/snabbdom/init.js",
+          "@pkit/snabbdom/lib/moodules/attributes": "/js/snabbdom/moodules/attributes.js",
+          "@pkit/snabbdom/lib/modules/props": "/js/snabbdom/modules/props.js",
+          "@pkit/snabbdom/lib/modules/style": "/js/snabbdom/modules/style.js",
+          "@pkit/snabbdom/lib/modules/eventlisteners": "/js/snabbdom/modules/eventlisteners.js",
+          "@pkit/snabbdom/lib/modules/dataset": "/js/snabbdom/modules/dataset.js"
         },
         "after": true
       }

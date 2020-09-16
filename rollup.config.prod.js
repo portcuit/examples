@@ -1,7 +1,9 @@
 import alias from '@rollup/plugin-alias'
 import { terser } from "rollup-plugin-terser";
+import packageJson from './package.json'
 
-const outDir = 'public/esm'
+const {['@pkit/web']:{jsRoot, docRoot}} = packageJson;
+const outDir = [docRoot, jsRoot].concat('/');
 
 const makeConfig = (name) => ({
   input: {
@@ -15,7 +17,8 @@ const makeConfig = (name) => ({
   plugins: [
     alias({
       entries:[
-        {find: /^\/esm\/(.*)/, replacement: `${__dirname}/${outDir}/$1`}
+        // {find: /^\/js\/(.*)/, replacement: `${__dirname}/${outDir}/$1`}
+        {find: new RegExp(`^/${jsRoot}/(.*)`), replacement: `${__dirname}/${outDir}/$1`}
       ]
     }),
     terser({
